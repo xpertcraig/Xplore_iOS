@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReceiveImageCell" rowHeight="191" id="sst-ft-MJ2" customClass="ReceiveImageCell" customModule="NewAppDemo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="191"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="sst-ft-MJ2" id="mjo-Bo-abN">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="190"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FgL-zH-WD5">
+                        <rect key="frame" x="10" y="10" width="150" height="170"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="150" id="K9D-rc-d0b"/>
+                            <constraint firstAttribute="height" constant="150" id="p5V-Wl-v8p"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="FgL-zH-WD5" firstAttribute="leading" secondItem="mjo-Bo-abN" secondAttribute="leading" constant="10" id="Kci-CL-r0x"/>
+                    <constraint firstItem="FgL-zH-WD5" firstAttribute="top" secondItem="mjo-Bo-abN" secondAttribute="top" constant="10" id="a9z-OS-4q1"/>
+                    <constraint firstAttribute="bottom" secondItem="FgL-zH-WD5" secondAttribute="bottom" constant="10" id="urH-Ot-uj4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imgVwReceive" destination="FgL-zH-WD5" id="iqw-of-A7b"/>
+            </connections>
+            <point key="canvasLocation" x="9.5" y="92.5"/>
+        </tableViewCell>
+    </objects>
+</document>

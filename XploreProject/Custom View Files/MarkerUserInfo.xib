@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Nunito-Light.ttf">
+            <string>Nunito-Light</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MarkerUserInfo" customModule="XploreProject" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="266" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OY1-Tf-NXS">
+                    <rect key="frame" x="0.0" y="0.0" width="266" height="60"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xSk-ag-2IV" customClass="UIImageViewCustomClass" customModule="XploreProject" customModuleProvider="target">
+                            <rect key="frame" x="8" y="7" width="45" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="45" id="FLP-4M-Yo2"/>
+                                <constraint firstAttribute="height" constant="45" id="rim-AW-s91"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="0.5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VVd-Ys-HXy" customClass="UIViewCustomClass" customModule="XploreProject" customModuleProvider="target">
+                            <rect key="frame" x="61" y="0.0" width="205" height="60"/>
+                            <subviews>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jaA-zX-yxP">
+                                    <rect key="frame" x="0.0" y="12" width="3" height="36"/>
+                                    <color key="backgroundColor" red="0.0" green="0.42745098040000001" blue="0.40784313729999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="3" id="naK-Ma-0lg"/>
+                                    </constraints>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Anjali" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oOs-py-Aso">
+                                    <rect key="frame" x="7" y="8" width="190" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="Lbt-a3-FEx"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Nunito-Light" family="Nunito" pointSize="13"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yhn-ge-TYQ">
+                                    <rect key="frame" x="7" y="25" width="198" height="35"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <state key="normal" title="View Profile"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="Yhn-ge-TYQ" firstAttribute="top" secondItem="oOs-py-Aso" secondAttribute="bottom" id="1h3-pb-RNb"/>
+                                <constraint firstAttribute="trailing" secondItem="oOs-py-Aso" secondAttribute="trailing" constant="8" id="3iC-XL-uDV"/>
+                                <constraint firstAttribute="bottom" secondItem="Yhn-ge-TYQ" secondAttribute="bottom" id="Eqh-aR-dfm"/>
+                                <constraint firstItem="oOs-py-Aso" firstAttribute="leading" secondItem="jaA-zX-yxP" secondAttribute="trailing" constant="4" id="IWG-Xl-uM6"/>
+                                <constraint firstItem="jaA-zX-yxP" firstAttribute="leading" secondItem="VVd-Ys-HXy" secondAttribute="leading" id="Pdb-c0-uFU"/>
+                                <constraint firstAttribute="bottom" secondItem="jaA-zX-yxP" secondAttribute="bottom" constant="12" id="Rfc-qJ-LhG"/>
+                                <constraint firstItem="oOs-py-Aso" firstAttribute="top" secondItem="VVd-Ys-HXy" secondAttribute="top" constant="8" id="qZD-My-H7a"/>
+                                <constraint firstAttribute="trailing" secondItem="Yhn-ge-TYQ" secondAttribute="trailing" id="uhg-jY-EbI"/>
+                                <constraint firstItem="Yhn-ge-TYQ" firstAttribute="leading" secondItem="oOs-py-Aso" secondAttribute="leading" id="v3c-uj-Y0O"/>
+                                <constraint firstItem="jaA-zX-yxP" firstAttribute="top" secondItem="VVd-Ys-HXy" secondAttribute="top" constant="12" id="ynm-lm-B83"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                    <color key="value" red="0.91758692259999997" green="0.40147542949999998" blue="0.028116203839999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="xSk-ag-2IV" firstAttribute="leading" secondItem="OY1-Tf-NXS" secondAttribute="leading" constant="8" id="EdI-Kg-vlO"/>
+                        <constraint firstAttribute="trailing" secondItem="VVd-Ys-HXy" secondAttribute="trailing" id="cWa-nx-iAR"/>
+                        <constraint firstItem="VVd-Ys-HXy" firstAttribute="top" secondItem="OY1-Tf-NXS" secondAttribute="top" id="gzb-Nm-Vmd"/>
+                        <constraint firstItem="VVd-Ys-HXy" firstAttribute="leading" secondItem="xSk-ag-2IV" secondAttribute="trailing" constant="8" id="h84-7q-Qcf"/>
+                        <constraint firstItem="xSk-ag-2IV" firstAttribute="centerY" secondItem="OY1-Tf-NXS" secondAttribute="centerY" id="ih5-Pr-Reg"/>
+                        <constraint firstAttribute="bottom" secondItem="VVd-Ys-HXy" secondAttribute="bottom" id="kQE-uj-ZBf"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="OY1-Tf-NXS" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="5rG-fS-PtP"/>
+                <constraint firstItem="OY1-Tf-NXS" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="8Z0-WL-n2Y"/>
+                <constraint firstItem="OY1-Tf-NXS" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ES0-ML-Kpy"/>
+                <constraint firstItem="OY1-Tf-NXS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Eg6-m1-l4y"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="userImgView" destination="xSk-ag-2IV" id="bkL-ec-RFp"/>
+                <outlet property="userNameLbl" destination="oOs-py-Aso" id="gca-al-30d"/>
+                <outlet property="viewProfileBtn" destination="Yhn-ge-TYQ" id="0Al-J9-txZ"/>
+            </connections>
+            <point key="canvasLocation" x="141" y="-178"/>
+        </view>
+    </objects>
+</document>
