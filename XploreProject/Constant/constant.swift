@@ -15,8 +15,14 @@ let textFieldActiveColor = UIColor(red: 60.0/255, green: 100.0/255, blue: 210.0/
 
 let appThemeColor: UIColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
 
-let googleApiKey = "AIzaSyCdI3kg1PGvy00zttaoR4NBMgWqeHN-QTA"
+//old used key
+//let googleApiKey = "AIzaSyCdI3kg1PGvy00zttaoR4NBMgWqeHN-QTA"
 
+//new by sir
+let googleApiKey = "AIzaSyBwACZfpIgU47tZP_IeJQSj2ubYERgYciQ"
+
+//by prachi
+//let googleApiKey = "AIzaSyDuMxcTE9veBDMS_jjIjHJ0ltUVCyGMn2I"
 //let googleApiKey = "AIzaSyDdfUiEN3grZALqX9tRHBD6WcqTaZ57XRc"
 
 var notificationCount: Int = 0

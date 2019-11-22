@@ -162,7 +162,6 @@
 		18AF285E206279820000A097 /* LinearProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearProgressBar.swift; sourceTree = "<group>"; };
 		18AF2860206279E60000A097 /* Clamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clamp.swift; sourceTree = "<group>"; };
 		18AF286520629E6F0000A097 /* MarkAbuseAlert.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarkAbuseAlert.xib; sourceTree = "<group>"; };
-		18BB687C205F9BA5002C2151 /* XploreProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = XploreProject.app; path = "/Users/dharmendra/Desktop/Xplore Project/XplorePro/XploreCampSite_IOS/build/Debug-iphoneos/XploreProject.app"; sourceTree = "<absolute>"; };
 		18BB687F205F9BA5002C2151 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18BB6881205F9BA5002C2151 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		18BB6887205F9BA6002C2151 /* XploreProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = XploreProject.xcdatamodel; sourceTree = "<group>"; };
@@ -187,6 +186,7 @@
 		74F2FE507F07312EFCB64C3A /* Pods-XploreProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.release.xcconfig"; sourceTree = "<group>"; };
 		D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.debug.xcconfig"; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
+		E985F1F92388459F00A3F26C /* XploreProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XploreProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9BA7E752358BAA600E84A89 /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		E9BCA95922E47E6E0079B8FD /* TOCropViewConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropViewConstants.h; sourceTree = "<group>"; };
 		E9BCA95C22E47E6E0079B8FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
@@ -518,6 +518,7 @@
 				FF662F78215F365B001328E9 /* Data Manager */,
 				18BB687E205F9BA5002C2151 /* XploreProject */,
 				FF662F7D215F367D001328E9 /* Libraries */,
+				E985F1F92388459F00A3F26C /* XploreProject.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -884,7 +885,7 @@
 			);
 			name = XploreProject;
 			productName = XploreProject;
-			productReference = 18BB687C205F9BA5002C2151 /* XploreProject.app */;
+			productReference = E985F1F92388459F00A3F26C /* XploreProject.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1296,7 +1297,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
@@ -1350,7 +1351,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
 				SDKROOT = iphoneos;

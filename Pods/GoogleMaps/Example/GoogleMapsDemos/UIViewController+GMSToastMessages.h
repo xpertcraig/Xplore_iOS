@@ -13,11 +13,14 @@
  * permissions and limitations under the License.
  */
 
-#import "GooglePlacesDemos/Samples/Autocomplete/AutocompleteBaseViewController.h"
+#import <UIKit/UIKit.h>
 
-/*
- * A demo showing how to use GMSAutocompleteViewController with a UISearchDisplayController.
- */
-@interface AutocompleteWithSearchDisplayController : AutocompleteBaseViewController
+NS_ASSUME_NONNULL_BEGIN
+
+@interface UIViewController (GMSToastMessages)
+
+- (void)gms_showToastWithMessage:(NSString*)message;
 
 @end
+
+NS_ASSUME_NONNULL_END

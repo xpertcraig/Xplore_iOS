@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc. All rights reserved.
+ * Copyright 2019 Google Inc. All rights reserved.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -13,11 +13,13 @@
  * permissions and limitations under the License.
  */
 
-#import "GooglePlacesDemos/Support/BaseDemoViewController.h"
+#import <CoreLocation/CoreLocation.h>
+#import <UIKit/UIKit.h>
 
-/*
- * SDK Demo showing different ways to use the place picker view controller.
+/**
+ * Demo that exposes the findPlaceLikelihoodsForLocation API.
  */
-@interface PlacePickerViewController : BaseDemoViewController
+@interface FindPlaceLikelihoodListViewController
+    : UIViewController <UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate>
 
 @end

@@ -338,11 +338,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 if placemarksArray != nil {
                     if (placemarksArray?.count)! > 0 {
                         let placemark = placemarksArray?.first
+                  //      "AIzaSyDuMxcTE9veBDMS_jjIjHJ0ltUVCyGMn2I"
                         
 //                        myCurrentLatitude = 32.265942
 //                        myCurrentLongitude = 75.646873
                         
-                        AlamoFireWrapper.sharedInstance.getOnlyApiForGooglePlace(action: ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(myCurrentLatitude),\(myCurrentLongitude)&radius=500&types=&name=&key=" + "AIzaSyDuMxcTE9veBDMS_jjIjHJ0ltUVCyGMn2I"), onSuccess: { (responseData) in
+                        AlamoFireWrapper.sharedInstance.getOnlyApiForGooglePlace(action: ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(myCurrentLatitude),\(myCurrentLongitude)&radius=500&types=&name=&key=" + googleApiKey), onSuccess: { (responseData) in
 
                             // applicationDelegate.dismissProgressView(view: self.view)
                             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
