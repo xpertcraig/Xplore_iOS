@@ -10,6 +10,7 @@ import UIKit
 import FacebookLogin
 import FBSDKLoginKit
 import GoogleSignIn
+import AuthenticationServices
 
 class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPaymentDelegate {
     
@@ -18,9 +19,12 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
     @IBOutlet weak var passwordTextFeild: UITextFieldCustomClass!
     @IBOutlet weak var scroolView: UIScrollView!
     
+    @IBOutlet weak var backBtnImg: UIImageView!
+    @IBOutlet weak var backBtn: UIButton!
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var paymentView: UIView!
     @IBOutlet weak var amountLbl: UILabel!
+    @IBOutlet weak var applePayBtn: UIView!
     
     //MARK:- Variable Declarations
     var fbbDataDict: NSDictionary = [:]
@@ -49,7 +53,12 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
     //MARK:- Inbuild functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if #available(iOS 13.0, *) {
+            self.setUpSignInAppleButton()
+        } else {
+            self.applePayBtn.isHidden = true
+            // Fallback on earlier versions
+        }
         self.overlayView.isHidden = true
         //Paypal
         self.setUpPaypal()
@@ -62,10 +71,26 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+          return .lightContent
+    }
+
     override func viewWillAppear(_ animated: Bool) {
+        let sing = Singleton.sharedInstance
+        if sing.loginComeFrom == fromTopBar || sing.loginComeFrom == fromProfile || sing.loginComeFrom == fromNearByuser || sing.loginComeFrom == fromAddCamps || sing.loginComeFrom == fromNoti || sing.loginComeFrom == fromSearch || sing.loginComeFrom == fromFavCamps || sing.loginComeFrom == fromRevFavCamp {
+            self.backBtn.isHidden = false
+            self.backBtnImg.isHidden = false
+            self.navigationController?.tabBarController?.tabBar.isHidden = true
+        } else {
+            self.backBtn.isHidden = true
+            self.backBtnImg.isHidden = true
+            self.navigationController?.tabBarController?.tabBar.isHidden = false
+        }
         //PayPal
         PayPalMobile.preconnect(withEnvironment: environment)
     }
+    
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         self.view.endEditing(true)
@@ -250,7 +275,8 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
     
     @IBAction func tapBackBtn(_ sender: UIButton) {
         self.view.endEditing(true)
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.popViewController(animated: false)
         
     }
     
@@ -307,7 +333,7 @@ extension LoginVc {
         
         let param: NSDictionary = ["email": self.emailTextfeild.text!.trimmingCharacters(in: .whitespaces), "password": passwordTextFeild.text!.trimmingCharacters(in: .whitespaces), "deviceToken": userDefault.value(forKey: "DeviceToken")! ,"deviceType": "ios","latitude": myCurrentLatitude, "longitude": myCurrentLongitude]
         
-        print(param)
+      //  print(param)
         
         AlamoFireWrapper.sharedInstance.getPost(action: "login.php", param: param as! [String : Any], onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
@@ -323,6 +349,8 @@ extension LoginVc {
                     DataManager.name = retValues["name"] as AnyObject
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
+                    
+                    applicationDelegate.notificationCountApi()
                     
                  //   objUser.parseUserData(recUserDict: retValues)
                     self.checkSubscription(recValue: retValues)
@@ -420,10 +448,58 @@ extension LoginVc {
                     //objUser.parseUserData(recUserDict: retValues)
                     self.checkSubscription(recValue: retValues)
                     
-//                    DataManager.isUserLoggedIn = true
-//
-//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    
+                }
+            }
+        }) { (error) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            if connectivity.isConnectedToInternet() {
+                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                
+            }
+        }
+    }
+    
+    //Apple login
+    func appleLoginApiHit(appleDict: [String: Any]){
+        applicationDelegate.startProgressView(view: self.view)
+        
+        if userDefault.value(forKey: "DeviceToken") as? String == nil {
+            userDefault.set(0, forKey: "DeviceToken")
+            
+        }
+        var emailR: String = ""
+         if appleDict["email"] as! String == "" {
+            emailR = "\(String(describing: (appleDict["id"])!))@xploreCamps.com"
+            
+        }
+        
+        let param: [String:Any] = ["name": appleDict["fullName"] ?? "", "email": emailR ,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": "", "appleToken": String(describing: (appleDict["id"])!) ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        
+      //  print(param)
+        
+        AlamoFireWrapper.sharedInstance.getPost(action: "register.php", param: param , onSuccess: { (responseData) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            
+            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
+                    
+                 //   print(retValues)
+                    
+                    DataManager.userId = retValues["userId"] as AnyObject
+                    DataManager.emailAddress = retValues["email"] as AnyObject
+                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+                    
+                    //objUser.parseUserData(recUserDict: retValues)
+                    self.checkSubscription(recValue: retValues)
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -453,12 +529,7 @@ extension LoginVc {
                     
                   //  print(dict)
                     if String(describing: (dict["result"])!) == "1" {
-                        
-                        //objUser.parseUserData(recUserDict: recValue)
-                        DataManager.isUserLoggedIn = true
-                        
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        self.moveBackToApp()
                         
                     } else {
                         
@@ -466,23 +537,6 @@ extension LoginVc {
                         objUser.parseUserData(recUserDict: recValue)
                         
                         self.overlayView.isHidden = false
-                        
-//                        let alert = UIAlertController(title: appName, message: yourSubscription, preferredStyle: .alert)
-//                        let yesBtn = UIAlertAction(title: yesBtntitle, style: .default, handler: { (UIAlertAction) in
-//                            alert.dismiss(animated: true, completion: nil)
-//
-//                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UpdatePaymentVC") as! UpdatePaymentVC
-//                            self.navigationController?.pushViewController(vc, animated: true)
-//
-//                        })
-//
-//                        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
-//                            alert.dismiss(animated: true, completion: nil)
-//
-//                        })
-//                        alert.addAction(yesBtn)
-//                        alert.addAction(noBtn)
-//                        self.present(alert, animated: true, completion: nil)
                         
                     }
                 } else {
@@ -550,10 +604,12 @@ extension LoginVc {
                         
                         self.overlayView.isHidden = true
 //                        objUser.parseUserData(recUserDict: recValue)
-                        DataManager.isUserLoggedIn = true
                         
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        self.moveBackToApp()
+//                        DataManager.isUserLoggedIn = true
+//
+//                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//                        self.navigationController?.pushViewController(vc, animated: true)
                         
                     })
                     
@@ -607,4 +663,76 @@ extension LoginVc :UITextFieldDelegate {
         return true
         
     }
+}
+
+extension UINavigationController {
+
+    func removeViewController(_ controller: UIViewController.Type) {
+        if let viewController = viewControllers.first(where: { $0.isKind(of: controller.self) }) {
+            viewController.removeFromParentViewController()
+        }
+    }
+}
+
+@available(iOS 13.0, *)
+extension LoginVc: ASAuthorizationControllerDelegate {
+    func setUpSignInAppleButton() {
+        let authorizationButton = ASAuthorizationAppleIDButton()
+        authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
+        
+        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 42)
+        authorizationButton.cornerRadius = 21
+          //Add button on some view or stack
+        self.applePayBtn.addSubview(authorizationButton)
+    }
+
+    @objc func handleAppleIdRequest() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+
+            print("User id is \(userIdentifier) Full Name is \(fullName) Email id is \(email)")
+            
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            appleIDProvider.getCredentialState(forUserID: userIdentifier) {  (credentialState, error) in
+                 switch credentialState {
+                    case .authorized:
+                        // The Apple ID credential is valid.
+                        
+                        var dict: [String: Any] = [:]
+                        dict["id"] = userIdentifier
+                        dict["fullName"] = fullName
+                        dict["email"] = email
+                        self.appleLoginApiHit(appleDict: dict)
+                        
+                        print("authorization")
+                        break
+                    case .revoked:
+                        // The Apple ID credential is revoked.
+                        break
+                    case .notFound:
+                        // No credential was found, so show the sign-in UI.
+                        break
+                    default:
+                        break
+                 }
+            }
+
+        }
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+    }
+
 }

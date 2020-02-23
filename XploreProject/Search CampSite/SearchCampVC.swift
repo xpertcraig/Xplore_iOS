@@ -68,7 +68,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
 
         if comeFrom == filterPush {
             self.searchViewHeight.constant = 0
-            // self.filterBtnStackView.isHidden = true
+             self.filterBtnStackView.isHidden = false
             
         } else {
             self.dataContainingView.isHidden = true
@@ -288,31 +288,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
                     
                //     print(retValues)
                     
-                    self.dataContainingView.isHidden = false
-                    self.recallAPIView.isHidden = true
-                    
-                    if (retValues.count) % 5 == 0 {
-                        self.upToLimit = (pageNum+1)*5 + 1
-                        
-                    } else {
-                        self.upToLimit = self.upToLimit + (retValues.count)
-                        
-                    }
-                    
-                    if pageNum == 0 {
-                        self.searchDataArr = []
-                        
-                    }
-                    for i in 0..<retValues.count {
-                        self.searchDataArr.add(retValues.object(at: i) as! NSDictionary)
-                        
-                    }
-                    
-                    // self.searchDataArr = retValues
-                    
-                    self.categoryCollectionView.delegate = self
-                    self.categoryCollectionView.dataSource = self
-                    self.categoryCollectionView.reloadData()
+                    self.reloadTbl(arrR: retValues, pageR: pageNum)
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -334,11 +310,59 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
         }
     }
     
-    func filterApiHit(pageNum: Int) {
-      //  if self.searchDataArr.count == 0 {
-          //  applicationDelegate.startProgressView(view: self.dataContainingView)
+    func reloadTbl(arrR: NSArray, pageR: Int) {
+        self.dataContainingView.isHidden = false
+        self.recallAPIView.isHidden = true
+        
+        if (arrR.count) % 5 == 0 {
+            self.upToLimit = (pageR+1)*5 + 1
             
-      //  }
+        } else {
+            self.upToLimit = self.upToLimit + (arrR.count)
+            
+        }
+        
+        if pageR == 0 {
+            self.searchDataArr = []
+            
+        }
+        if self.campIndex != -1 {
+            for _ in 0..<arrR.count {
+                self.searchDataArr.removeLastObject()
+                
+            }
+        }
+        
+        for i in 0..<arrR.count {
+            self.searchDataArr.add(arrR.object(at: i) as! NSDictionary)
+            
+        }
+        
+        if self.campIndex == -1 {
+            self.categoryCollectionView.delegate = self
+            self.categoryCollectionView.dataSource = self
+            self.categoryCollectionView.reloadData()
+        } else {
+            let indexPath = IndexPath(item: self.campIndex, section: 0)
+            
+            var indexPaths = [IndexPath]()
+            indexPaths.append(indexPath) //"indexPath" ideally get when tap didSelectItemAt or through long press gesture recogniser.
+            
+            let indexS = IndexSet(arrayLiteral: 0)
+            self.categoryCollectionView.reloadSections(indexS)
+            self.categoryCollectionView.reloadItems(at: indexPaths)
+            
+            self.campIndex = -1
+            self.campId = -1
+        }
+        
+    }
+    
+    func filterApiHit(pageNum: Int) {
+        if self.searchDataArr.count == 0 {
+            applicationDelegate.startProgressView(view: self.dataContainingView)
+            
+        }
         
         var api: String = ""
         if self.filterDataDict == [:] {
@@ -360,32 +384,8 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
 
                  //   print(retValues)
 
-                    self.dataContainingView.isHidden = false
+                    self.reloadTbl(arrR: retValues, pageR: pageNum)
                     
-                    if (retValues.count) % 5 == 0 {
-                        self.upToLimit = (pageNum+1)*5 + 1
-                        
-                    } else {
-                        self.upToLimit = self.upToLimit + (retValues.count)
-                        
-                    }
-                    
-                    if pageNum == 0 {
-                        self.searchDataArr = []
-                        
-                    }
-                    for i in 0..<retValues.count {
-                        self.searchDataArr.add(retValues.object(at: i) as! NSDictionary)
-                        
-                    }
-                    
-                    // self.searchDataArr = retValues
-                    
-                    self.categoryCollectionView.delegate = self
-                    self.categoryCollectionView.dataSource = self
-                    self.categoryCollectionView.reloadData()
-                    
-
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
 
@@ -413,16 +413,19 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             let cell = self.categoryCollectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell
             cell.favouriteButton.isUserInteractionEnabled = true
             
-            self.campIndex = -1
-            self.campId = -1
             ///////
-            applicationDelegate.dismissProgressView(view: self.dataContainingView)
+        //    applicationDelegate.dismissProgressView(view: self.dataContainingView)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
               //      print(dict)
-                    self.resetPaginationVar()
+              //      self.resetPaginationVar()
+                    
+                    let pagN = self.campIndex/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
+                    
                     if self.comeFrom == filterPush {
                         self.filterApiHit(pageNum: self.pageNo)
                         
@@ -686,6 +689,19 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
         
         cell.tapProfilePicBtn.tag = indexPath.row
         cell.tapProfilePicBtn.addTarget(self, action: #selector(tapSearchProfilePicBtn(sender:)), for: .touchUpInside)
+        
+        if String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
+           // cell.playBtn.isHidden = true
+            cell.playImg.isHidden = false
+            
+            cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+            cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            
+        } else {
+           // cell.playBtn.isHidden = true
+            cell.playImg.isHidden = true
+            
+        }
         
         return cell
     }

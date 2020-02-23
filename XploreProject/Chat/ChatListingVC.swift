@@ -72,7 +72,7 @@ class ChatListingVC: UIViewController {
     }
     
     func animateTableView() {
-        let leftAnimation = TableViewAnimation.Cell.left(duration: 0.5)
+        let leftAnimation = TableViewAnimation.Cell.left(duration: 1.0)
         self.chatListingTblView.animate(animation: leftAnimation, indexPaths: nil, completion: nil)
         
     }
@@ -83,36 +83,62 @@ class ChatListingVC: UIViewController {
             applicationDelegate.startProgressView(view: self.view)
             
         }
+        self.chatListingTblView.delegate = self
+        self.chatListingTblView.dataSource = self
+        
+        var tempArr: [[String: AnyObject]] = []
         
         let ref = Database.database().reference()
         ref.child("Users").observe(.childAdded, with: { (shot) in
             
             applicationDelegate.dismissProgressView(view: self.view)
             
+            
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
                 
-              //  print(postDict)
+            //    print(postDict)
                 
                 if (postDict["userId"]) != nil {
                    // self.usersListDict = []
                     
                     if String(describing: (postDict["userId"])!) == String(describing: (DataManager.userId)) || String(describing: (postDict["othersUserId"])!) == String(describing: (DataManager.userId)) {
-                        self.usersListDict.append(postDict)
                         
+                        tempArr.append(postDict)
+                        
+                        if let _ = tempArr.last?["last_msgTime"] as? Int {
+                            let a = NSArray.init(array: tempArr)
+                            let filArray = a.discendingArrayWithKeyValue(key: "last_msgTime")
+                            
+                            self.usersListDict = filArray as! [[String : Any]]
+                            
+                        } else {
+                            self.usersListDict = tempArr
+                            
+                        }
+                        
+                        Singleton.sharedInstance.chatListArr = self.usersListDict
+                        self.chatListingTblView.reloadData()
                     }
-                    Singleton.sharedInstance.chatListArr = self.usersListDict
                     
-                    self.chatListingTblView.delegate = self
-                    self.chatListingTblView.dataSource = self
-                    self.chatListingTblView.reloadData()
                 }
             }
+            
         })
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            applicationDelegate.dismissProgressView(view: self.view)
-            
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            applicationDelegate.dismissProgressView(view: self.view)
+//
+//            print(tempArr)
+//
+//            let a = NSArray.init(array: tempArr)
+//            let filArray = a.ascendingArrayWithKeyValue(key: "last_msgTime")
+//
+//            print(filArray)
+//
+//            self.usersListDict = filArray as! [[String : Any]]
+//            Singleton.sharedInstance.chatListArr = self.usersListDict
+//            self.chatListingTblView.reloadData()
+//        }
     }
     
     //MARK: - Status Color
@@ -223,5 +249,26 @@ extension ChatListingVC :UITableViewDataSource ,UITableViewDelegate {
         
         self.navigationController?.pushViewController(chatVC, animated: true)
       
+    }
+}
+
+
+extension NSArray{
+    //sorting- ascending
+    func ascendingArrayWithKeyValue(key:String) -> NSArray{
+        let ns = NSSortDescriptor.init(key: key, ascending: true)
+        let aa = NSArray(object: ns)
+        let arrResult = self.sortedArray(using: aa as! [NSSortDescriptor])
+        return arrResult as NSArray
+    }
+    
+    //sorting - descending
+    func discendingArrayWithKeyValue(key:String) -> NSArray{
+        print(key)
+        
+        let ns = NSSortDescriptor.init(key: key, ascending: false)
+        let aa = NSArray(object: ns)
+        let arrResult = self.sortedArray(using: aa as! [NSSortDescriptor])
+        return arrResult as NSArray
     }
 }

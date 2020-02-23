@@ -6,6 +6,7 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     //MARK:- Iboutlets
     @IBOutlet weak var settingTableView: UITableView!
     @IBOutlet weak var notificationCountLbl: UILabel!
+    @IBOutlet weak var containerView: UIView!
     
     //MARK:- Variable Declarations
     var tableViewArray = NSArray()
@@ -16,8 +17,15 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.startFunc()
-       
+        if DataManager.isUserLoggedIn! {
+            self.startFunc()
+            self.containerView.isHidden = true
+            
+        } else {
+            Singleton.sharedInstance.loginComeFrom = settingStr
+            self.containerView.isHidden = false
+            
+        }
     }
     
     //MARK:- Function definitions
@@ -254,11 +262,16 @@ extension SettingVc {
                     
                     notificationCount = 0
                     
-                    //   userDefault.set(false,forKey: login.USER_DEFAULT_LOGIN_CHECK_Key)
-                    let loginVcObj = storyboard.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+//                    let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//                    self.navigationController!.pushViewController(revealViewControllerVcObj, animated: false)
+                    
+                    
+                       userDefault.set(false,forKey: login.USER_DEFAULT_LOGIN_CHECK_Key)
+                    let homeVc = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
                     var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
                     vcArray.removeAll()
-                    vcArray.append(loginVcObj)
+                    vcArray.append(homeVc)
+                    self.removeDataonLogout()
                     (applicationDelegate.window?.rootViewController as! UINavigationController).setViewControllers(vcArray, animated: false)
                     
                 } else {
@@ -276,6 +289,24 @@ extension SettingVc {
                 
             }
         }
+    }
+    
+    func removeDataonLogout() {
+        let deviceToken = userDefault.value(forKey: "DeviceToken")!
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+        userDefault.set(deviceToken, forKey: "DeviceToken")
+        
+        let sing = Singleton.sharedInstance
+        sing.homeFeaturesCampsArr = []
+        sing.homeReviewBasedCampsArr = []
+        sing.myCurrentLocDict = [:]
+        sing.favouritesCampArr = []
+        sing.myCampsArr = []
+        sing.myProfileDict = [:]
+        sing.notificationListingArr = []
+        sing.chatListArr = []
+        sing.loginComeFrom = ""
+        
     }
 }
 

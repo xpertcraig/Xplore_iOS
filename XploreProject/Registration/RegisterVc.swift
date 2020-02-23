@@ -10,6 +10,7 @@ import UIKit
 import FacebookLogin
 import FBSDKLoginKit
 import GoogleSignIn
+import AuthenticationServices
 
 class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     
@@ -19,6 +20,7 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet weak var emailTextFeild: UITextFieldCustomClass!
     @IBOutlet weak var passwordTextfeild: UITextFieldCustomClass!
     @IBOutlet weak var confirmPassowrd: UITextFieldCustomClass!
+    @IBOutlet weak var applePayBtn: UIView!
     
     //MARK:- Variable Declarations
     var fbbDataDict: NSDictionary = [:]
@@ -27,6 +29,12 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if #available(iOS 13.0, *) {
+            self.setUpSignInAppleButton()
+        } else {
+            self.applePayBtn.isHidden = true
+            // Fallback on earlier versions
+        }
         //call googleSignIn delegate
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
@@ -34,6 +42,10 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
         /////
         self.addKeyBoardObservers()
         
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+          return .lightContent
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -218,20 +230,19 @@ extension RegisterVc {
                 
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
+                    self.verifyEmailAndLogin()
                     
-                 //   print(retValues)
-                    
-                    DataManager.userId = retValues["userId"] as AnyObject
-                    DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
-                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-                    
-                   // objUser.parseUserData(recUserDict: retValues)
-                    DataManager.isUserLoggedIn = true
-                    
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-                    self.navigationController?.pushViewController(vc, animated: true)
+//                    DataManager.userId = retValues["userId"] as AnyObject
+//                    DataManager.emailAddress = retValues["email"] as AnyObject
+//                    DataManager.name = retValues["name"] as AnyObject
+//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+//
+//                   // objUser.parseUserData(recUserDict: retValues)
+//                    DataManager.isUserLoggedIn = true
+//
+//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//                    self.navigationController?.pushViewController(vc, animated: true)
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -254,6 +265,18 @@ extension RegisterVc {
 //        self.navigationController?.pushViewController(Obj, animated: true)
     }
     
+    func verifyEmailAndLogin() {
+        //   print(retValues)
+           let alert = UIAlertController(title: appName, message: verifyEmail, preferredStyle: .alert)
+           let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
+               alert.dismiss(animated: true, completion: nil)
+               self.navigationController?.popViewController(animated: true)
+           })
+           alert.addAction(yesBtn)
+           self.present(alert, animated: true, completion: nil)
+        
+    }
+    
     func FbLoginApiHit(){
         applicationDelegate.startProgressView(view: self.view)
         
@@ -272,19 +295,21 @@ extension RegisterVc {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
                     
+                    self.verifyEmailAndLogin()
                 //    print(retValues)
                     
-                    DataManager.userId = retValues["userId"] as AnyObject
-                    DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
-                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-                    
+//                    DataManager.userId = retValues["userId"] as AnyObject
+//                    DataManager.emailAddress = retValues["email"] as AnyObject
+//                    DataManager.name = retValues["name"] as AnyObject
+//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+//
+//                    self.moveBackToApp()
                     //objUser.parseUserData(recUserDict: retValues)
-                    DataManager.isUserLoggedIn = true
+//                    DataManager.isUserLoggedIn = true
                     
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-                    self.navigationController?.pushViewController(vc, animated: true)
+//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//                    self.navigationController?.pushViewController(vc, animated: true)
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -321,20 +346,75 @@ extension RegisterVc {
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
-                    
+                    self.verifyEmailAndLogin()
                //     print(retValues)
                     
-                    DataManager.userId = retValues["userId"] as AnyObject
-                    DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
-                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+//                    DataManager.userId = retValues["userId"] as AnyObject
+//                    DataManager.emailAddress = retValues["email"] as AnyObject
+//                    DataManager.name = retValues["name"] as AnyObject
+//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+//
+//                    self.moveBackToApp()
                     
                     //objUser.parseUserData(recUserDict: retValues)
-                    DataManager.isUserLoggedIn = true
+//                    DataManager.isUserLoggedIn = true
+//
+//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//                    self.navigationController?.pushViewController(vc, animated: true)
                     
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    
+                }
+            }
+        }) { (error) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            if connectivity.isConnectedToInternet() {
+                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                
+            }
+        }
+    }
+    
+    //Apple login
+    func appleLoginApiHit(appleDict: [String: Any]){
+        applicationDelegate.startProgressView(view: self.view)
+        
+        if userDefault.value(forKey: "DeviceToken") as? String == nil {
+            userDefault.set(0, forKey: "DeviceToken")
+            
+        }
+        var emailR: String = ""
+         if appleDict["email"] as! String == "" {
+            emailR = "\(String(describing: (appleDict["id"])!))@xploreCamps.com"
+            
+        }
+        
+        let param: [String:Any] = ["name": appleDict["fullName"] ?? "", "email": emailR ,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": "", "appleToken": String(describing: (appleDict["id"])!) ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        
+      //  print(param)
+        
+        AlamoFireWrapper.sharedInstance.getPost(action: "register.php", param: param , onSuccess: { (responseData) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            
+            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
+                    self.verifyEmailAndLogin()
+                    
+                 //   print(retValues)
+                    
+//                    DataManager.userId = retValues["userId"] as AnyObject
+//                    DataManager.emailAddress = retValues["email"] as AnyObject
+//                    DataManager.name = retValues["name"] as AnyObject
+//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+//
+//                    self.moveBackToApp()
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -391,4 +471,67 @@ extension RegisterVc :UITextFieldDelegate {
         }
         return true
     }
+}
+
+@available(iOS 13.0, *)
+extension RegisterVc: ASAuthorizationControllerDelegate {
+    func setUpSignInAppleButton() {
+        let authorizationButton = ASAuthorizationAppleIDButton()
+        authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
+        
+        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 42)
+        authorizationButton.cornerRadius = 21
+          //Add button on some view or stack
+        self.applePayBtn.addSubview(authorizationButton)
+    }
+
+    @objc func handleAppleIdRequest() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+
+            print("User id is \(userIdentifier) Full Name is \(fullName) Email id is \(email)")
+            
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            appleIDProvider.getCredentialState(forUserID: userIdentifier) {  (credentialState, error) in
+                 switch credentialState {
+                    case .authorized:
+                        // The Apple ID credential is valid.
+                        
+                        var dict: [String: Any] = [:]
+                        dict["id"] = userIdentifier
+                        dict["fullName"] = fullName
+                        dict["email"] = email
+                        self.appleLoginApiHit(appleDict: dict)
+                        
+                        print("authorization")
+                        break
+                    case .revoked:
+                        // The Apple ID credential is revoked.
+                        break
+                    case .notFound:
+                        // No credential was found, so show the sign-in UI.
+                        break
+                    default:
+                        break
+                 }
+            }
+
+        }
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+    }
+
 }

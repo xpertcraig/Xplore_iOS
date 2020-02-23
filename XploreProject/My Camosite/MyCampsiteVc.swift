@@ -21,19 +21,15 @@ class MyCampsiteVc: UIViewController {
     @IBOutlet weak var favoriteMarkView: UIViewCustomClass!
     @IBOutlet weak var markAsFavBtn: UIButton!
     @IBOutlet weak var favMarkbottomConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var backBtnImgView: UIImageView!
     @IBOutlet weak var backBtn: UIButton!
-    
     @IBOutlet weak var recallAPIView: UIView!
-    
     @IBOutlet weak var noDataLbl: UILabel!
-    
     @IBOutlet weak var notificationCountLbl: UILabel!
-    
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityViewHeight: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var containerView: UIView!
     
     
     //MARK:- Variable Declarations
@@ -62,12 +58,17 @@ class MyCampsiteVc: UIViewController {
 
         backBtnPressedForPublished = false
         
-        self.publishedButton.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        self.publishedButton.setTitleColor(UIColor.white , for: .normal)
-        
-        self.draftButton.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
-        
+        if fromSaveDraft == true {
+            self.onDraftBtn()
+            
+        } else {
+            self.publishedButton.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.publishedButton.setTitleColor(UIColor.white , for: .normal)
+               
+            self.draftButton.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
+            
+        }
         //refresh controll
         self.refreshData()
     }
@@ -82,11 +83,18 @@ class MyCampsiteVc: UIViewController {
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
-        if backBtnPressedForPublished == false {
-            self.callAPI()
-            
+        if DataManager.isUserLoggedIn! {
+            if backBtnPressedForPublished == false {
+                self.callAPI()
+                
+            } else {
+                backBtnPressedForPublished = false
+                
+            }
+            self.containerView.isHidden = true
         } else {
-            backBtnPressedForPublished = false
+            Singleton.sharedInstance.loginComeFrom = myCampsStr
+            self.containerView.isHidden = false
             
         }
     }
@@ -105,12 +113,27 @@ class MyCampsiteVc: UIViewController {
     }
     
     func setDelegateAndDataSource() {
-        self.publishSavedCollView.delegate = self
-        self.publishSavedCollView.dataSource = self
-        
-        self.publishSavedCollView.reloadData()
+        if self.campIndex == -1 {
+            
+            self.publishSavedCollView.delegate = self
+            self.publishSavedCollView.dataSource = self
+            self.publishSavedCollView.reloadData()
+        } else {
+            let indexPath = IndexPath(item: self.campIndex, section: 0)
+            
+            var indexPaths = [IndexPath]()
+            indexPaths.append(indexPath) //"indexPath" ideally get when tap didSelectItemAt or through long press gesture recogniser.
+            
+            let indexS = IndexSet(arrayLiteral: 0)
+            self.publishSavedCollView.reloadSections(indexS)
+            self.publishSavedCollView.reloadItems(at: indexPaths)
+            
+            self.campIndex = -1
+            self.campId = -1
+        }
         
         if fromSaveDraft == true {
+            fromSaveDraft = false
             self.onDraftBtn()
             
         } else if self.firstTime == false {
@@ -178,6 +201,7 @@ class MyCampsiteVc: UIViewController {
         } else {
             self.backBtn.isHidden = true
             self.backBtnImgView.isHidden = true
+            
             
         }
         
@@ -439,6 +463,10 @@ class MyCampsiteVc: UIViewController {
     }
     
     @IBAction func publishedAction(_ sender: Any) {
+        self.onPubishBtn()
+    }
+    
+    func onPubishBtn() {
         fromSaveDraft = false
         self.campType = publishCamp
         self.collArr = []
@@ -452,10 +480,17 @@ class MyCampsiteVc: UIViewController {
         self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
         
         self.publishSavedCollView.reloadData()
+        
     }
     
     @objc func editDraftBtnActions(sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyCampDescriptionVc") as! MyCampDescriptionVc
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+        
+//        vc.comeFrom = draftCamp
+//        vc.recDraftIndex = recDraftIndex
+//        vc.recDraft = recDraft
+//        self.navigationController?.pushViewController(vc, animated: true)
+        
         
         vc.comeFrom = draftCamp
         vc.recDraftIndex = sender.tag
@@ -564,6 +599,7 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
                 cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
                 
             }
+            cell.playImg.isHidden = true
         } else {
             cell.ttlRatingLbl.isHidden = false
             cell.reviewFeaturedStarView.isHidden = false
@@ -613,6 +649,19 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
                 cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
                 
             }
+            
+            if String(describing: ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
+               // cell.playBtn.isHidden = true
+                cell.playImg.isHidden = false
+                
+                cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+                cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+                
+            } else {
+               // cell.playBtn.isHidden = true
+                cell.playImg.isHidden = true
+                
+            }
         }
         
 //        cell.showImgBtn.tag = indexPath.row
@@ -622,9 +671,11 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         backBtnPressedForPublished = true
         if campType == publishCamp {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
             vc.campId = String(describing: ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            
             self.navigationController?.pushViewController(vc, animated: true)
             
         } else {
@@ -642,8 +693,10 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
 extension MyCampsiteVc {
     func publishApiHit(pageNum: Int) {
         if (Singleton.sharedInstance.myCampsArr.count == 0 && userDefault.value(forKey: myCampsStr) == nil){
-            applicationDelegate.startProgressView(view: self.view)
-            
+            if fromSaveDraft == false {
+                applicationDelegate.startProgressView(view: self.view)
+                
+            }
         }
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "publishedCampsite.php?userId="+(DataManager.userId as! String)+"&offset=\(pageNum)", onSuccess: { (responseData) in
@@ -671,6 +724,13 @@ extension MyCampsiteVc {
                         self.publishCampArr = []
                         
                     }
+                    if self.campIndex != -1 {
+                        for _ in 0..<(retValues.count) {
+                            self.publishCampArr.removeLastObject()
+                            
+                        }
+                    }
+                    
                     for i in 0..<retValues.count {
                         self.publishCampArr.add(retValues.object(at: i) as! NSDictionary)
                         
@@ -714,17 +774,19 @@ extension MyCampsiteVc {
             let cell = self.publishSavedCollView.cellForItem(at: indexPath as IndexPath) as! CustomCell
             cell.favouriteButton.isUserInteractionEnabled = true
             
-            self.campIndex = -1
-            self.campId = -1
             ///////
-            applicationDelegate.dismissProgressView(view: self.view)
+           // applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
                   //  print(dict)
                     
-                    self.resetPaginationVar()
+                   // self.resetPaginationVar()
+                    
+                    let pagN = self.campIndex/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
                     self.publishApiHit(pageNum: self.pageNo)
                     
                 } else {

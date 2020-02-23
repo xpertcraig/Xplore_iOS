@@ -20,20 +20,18 @@ class savedCompositeVc: UIViewController {
     @IBOutlet weak var favouriteSavedCollView: UICollectionView!
     @IBOutlet weak var backBtnImgView: UIImageView!
     @IBOutlet weak var backBtn: UIButton!
-    
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var favoriteMarkView: UIViewCustomClass!
     @IBOutlet weak var markAsFavBtn: UIButton!
     @IBOutlet weak var favMarkbottomConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var recallAPIView: UIView!
     @IBOutlet weak var noDataLbl: UILabel!
-    
     @IBOutlet weak var notificationCountLbl: UILabel!
-    
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityViewHeight: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var containerView: UIView!
+    
     
     //MARK:- Variable Declarations
     var comeFrom = ""
@@ -86,12 +84,18 @@ class savedCompositeVc: UIViewController {
             //api
           //  self.callAPI()
        // }
-        
-        if backBtnPressedForPublished == false {
-            self.callAPI()
-            
+        if DataManager.isUserLoggedIn! {
+            if backBtnPressedForPublished == false {
+                self.callAPI()
+                
+            } else {
+                backBtnPressedForPublished = false
+                
+            }
+            self.containerView.isHidden = true
         } else {
-            backBtnPressedForPublished = false
+            Singleton.sharedInstance.loginComeFrom = savedCamp
+            self.containerView.isHidden = false
             
         }
     }
@@ -116,9 +120,30 @@ class savedCompositeVc: UIViewController {
     }
     
     func setDelegateAndDataSource() {
-        self.favouriteSavedCollView.delegate = self
-        self.favouriteSavedCollView.dataSource = self
-        self.favouriteSavedCollView.reloadData()
+        if self.campIndex == -1 {
+            self.favouriteSavedCollView.delegate = self
+            self.favouriteSavedCollView.dataSource = self
+            self.favouriteSavedCollView.reloadData()
+        } else {
+            if self.favouriteCampArr.count-1 >= self.campIndex {
+                let indexPath = IndexPath(item: self.campIndex, section: 0)
+                
+                var indexPaths = [IndexPath]()
+                indexPaths.append(indexPath) //"indexPath" ideally get when tap didSelectItemAt or through long press gesture recogniser.
+                
+                let indexS = IndexSet(arrayLiteral: 0)
+                self.favouriteSavedCollView.reloadSections(indexS)
+                self.favouriteSavedCollView.reloadItems(at: indexPaths)
+                
+            } else {
+                self.favouriteSavedCollView.reloadData()
+                
+            }
+            
+          //
+            self.campIndex = -1
+            self.campId = -1
+        }
         
         if fromFavourites == true {
             self.favBtnAction()
@@ -198,7 +223,8 @@ class savedCompositeVc: UIViewController {
     
     func callAPI() {
         if connectivity.isConnectedToInternet() {
-            self.favouritesApiHit(pageNum: 0)
+            self.resetPaginationVar()
+            self.favouritesApiHit(pageNum: self.pageNo)
             
         } else {
             if self.favouriteCampArr.count == 0 && (userDefault.value(forKey: mySavesCamps)) == nil {
@@ -607,6 +633,19 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
         cell.tapProfilePicBtn.tag = indexPath.row
         cell.tapProfilePicBtn.addTarget(self, action: #selector(tapFevoritesProfilePicBtn(sender:)), for: .touchUpInside)
         
+        if String(describing: ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
+           // cell.playBtn.isHidden = true
+            cell.playImg.isHidden = false
+            
+            cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+            cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            
+        } else {
+           // cell.playBtn.isHidden = true
+            cell.playImg.isHidden = true
+            
+        }
+        
         return cell
     }
     
@@ -661,10 +700,25 @@ extension savedCompositeVc {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSArray)
                     
+                    if (retValues.count) % 5 == 0 {
+                        self.upToLimit = (pageNum+1)*5 + 1
+                        
+                    } else {
+                        self.upToLimit = self.upToLimit + (retValues.count)
+                        
+                    }
                     if pageNum == 0 {
                         self.favouriteCampArr = []
                         
                     }
+                    
+                    if self.campIndex != -1 {
+                        for _ in 0..<(retValues.count) {
+                            self.favouriteCampArr.removeLastObject()
+                            
+                        }
+                    }
+                    
                     for i in 0..<retValues.count {
                         self.favouriteCampArr.add(retValues.object(at: i) as! NSDictionary)
                         
@@ -710,18 +764,19 @@ extension savedCompositeVc {
                 let cell = self.favouriteSavedCollView.cellForItem(at: indexPath as IndexPath) as! CustomCell
                 cell.favouriteButton.isUserInteractionEnabled = true
 
-           
-            self.campIndex = -1
-            self.campId = -1
             ///////
-            applicationDelegate.dismissProgressView(view: self.view)
+           // applicationDelegate.dismissProgressView(view: self.view)
 
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
 
                   //  print(dict)
 
-                    self.favouritesApiHit(pageNum: 0)
+                    let pagN = self.campIndex/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
+                    
+                    self.favouritesApiHit(pageNum: self.pageNo)
 
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)

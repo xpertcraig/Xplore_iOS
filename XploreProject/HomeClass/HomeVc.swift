@@ -20,34 +20,22 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     @IBOutlet weak var myCurrentLocationState: UILabel!
     @IBOutlet weak var mycurrentLocationImage: UIImageView!
     @IBOutlet weak var currentLocView: UIView!
-    
     @IBOutlet weak var favMarkbottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tripsCollectionView: UICollectionView!
     @IBOutlet weak var favoriteMarkView: UIViewCustomClass!
-    
     @IBOutlet weak var markAsFavBtn: UIButton!
- //   @IBOutlet weak var reviewBasedCollVIew: UICollectionView!
-    
     @IBOutlet weak var reviewCollView: UICollectionView!
-    
-    
     @IBOutlet weak var recallAPIView: UIView!
-    
     @IBOutlet weak var searchView: UIView!
-    
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var paymentView: UIView!
     @IBOutlet weak var amountLbl: UILabel!
-    
     @IBOutlet weak var notificationCountLbl: UILabel!
-    
     @IBOutlet weak var tripsCollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var reviewBasedCollHeight: NSLayoutConstraint!
-    
     @IBOutlet weak var tripsPageController: UIPageControl!
     @IBOutlet weak var reviewBasedPageController: UIPageControl!
-    
-    
+    @IBOutlet weak var topButtonContainerView: UIView!
     
     //MARK:- Variable Declaration
     var featuredArr: NSArray = []
@@ -56,6 +44,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     var campId: Int = -1
     var campIndex: Int = -1
     var campType: String = ""
+    let disptchG = DispatchGroup()
     
     //Pappal Config Object
     var payPalConfig = PayPalConfiguration() // default
@@ -74,16 +63,16 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             
         }
     }
-    
-    //
-    //var paypalTransaction_id = "0"
-    
     ///
     var homeRefreshControl = UIRefreshControl()
     
     //MARK:- Inbuild Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.moveToControllerAfterLogin()
+        var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
+        print(vcArray)
         
         self.getLocationNameAndImage()
         
@@ -142,7 +131,6 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
         //api
         self.callAPI()
-        self.checkSubscription()
         
         //PayPal
         PayPalMobile.preconnect(withEnvironment: environment)
@@ -154,6 +142,41 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     //MARK:- Function Definitions
+    func moveToControllerAfterLogin() {
+        let sing = Singleton.sharedInstance
+        if sing.loginComeFrom == fromAddCamps {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else if sing.loginComeFrom == fromNearByuser {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else if sing.loginComeFrom == fromProfile {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else if sing.loginComeFrom == fromNoti {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else if sing.loginComeFrom == fromAddCamps {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else if sing.loginComeFrom == fromSearch {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "SearchCampVC") as! SearchCampVC
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else if sing.loginComeFrom == fromCampDes {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
+            swRevealObj.campId = sing.campId
+            sing.campId = ""
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        }
+    }
+    
     func setMyCurrentLoc() {
         if let img = Singleton.sharedInstance.myCurrentLocDict["mycurLocImg"] as? UIImage {
             self.mycurrentLocationImage.image = img
@@ -325,10 +348,17 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     @objc func tapSearchView() {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchCampVC") as! SearchCampVC
-        vc.searchType = "Home"
-        self.navigationController?.pushViewController(vc, animated: false )
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchCampVC") as! SearchCampVC
+            vc.searchType = "Home"
+            self.navigationController?.pushViewController(vc, animated: false )
+            
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromSearch
+            self.navigationController?.pushViewController(vc, animated: false)
+            
+        }
     }
     
     func getLocationNameAndImage() {
@@ -381,16 +411,19 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     func callAPI() {
         if connectivity.isConnectedToInternet() {
+            self.disptchG.enter()
             self.HomeAPIHit()
-            
+            if DataManager.isUserLoggedIn! {
+                applicationDelegate.notificationCountApi()
+                self.disptchG.enter()
+                self.checkSubscription()
+            }
         } else {
             if self.featuredArr.count == 0 && self.reviewBasedArr.count == 0  {
                 self.recallAPIView.isHidden = false
                                 
             }
-            
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
         }
     }
     
@@ -414,27 +447,55 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     //MARK:- Button Actions
     @IBAction func profileAction(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromProfile
+            self.navigationController?.pushViewController(vc, animated: false)
+            
+        }
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromNearByuser
+            self.navigationController?.pushViewController(vc, animated: false)
+           
+       }
     }
     
     @IBAction func addCamp(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromAddCamps
+            self.navigationController?.pushViewController(vc, animated: false)
+            
+        }
     }
     
     @IBAction func notificationAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromNoti
+            self.navigationController?.pushViewController(vc, animated: false)
+            
+        }
     }
     
     @IBAction func closeFavouritesView(_ sender: Any) {
@@ -542,6 +603,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         self.view.endEditing(true)
         self.recallAPIView.isHidden = true
         if connectivity.isConnectedToInternet() {
+            self.disptchG.enter()
             self.HomeAPIHit()
             
         } else {
@@ -564,6 +626,14 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     @IBAction func tapFeaturedReviewBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
         vc.comeFrom = reviewBased
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
+    @IBAction func tapViewAllCampsBtn(_ sender: Any) {
+        self.view.endEditing(true)
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
+        vc.comeFrom = allCamps
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -596,15 +666,9 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
-            
-          //  print(self.featuredArr.count)
-            
             return self.featuredArr.count
             
         } else if collectionView.tag == 2 {
-            
-       //     print(self.reviewBasedArr.count)
-            
             return self.reviewBasedArr.count
             
         }
@@ -622,7 +686,6 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             config.imageView = cell.featuredReviewImgView
             
         }
-        
         present(ImageViewerController(configuration: configuration), animated: true)
         
     }
@@ -648,6 +711,8 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             self.tripsCollScroll = true
             
             let cell = self.tripsCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
+            
+            //print(self.featuredArr.object(at: indexPath.row) as! NSDictionary)
             
 //            cell.viewAll.tag = indexPath.row
 //            cell.viewAll.addTarget(self, action:#selector(buttonPressed(_:)), for:.touchUpInside)
@@ -699,8 +764,37 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 
             }
             
+            if String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
+             //   cell.playBtn.isHidden = false
+                cell.playImg.isHidden = false
+                
+                cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+                cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+                
+            } else {
+               // cell.playBtn.isHidden = true
+                cell.playImg.isHidden = true
+                
+            }
+            
 //            cell.showImgBtn.tag = indexPath.row
 //            cell.showImgBtn.addTarget(self, action: #selector(tapTripsShowImgView(sender:)), for: .touchUpInside)
+            
+//            if (self.campDetailDict.value(forKey: "videoindex") as! String) != "-1" && (self.campDetailDict.value(forKey: "videoindex") as! String) != "0" && (self.campDetailDict.value(forKey: "videoindex") as! String) != "" && (self.campDetailDict.value(forKey: "campsiteVideo") as! String) != "" {
+//                if indexPath.row == Int(self.campDetailDict.value(forKey: "videoindex") as! String)! - 1 {
+//                    cell.playImg.isHidden = false
+//
+//                    cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+//                    cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+//
+//                } else {
+//                    cell.playImg.isHidden = true
+//
+//                }
+//            } else {
+//                cell.playImg.isHidden = true
+//
+//            }
             
             cell.tapProfilePicBtn.tag = indexPath.row
             cell.tapProfilePicBtn.addTarget(self, action: #selector(tapFeaturedProfilePicBtn(sender:)), for: .touchUpInside)
@@ -767,6 +861,19 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
 //            cell.showImgBtn.tag = indexPath.row
 //            cell.showImgBtn.addTarget(self, action: #selector(tapReviewShowImgView(sender:)), for: .touchUpInside)
             
+            if String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
+               // cell.playBtn.isHidden = true
+                cell.playImg.isHidden = false
+                
+                cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+                cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+                
+            } else {
+               // cell.playBtn.isHidden = true
+                cell.playImg.isHidden = true
+                
+            }
+            
             cell.tapProfilePicBtn.tag = indexPath.row
             cell.tapProfilePicBtn.addTarget(self, action: #selector(tapReviewProfilePicBtn(sender:)), for: .touchUpInside)
             
@@ -807,18 +914,26 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
-        
-        if collectionView.tag == 1 {
-            //print(self.featuredArr.object(at: indexPath.row) as! NSDictionary)
-            vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-        } else {
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
+            if collectionView.tag == 1 {
+                vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            } else {
+                vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            }
+            self.navigationController?.pushViewController(vc, animated: true)
             
-          //  print(self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary)
-            vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromCampDes
+            if collectionView.tag == 1 {
+                Singleton.sharedInstance.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            } else {
+                Singleton.sharedInstance.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            }
+            self.navigationController?.pushViewController(vc, animated: false)
+            
         }
-        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -844,8 +959,43 @@ extension HomeVc : UITextFieldDelegate {
     }
     
     @objc func favoutiteAction(sender: UIButton) {
-        self.campIndex = sender.tag
-        if String(describing: ((self.featuredArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
+        if DataManager.isUserLoggedIn! {
+            self.campIndex = sender.tag
+            openfavView(index: sender.tag)
+            
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromFavCamps
+            Singleton.sharedInstance.favIndex = sender.tag
+            self.navigationController?.pushViewController(vc, animated: false)
+            
+        }
+    }
+    
+    func openfavView(index: Int) {
+        self.campIndex = index
+        if String(describing: ((self.featuredArr.object(at: index) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
+            self.markAsFavBtn.setTitle("Mark as favourite", for: .normal)
+            
+        } else {
+            self.markAsFavBtn.setTitle("Delete from favourite", for: .normal)
+            
+        }
+        self.scrollToSelectedIndex(selColl: self.tripsCollectionView, index: index)
+        self.campType = "featured"
+        self.campId = Int(String(describing: ((self.featuredArr.object(at: index) as! NSDictionary).value(forKey: "campId"))!))!
+        self.favMarkbottomConstraint.constant = 150
+        self.overlayView.tag = index
+        self.overlayView.isHidden = false
+        self.favoriteMarkView.isHidden = false
+        self.paymentView.isHidden = true
+        self.view.layoutIfNeeded()
+        
+    }
+    
+    func openRevFavView(index: Int) {
+        self.campIndex = index
+        if String(describing: ((self.reviewBasedArr.object(at: index) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
             self.markAsFavBtn.setTitle("Mark as favourite", for: .normal)
             
         } else {
@@ -853,48 +1003,35 @@ extension HomeVc : UITextFieldDelegate {
             
         }
         
-        self.campType = "featured"
-        self.campId = Int(String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!))!
+        self.scrollToSelectedIndex(selColl: self.reviewCollView, index: index)
+        self.campType = "reviewBased"
+        self.campId = Int(String(describing: ((self.reviewBasedArr.object(at: index) as! NSDictionary).value(forKey: "campId"))!))!
+        self.favMarkbottomConstraint.constant = 150
+        self.overlayView.tag = index
+        self.overlayView.isHidden = false
+        self.favoriteMarkView.isHidden = false
+        self.paymentView.isHidden = true
+        self.view.layoutIfNeeded()
         
-       // favMarkbottomConstraint.constant = 0
-     //   UIView.animate(withDuration: 1) {
-            self.favMarkbottomConstraint.constant = 150
-            
-            self.overlayView.tag = sender.tag
-            self.overlayView.isHidden = false
-            self.favoriteMarkView.isHidden = false
-        
-            self.paymentView.isHidden = true
-        
-            self.view.layoutIfNeeded()
-      //  }
     }
     
     @objc func revfavAction(sender: UIButton) {
-        self.campIndex = sender.tag
-        if String(describing: ((self.reviewBasedArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
-            self.markAsFavBtn.setTitle("Mark as favourite", for: .normal)
+        if DataManager.isUserLoggedIn! {
+            self.campIndex = sender.tag
+            openRevFavView(index: sender.tag)
             
         } else {
-            self.markAsFavBtn.setTitle("Delete from favourite", for: .normal)
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            Singleton.sharedInstance.loginComeFrom = fromRevFavCamp
+            Singleton.sharedInstance.favIndex = sender.tag
+            self.navigationController?.pushViewController(vc, animated: false)
             
         }
+    }
+    
+    func scrollToSelectedIndex(selColl: UICollectionView, index: Int) {
+        selColl.scrollToItem(at:IndexPath(item: index, section: 0), at: .right, animated: false)
         
-        self.campType = "reviewBased"
-        self.campId = Int(String(describing: ((self.reviewBasedArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!))!
-        
-      //  favMarkbottomConstraint.constant = 0
-      //  UIView.animate(withDuration: 1) {
-            self.favMarkbottomConstraint.constant = 150
-            
-            self.overlayView.tag = sender.tag
-            self.overlayView.isHidden = false
-        
-            self.favoriteMarkView.isHidden = false
-            self.paymentView.isHidden = true
-        
-            self.view.layoutIfNeeded()
-      //  }
     }
     
     @objc func endEditing () {
@@ -923,11 +1060,21 @@ extension HomeVc {
         
         // start the timer
          DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let param: NSDictionary = ["userId": DataManager.userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude]
+            var userId: String = ""
+            if let userId1 = DataManager.userId as? String {
+                userId = userId1
+                
+            } else {
+                userId = ""
+                
+            }
+            let param: NSDictionary = ["userId": userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude]
             
-           // print(param)
+            print(param)
             
             AlamoFireWrapper.sharedInstance.getPost(action: "home.php", param: param as! [String : Any], onSuccess: { (responseData) in
+                
+                self.disptchG.leave()
                 applicationDelegate.dismissProgressView(view: self.view)
                 
                 self.homeRefreshControl.endRefreshing()
@@ -936,7 +1083,7 @@ extension HomeVc {
                     if (String(describing: (dict["success"])!)) == "1" {
                         let retValues = (dict["result"]! as! NSDictionary)
                         
-                  //      print(retValues)
+                        print(retValues)
                         
                         self.homeScrollView.isHidden = false
                         self.recallAPIView.isHidden = true
@@ -957,6 +1104,7 @@ extension HomeVc {
                     }
                 }
             }) { (error) in
+                self.disptchG.leave()
                 if Singleton.sharedInstance.homeFeaturesCampsArr.count == 0 && Singleton.sharedInstance.homeReviewBasedCampsArr.count == 0{
                     self.recallAPIView.isHidden = false
                     
@@ -977,7 +1125,7 @@ extension HomeVc {
         //applicationDelegate.startProgressView(view: self.view)
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "isPaid.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
-            
+            self.disptchG.leave()
            // applicationDelegate.dismissProgressView(view: self.view)
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
@@ -1001,7 +1149,14 @@ extension HomeVc {
                             tabBarItem5.isEnabled = true
                             
                         }
-                        
+                        let sing = Singleton.sharedInstance
+                        if sing.loginComeFrom == fromFavCamps {
+                            self.openfavView(index: sing.favIndex)
+                            sing.favIndex = -1
+                        } else if sing.loginComeFrom == fromRevFavCamp {
+                            self.openRevFavView(index: sing.favIndex)
+                            sing.favIndex = -1
+                        }
                     } else {
                         self.subscriptionCargesAPIHit()
                         
@@ -1052,6 +1207,7 @@ extension HomeVc {
                 }
             }
         }) { (error) in
+            self.disptchG.leave()
             //applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
                 //CommonFunctions.showAlert(self, message: serverError, title: appName)
@@ -1161,13 +1317,13 @@ extension HomeVc {
             self.campIndex = -1
             self.campId = -1
             ///////
-            applicationDelegate.dismissProgressView(view: self.view)
+           // applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
                   //  print(dict)
-                    
+                    self.disptchG.enter()
                     self.HomeAPIHit()
                     
                 } else {

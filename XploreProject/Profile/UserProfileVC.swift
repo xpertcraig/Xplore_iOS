@@ -71,9 +71,21 @@ class UserProfileVC: UIViewController {
     }
     
     @objc func tapCampSiteView() {
+     //   print(userInfoDict)
+        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
         vc.comeFrom = myProfile
         vc.userId = self.userId
+        
+        if let name: String = self.userInfoDict["authorName"] as? String {
+            vc.autherInfo.updateValue(name, forKey: "autherName")
+            
+        }
+        if let img: String = self.userInfoDict["profileImage"] as? String {
+            vc.autherInfo.updateValue(img, forKey: "autherImg")
+            
+        }
+        
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -141,7 +153,8 @@ class UserProfileVC: UIViewController {
                     otherUserId = (String(describing: (self.userInfoDict.value(forKey: "campAuthor"))!))
                 }
                 
-                let dictMessage = ["othersUserId": otherUserId ,"otherUserProfileImage": (String(describing: (self.userInfoDict.value(forKey: "profileImage"))!)),"otherUsername": otherUserName, "userId": String(describing: (DataManager.userId)), "username": String(describing: (DataManager.name)) , "userProfileImage": String(describing: (DataManager.profileImage)) ,"last_msg": "", "last_msgTime": ""]
+                let dictMessage: [String: Any] = ["othersUserId": otherUserId ,"otherUserProfileImage": (String(describing: (self.userInfoDict.value(forKey: "profileImage"))!)),"otherUsername": otherUserName, "userId": String(describing: (DataManager.userId)), "username": String(describing: (DataManager.name)) , "userProfileImage": String(describing: (DataManager.profileImage)) ,"last_msg": "", "last_msgTime": ""]
+                
                 
                 ref.updateChildValues(dictMessage)
                 

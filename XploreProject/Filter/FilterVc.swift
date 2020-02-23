@@ -37,16 +37,14 @@ class FilterVc: UIViewController, selectTypeDelegate {
     @IBOutlet weak var countryStateCityTblView: UITableView!
     @IBOutlet weak var countryStateCityTop: NSLayoutConstraint!
     @IBOutlet weak var countryStateCityHeight: NSLayoutConstraint!
-    
     @IBOutlet weak var noDataFoundLbl: UILabel!
-    
     @IBOutlet weak var distanceValueSlider: UISlider!
     @IBOutlet weak var sliderValueLbl: UILabel!
-    
     @IBOutlet weak var backBtnImgView: UIImageView!
     @IBOutlet weak var backBtn: UIButton!
-    
     @IBOutlet weak var notificationCountLbl: UILabel!
+    @IBOutlet weak var containerView: UIView!
+    
     
     //MARK:- Variable Declarations
     var countryId: String = ""
@@ -81,45 +79,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
+        self.setUpOnLoad()
         
-        self.countryStateCityTblView.layer.borderColor = UIColor.lightGray.cgColor
-        self.countryStateCityTblView.layer.borderWidth = 0.5
-        self.countryStateCityTblView.layer.masksToBounds = true
-        
-        self.countryStateCityTblView.tableFooterView = UIView()
-        
-        self.showHideTxtFld.isHidden = false
-        self.typeTxtFld.isHidden = true
-        
-        self.filterScrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeCountryStateCityTbl)))
-        
-        self.amentiesView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGastureView)))
-        self.typeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapTypeView)))
-        
-        self.countryView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCountryView)))
-        self.stateview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapStateView)))
-        self.cityView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCityView)))
-        
-        //
-        callAPI()
-        
-        self.noDataFoundLbl.isHidden = true
-        self.countryTxtfld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
-        self.stateTxtFld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
-        self.cityTxtFld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
-        
-        self.distanceValueSlider.addTarget(self, action: #selector(NearByUsersVC.updateKmsLabel(sender:)), for: .touchUpInside)
-        
-        if self.comeFrom == notFromTabbar {
-            self.backBtn.isHidden = false
-            self.backBtnImgView.isHidden = false
-            
-        } else {
-            self.backBtn.isHidden = true
-            self.backBtnImgView.isHidden = true
-            
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -146,6 +107,57 @@ class FilterVc: UIViewController, selectTypeDelegate {
     }
     
     //MARK:- Function Definitions
+    func setUpOnLoad() {
+        self.notificationCountLbl.text! = String(describing: (notificationCount))
+        
+        self.countryStateCityTblView.layer.borderColor = UIColor.lightGray.cgColor
+        self.countryStateCityTblView.layer.borderWidth = 0.5
+        self.countryStateCityTblView.layer.masksToBounds = true
+        
+        self.countryStateCityTblView.tableFooterView = UIView()
+        
+        self.showHideTxtFld.isHidden = false
+        self.typeTxtFld.isHidden = true
+        
+        self.filterScrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeCountryStateCityTbl)))
+        
+        self.amentiesView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGastureView)))
+        self.typeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapTypeView)))
+        
+        self.countryView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCountryView)))
+        self.stateview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapStateView)))
+        self.cityView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCityView)))
+        
+        
+        if DataManager.isUserLoggedIn! {
+            callAPI()
+            Singleton.sharedInstance.loginComeFrom = ""
+            self.containerView.isHidden = true
+            
+        } else {
+            Singleton.sharedInstance.loginComeFrom = filter
+            self.containerView.isHidden = false
+            
+        }
+        self.noDataFoundLbl.isHidden = true
+        self.countryTxtfld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
+        self.stateTxtFld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
+        self.cityTxtFld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
+        
+        self.distanceValueSlider.addTarget(self, action: #selector(NearByUsersVC.updateKmsLabel(sender:)), for: .touchUpInside)
+        
+        if self.comeFrom == notFromTabbar {
+            self.backBtn.isHidden = false
+            self.backBtnImgView.isHidden = false
+            
+        } else {
+            self.backBtn.isHidden = true
+            self.backBtnImgView.isHidden = true
+            
+        }
+        
+    }
+    
     func resetData() {
         /////
         self.countryTxtfld.text! = ""

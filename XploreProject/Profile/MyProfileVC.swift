@@ -110,8 +110,7 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         if (Singleton.sharedInstance.myProfileDict.count == 0 && userDefault.value(forKey: myProfileStr) == nil){
             applicationDelegate.startProgressView(view: self.view)
             
-        }
-        
+        }        
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "myProfile.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
             
@@ -203,5 +202,15 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     @IBAction func tapBackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         
+    }
+}
+
+extension UIImagePickerController {
+    open override var childViewControllerForStatusBarHidden: UIViewController? {
+        return nil
+    }
+
+    open override var prefersStatusBarHidden: Bool {
+        return true
     }
 }

@@ -33,7 +33,8 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityViewHeight: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak var topNavigationView: UIView!
+    @IBOutlet weak var topNavigationHeight: NSLayoutConstraint!
     
     //MARK:- Variable Declaration
     var campId: Int = -1
@@ -52,6 +53,8 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     var limit:Int = 5
     var upToLimit = 0
     
+    var autherInfo: [String: Any] = [:]
+    
     ///
     var featuredReviewRefreshControl = UIRefreshControl()
     
@@ -61,22 +64,33 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if !DataManager.isUserLoggedIn! {
+            self.topNavigationView.isHidden = true
+            self.topNavigationHeight.constant = 0
+            
+        }
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
         if comeFrom == featuredBased {
             self.campsiteTypeLbl.text! = "Featured Campsites"
             self.sortBtn.isHidden = true
+            self.filterBtn.isHidden = true
             
         } else if comeFrom == myProfile {
             self.campsiteTypeLbl.text! = "Campsites"
             self.sortBtn.isHidden = true
             self.filterBtn.isHidden = true
             
-        } else {
-            self.campsiteTypeLbl.text! = "Review Campsites"
+        } else if comeFrom == reviewBased {
+            self.campsiteTypeLbl.text! = "Review Based"
             self.sortBtn.isHidden = false
-            
             self.ascDscToggle = "1"
+            self.filterBtn.isHidden = true
+            
+        } else {
+            self.campsiteTypeLbl.text! = allCamps
+            self.sortBtn.isHidden = true
+            self.filterBtn.isHidden = true
         }
         
         self.dataContainingView.isHidden = true
@@ -156,14 +170,15 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 self.filterApiHit(pageNum: pageNo)
                 
             } else {
-                if comeFrom == featuredBased {
-                    self.featuredAPIHit(pageNum: pageNo)
-                    
-                } else if comeFrom == myProfile {
-                    self.featuredAPIHit(pageNum: pageNo)
+//                if comeFrom == featuredBased || comeFrom == myProfile || comeFrom == allCamps {
+//                    self.featuredAPIHit(pageNum: pageNo)
+//
+//                }
+                if comeFrom == reviewBased {
+                    self.revieweBasedAPIHit(pageNum: pageNo)
                     
                 } else {
-                    self.revieweBasedAPIHit(pageNum: pageNo)
+                    self.featuredAPIHit(pageNum: pageNo)
                     
                 }
             }
@@ -212,15 +227,19 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                         self.filterApiHit(pageNum: self.pageNo)
 
                     } else {
-                        if comeFrom == featuredBased {
-                            self.featuredAPIHit(pageNum: self.pageNo)
-
-                        } else if comeFrom == myProfile {
-                            self.featuredAPIHit(pageNum: self.pageNo)
-
-                        } else {
+//                        if comeFrom == featuredBased {
+//                            self.featuredAPIHit(pageNum: self.pageNo)
+//
+//                        } else if comeFrom == myProfile {
+//                            self.featuredAPIHit(pageNum: self.pageNo)
+//
+//                        }
+                        if self.comeFrom == reviewBased {
                             self.revieweBasedAPIHit(pageNum: self.pageNo)
 
+                        } else {
+                            self.featuredAPIHit(pageNum: self.pageNo)
+                            
                         }
                     }
                 }
@@ -341,24 +360,33 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     }
     
     func featuredAPIHit(pageNum: Int) {
-     //   if self.featuredReviewArr.count == 0 {
-         //   applicationDelegate.startProgressView(view: self.view)
+        if self.featuredReviewArr.count == 0 {
+            applicationDelegate.startProgressView(view: self.view)
             
-      //  }
+        }
        
         var api1: String = ""
         var api2: String = ""
+        if let userId1 = DataManager.userId as? String {
+            userId = userId1
+            
+        }
         
-        http://clientstagingdev.com/explorecampsite/api/userPublished.php?userId=43&offset=0&userCamps=33
+     //   http://clientstagingdev.com/explorecampsite/api/userPublished.php?userId=43&offset=0&userCamps=33
         
         if comeFrom == myProfile {
-            api1 = "userPublished.php?userId=" + (DataManager.userId as! String) //+ userId
+            api1 = "userPublished.php?userId=" + userId //+ userId
             
             api2 = "&offset=\(pageNum)&userCamps=\(userId)"
-        } else {
-            api1 = "featuredCampsites.php?userId=" + (DataManager.userId as! String)
+        } else if comeFrom == featuredBased {
+            api1 = "featuredCampsites.php?userId=" + userId
             
             api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)"
+        } else {
+            api1 = "nearbynew.php?userId=" + userId
+            
+            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)"
+            
         }
         
         let api:String = api1 + api2
@@ -372,57 +400,24 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     let retValues = (dict["result"]! as! NSArray)
                     
                  //   print(retValues)
-                    
-                    self.dataContainingView.isHidden = false
-                    self.recallAPIView.isHidden = true
-                    
-                    if (retValues.count) % 5 == 0 {
-                        self.upToLimit = (pageNum+1)*5 + 1
-                        
-                    } else {
-                        self.upToLimit = self.upToLimit + (retValues.count)
-                        
-                    }
-                    
-                    if pageNum == 0 {
-                        self.featuredReviewArr = []
-                        
-                    }
-                    for i in 0..<retValues.count {
-                        self.featuredReviewArr.add(retValues.object(at: i) as! NSDictionary)
-                        
-                    }
-                    
-                   // self.featuredReviewArr = retValues
-                    self.categoryCollectionView.delegate = self
-                    self.categoryCollectionView.dataSource = self
-                    self.categoryCollectionView.reloadData()
-                    
+                    self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
             }
         }) { (error) in
-            self.recallAPIView.isHidden = false
+            self.apiError()
             
-            applicationDelegate.dismissProgressView(view: self.view)
-            if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
-                
-            } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
-            }
         }
     }
     
     func revieweBasedAPIHit(pageNum: Int) {
-        //if self.featuredReviewArr.count == 0 {
-          //  applicationDelegate.startProgressView(view: self.view)
-         //
-        //}
-        let apo1: String = "reviewCampsites.php?userId=" + (DataManager.userId as! String)
+        if self.featuredReviewArr.count == 0 {
+            applicationDelegate.startProgressView(view: self.view)
+         
+        }
+        let apo1: String = "reviewCampsites.php?userId=" + userId
         let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)"
         
         let api:String = apo1 + api2
@@ -437,52 +432,79 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     let retValues = (dict["result"]! as! NSArray)
                   //  print(retValues)
                     
-                    self.dataContainingView.isHidden = false
-                    self.recallAPIView.isHidden = true
-                    
-                    if (retValues.count) % 5 == 0 {
-                        self.upToLimit = (pageNum+1)*5 + 1
-                        
-                    } else {
-                        self.upToLimit = self.upToLimit + (retValues.count)
-                        
-                    }
-                    
-                    if pageNum == 0 {
-                        self.featuredReviewArr = []
-                        
-                    }
-                    for i in 0..<retValues.count {
-                        self.featuredReviewArr.add(retValues.object(at: i) as! NSDictionary)
-                        
-                    }
-                    
-                    //self.featuredReviewArr = retValues
-                    
-                    self.categoryCollectionView.delegate = self
-                    self.categoryCollectionView.dataSource = self
-                    self.categoryCollectionView.reloadData()
-                    
+                    self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
             }
         }) { (error) in
-            self.recallAPIView.isHidden = false
-            
-            applicationDelegate.dismissProgressView(view: self.view)
-            if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
-                
-            } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
-            }
+            self.apiError()
         }
     }
     
-    func FavUnfavAPIHit(){
+    func reloadTbl(arrR: NSArray, pageR: Int) {
+        self.dataContainingView.isHidden = false
+        self.recallAPIView.isHidden = true
+        
+        if (arrR.count) % 5 == 0 {
+            self.upToLimit = (pageR+1)*5 + 1
+            
+        } else {
+            self.upToLimit = self.upToLimit + (arrR.count)
+            
+        }
+        
+        if pageR == 0 {
+            self.featuredReviewArr = []
+            
+        }
+        if self.campIndex != -1 {
+            for _ in 0..<arrR.count {
+                self.featuredReviewArr.removeLastObject()
+                
+            }
+        }
+        
+        for i in 0..<arrR.count {
+            self.featuredReviewArr.add(arrR.object(at: i) as! NSDictionary)
+            
+        }
+        
+        if self.campIndex == -1 {
+            self.categoryCollectionView.delegate = self
+            self.categoryCollectionView.dataSource = self
+            self.categoryCollectionView.reloadData()
+        } else {
+            let indexPath = IndexPath(item: self.campIndex, section: 0)
+            
+            var indexPaths = [IndexPath]()
+            indexPaths.append(indexPath) //"indexPath" ideally get when tap didSelectItemAt or through long press gesture recogniser.
+            
+            let indexS = IndexSet(arrayLiteral: 0)
+            self.categoryCollectionView.reloadSections(indexS)
+            self.categoryCollectionView.reloadItems(at: indexPaths)
+            
+            self.campIndex = -1
+            self.campId = -1
+        }
+        
+    }
+    
+    func apiError() {
+        self.recallAPIView.isHidden = false
+        
+        applicationDelegate.dismissProgressView(view: self.view)
+        if connectivity.isConnectedToInternet() {
+            CommonFunctions.showAlert(self, message: serverError, title: appName)
+            
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            
+        }
+    }
+    
+    func FavUnfavAPIHit(indexR: NSIndexPath){
         applicationDelegate.startProgressView(view: self.view)
         let indexPath = NSIndexPath(item: self.campIndex, section: 0)
         
@@ -494,8 +516,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             let cell = self.categoryCollectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell
                 cell.favouriteButton.isUserInteractionEnabled = true
             
-            self.campIndex = -1
-            self.campId = -1
             ///////
             applicationDelegate.dismissProgressView(view: self.view)
             
@@ -503,15 +523,24 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
                    // print(dict)
-                    self.resetPaginationVar()
-                    if self.comeFrom == featuredBased {
-                        self.featuredAPIHit(pageNum: self.pageNo)
-                        
-                    } else if self.comeFrom == myProfile {
-                        self.featuredAPIHit(pageNum: self.pageNo)
-                        
-                    }  else {
+                   // self.resetPaginationVar()
+                    let pagN = self.campIndex/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
+                    
+//                    if self.comeFrom == featuredBased {
+//                        self.featuredAPIHit(pageNum: self.pageNo)
+//
+//                    } else if self.comeFrom == myProfile {
+//                        self.featuredAPIHit(pageNum: self.pageNo)
+//
+//                    }
+                    
+                    if self.comeFrom == reviewBased {
                         self.revieweBasedAPIHit(pageNum: self.pageNo)
+                        
+                    } else {
+                        self.featuredAPIHit(pageNum: self.pageNo)
                         
                     }
                 } else {
@@ -598,7 +627,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 cell.favouriteButton.setImage(UIImage(named: "Favoutites"), for: .normal)
                             
             }
-            self.FavUnfavAPIHit()
+            self.FavUnfavAPIHit(indexR: indexPath)
             
         } else {
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
@@ -647,14 +676,19 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         self.recallAPIView.isHidden = true
         if connectivity.isConnectedToInternet() {
             self.resetPaginationVar()
-            if comeFrom == featuredBased {
-                self.featuredAPIHit(pageNum: pageNo)
-                
-            } else if comeFrom == myProfile {
-                self.featuredAPIHit(pageNum: pageNo)
+//            if comeFrom == featuredBased {
+//                self.featuredAPIHit(pageNum: pageNo)
+//
+//            } else if comeFrom == myProfile {
+//                self.featuredAPIHit(pageNum: pageNo)
+//
+//            }
+            
+            if self.comeFrom == reviewBased {
+                self.revieweBasedAPIHit(pageNum: pageNo)
                 
             } else {
-                self.revieweBasedAPIHit(pageNum: pageNo)
+                self.featuredAPIHit(pageNum: pageNo)
                 
             }
         } else {
@@ -780,14 +814,39 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
 //        cell.showImgBtn.addTarget(self, action: #selector(tapTripsShowImgView(sender:)), for: .touchUpInside)
         
         if comeFrom == myProfile {
-            cell.userProfileAndNameView.isHidden = true
+            cell.userProfileAndNameView.isHidden = false
+            cell.userProfileAndNameView.isUserInteractionEnabled = false
             
+            if self.autherInfo.count != 0 {
+                if let img = (self.autherInfo["autherImg"] as? String) {                    
+                    cell.autherImgView.sd_setShowActivityIndicatorView(true)
+                    cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                    cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+                    
+                }
+                cell.autherNameLbl.text = (self.autherInfo["autherName"] as? String)
+                
+            }
         } else {
             cell.userProfileAndNameView.isHidden = false
+            cell.userProfileAndNameView.isUserInteractionEnabled = true
             
             cell.tapProfilePicBtn.tag = indexPath.row
             cell.tapProfilePicBtn.addTarget(self, action: #selector(tapReviewProfilePicBtn(sender:)), for: .touchUpInside)
 
+        }
+        
+        if String(describing: ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
+           // cell.playBtn.isHidden = true
+            cell.playImg.isHidden = false
+            
+            cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
+            cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            
+        } else {
+           // cell.playBtn.isHidden = true
+            cell.playImg.isHidden = true
+            
         }
         
         return cell
@@ -836,7 +895,7 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         } else {
             
             if comeFrom == myProfile {
-                return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(310))
+                return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(330))
                 
             } else {
                 return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(330))

@@ -86,7 +86,7 @@ class NotificationVc: UIViewController {
     }
     
     func animateTableView() {
-        let leftAnimation = TableViewAnimation.Cell.left(duration: 0.5)
+        let leftAnimation = TableViewAnimation.Cell.left(duration: 1.0)
         self.notificationTableview.animate(animation: leftAnimation, indexPaths: nil, completion: nil)
         
     }

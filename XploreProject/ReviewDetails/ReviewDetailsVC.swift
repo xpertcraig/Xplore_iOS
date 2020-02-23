@@ -181,10 +181,21 @@ class ReviewDetailsVC: UIViewController {
     }
     
     @IBAction func tapUserImgView(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-        vc.userInfoDict = self.reviewDeatils
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if String(describing: (DataManager.userId)) == String(describing: (self.reviewDeatils.value(forKey: "userId"))!) {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+            vc.userInfoDict = self.reviewDeatils
+            self.navigationController?.pushViewController(vc, animated: true)
+
+        }
+//
+//        print(self.reviewDeatils)
+//
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+//        vc.userInfoDict = self.reviewDeatils
+//        self.navigationController?.pushViewController(vc, animated: true)        
     }
 }
 

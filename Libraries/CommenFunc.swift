@@ -53,7 +53,7 @@ class CommonFunctions: NSObject {
         dateFormatter.locale = Locale(identifier: "en_US")        
       //  dateFormatter.locale = NSLocale.current
 
-        dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:ss z" //Specify your format that you want
+        dateFormatter.dateFormat = "YYYY-MM-dd HH:mm:ss z" //Specify your format that you want
         let recDateInMomentAgo = date.getElapsedInterval(recDate: date1)
 
         return recDateInMomentAgo
@@ -71,8 +71,10 @@ class CommonFunctions: NSObject {
         dateFormatter.locale = Locale(identifier: "en_US")
         //  dateFormatter.locale = NSLocale.current
         
-        dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:ss z" //Specify your format that you want
+        dateFormatter.dateFormat = "YYYY-MM-dd HH:mm:ss z" //Specify your format that you want
         let recDateInMomentAgo = date.getElapsedInterval()
+        
+       // let recDateInMomentAgo = dateFormatter.string(from: date)
         
         return recDateInMomentAgo
         

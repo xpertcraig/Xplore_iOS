@@ -38,7 +38,6 @@
 		18AF286620629E6F0000A097 /* MarkAbuseAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18AF286520629E6F0000A097 /* MarkAbuseAlert.xib */; };
 		18BB6880205F9BA5002C2151 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB687F205F9BA5002C2151 /* AppDelegate.swift */; };
 		18BB6882205F9BA5002C2151 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB6881205F9BA5002C2151 /* ViewController.swift */; };
-		18BB6888205F9BA6002C2151 /* XploreProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 18BB6886205F9BA6002C2151 /* XploreProject.xcdatamodeld */; };
 		18BB688D205F9BA6002C2151 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18BB688B205F9BA6002C2151 /* LaunchScreen.storyboard */; };
 		18BB689E205FA2F8002C2151 /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18BB6895205FA2F6002C2151 /* Nunito-Regular.ttf */; };
 		18BB689F205FA2F8002C2151 /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18BB6896205FA2F6002C2151 /* Nunito-Black.ttf */; };
@@ -57,7 +56,9 @@
 		18BB68E5205FE866002C2151 /* UIImageViewCustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E4205FE866002C2151 /* UIImageViewCustomClass.swift */; };
 		18BB68E8205FE94A002C2151 /* GalleryVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E7205FE94A002C2151 /* GalleryVc.swift */; };
 		6347FFB62E03D414F33ADC92 /* Pods_XploreProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16618643E92023492CB801C3 /* Pods_XploreProject.framework */; };
+		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
 		E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931F9A922882E8900DA6054 /* myCustomSlider.swift */; };
+		E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */; };
 		E9BA7E762358BAA600E84A89 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BA7E752358BAA600E84A89 /* Singleton.swift */; };
 		E9BCA98C22E47E6E0079B8FD /* TOCropViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E9BCA95B22E47E6E0079B8FD /* TOCropViewControllerLocalizable.strings */; };
 		E9BCA98D22E47E6E0079B8FD /* TOActivityCroppedImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = E9BCA97622E47E6E0079B8FD /* TOActivityCroppedImageProvider.m */; };
@@ -164,7 +165,6 @@
 		18AF286520629E6F0000A097 /* MarkAbuseAlert.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarkAbuseAlert.xib; sourceTree = "<group>"; };
 		18BB687F205F9BA5002C2151 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18BB6881205F9BA5002C2151 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		18BB6887205F9BA6002C2151 /* XploreProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = XploreProject.xcdatamodel; sourceTree = "<group>"; };
 		18BB688C205F9BA6002C2151 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18BB688E205F9BA6002C2151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18BB6895205FA2F6002C2151 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
@@ -185,8 +185,10 @@
 		18BB68E7205FE94A002C2151 /* GalleryVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryVc.swift; sourceTree = "<group>"; };
 		74F2FE507F07312EFCB64C3A /* Pods-XploreProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.release.xcconfig"; sourceTree = "<group>"; };
 		D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.debug.xcconfig"; sourceTree = "<group>"; };
+		E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xplore.xcdatamodel; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
 		E985F1F92388459F00A3F26C /* XploreProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XploreProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E9BA7E752358BAA600E84A89 /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		E9BCA95922E47E6E0079B8FD /* TOCropViewConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropViewConstants.h; sourceTree = "<group>"; };
 		E9BCA95C22E47E6E0079B8FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
@@ -563,12 +565,12 @@
 				18BB68A7205FA942002C2151 /* CustomClasses */,
 				18BB6894205FA2E0002C2151 /* Font Files */,
 				18BB6881205F9BA5002C2151 /* ViewController.swift */,
+				E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */,
 				FF85FBAB214696A600CAC94F /* Main.storyboard */,
 				FF85FBAD214696B100CAC94F /* Assets.xcassets */,
 				18BB688B205F9BA6002C2151 /* LaunchScreen.storyboard */,
 				FF662F9C215F591B001328E9 /* GoogleService-Info.plist */,
 				18BB688E205F9BA6002C2151 /* Info.plist */,
-				18BB6886205F9BA6002C2151 /* XploreProject.xcdatamodeld */,
 			);
 			path = XploreProject;
 			sourceTree = "<group>";
@@ -803,6 +805,7 @@
 		FF662F78215F365B001328E9 /* Data Manager */ = {
 			isa = PBXGroup;
 			children = (
+				E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */,
 				FF662F79215F365B001328E9 /* DataManager.swift */,
 				FF662F7A215F365B001328E9 /* UserData.swift */,
 				FF662F99215F5561001328E9 /* XploreProject-Bridging-Header.h */,
@@ -1110,6 +1113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */,
 				FF57DBE2217703B4005D9CB8 /* NotificationTableViewCell.swift in Sources */,
 				E9BCA99422E47E6E0079B8FD /* TOCropOverlayView.m in Sources */,
 				1867ABA920663E49009DE2C8 /* addReviewVc.swift in Sources */,
@@ -1117,11 +1121,11 @@
 				FF5F121A217064F9007EE157 /* addPhotosCollectionViewCell.swift in Sources */,
 				18861BEF2068C28D00EF2F02 /* UITableView+TableFlip.swift in Sources */,
 				E9CE1C3423031AA300333248 /* PaymentHistoryTableViewCell.swift in Sources */,
-				18BB6888205F9BA6002C2151 /* XploreProject.xcdatamodeld in Sources */,
 				E9BCA98F22E47E6E0079B8FD /* TOCroppedImageAttributes.m in Sources */,
 				FF482DA9215B53BB0047262D /* ChatListingVC.swift in Sources */,
 				188E8DB02065014D00767B75 /* PrivacyVc.swift in Sources */,
 				FF662F7B215F365B001328E9 /* DataManager.swift in Sources */,
+				E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */,
 				E9BCA99B22E480770079B8FD /* CropViewController.swift in Sources */,
 				FF57DBDD2176FC0D005D9CB8 /* AboutUsVC.swift in Sources */,
 				185696C82060FA7400B83780 /* constant.swift in Sources */,
@@ -1365,9 +1369,10 @@
 			baseConfigurationReference = D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = XploreProject/XploreProject.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: kamaljit Singh (9PF8AP9825)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
 				INFOPLIST_FILE = XploreProject/Info.plist;
@@ -1545,9 +1550,10 @@
 			baseConfigurationReference = 74F2FE507F07312EFCB64C3A /* Pods-XploreProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = XploreProject/XploreProject.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: kamaljit Singh (9PF8AP9825)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
 				INFOPLIST_FILE = XploreProject/Info.plist;
@@ -1743,13 +1749,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		18BB6886205F9BA6002C2151 /* XploreProject.xcdatamodeld */ = {
+		E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				18BB6887205F9BA6002C2151 /* XploreProject.xcdatamodel */,
+				E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */,
 			);
-			currentVersion = 18BB6887205F9BA6002C2151 /* XploreProject.xcdatamodel */;
-			path = XploreProject.xcdatamodeld;
+			currentVersion = E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */;
+			path = Xplore.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

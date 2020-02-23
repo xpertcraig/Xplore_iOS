@@ -24,6 +24,10 @@ class ForgotPasswordVC: UIViewController, UITextFieldDelegate {
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+          return .lightContent
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         self.view.endEditing(true)
         

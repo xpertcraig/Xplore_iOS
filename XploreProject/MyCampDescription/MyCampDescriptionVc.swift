@@ -159,6 +159,14 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         self.pageControl.numberOfPages = (self.recDraft.value(forKey: "campImages") as! NSArray).count
         self.myCampImgArr = (self.recDraft.value(forKey: "campImages") as! NSArray)
         
+        if (self.recDraft.value(forKey: "campImages") as! NSArray).count == 1 && String(describing: (self.recDraft.value(forKey: "videoindex"))!) == "1" {
+            self.videoIndex = Int(String(describing: (self.recDraft.value(forKey: "videoindex"))!))!
+            self.videoString = (self.recDraft.value(forKey: "campsiteVideo") as! String)
+            
+        } else {
+            self.videoIndex = -1
+            
+        }
         self.myDraftCollVIew.reloadData()
         
     }
@@ -223,8 +231,10 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         self.pageControl.numberOfPages = (self.recDraft.value(forKey: "MyImgArr") as! NSArray).count
         self.myCampImgArr = (self.recDraft.value(forKey: "MyImgArr") as! NSArray)
         
-        self.videoIndex = (self.recDraft.value(forKey: "videoIndex")) as! Int
-        self.videoString = (self.recDraft.value(forKey: "videoUrl")) as! String
+        self.videoIndex = -1
+        self.videoString = ""
+//        self.videoIndex = (self.recDraft.value(forKey: "videoIndex")) as! Int
+//        self.videoString = (self.recDraft.value(forKey: "videoUrl")) as! String
         
         self.myDraftCollVIew.reloadData()
     }
@@ -425,7 +435,6 @@ extension MyCampDescriptionVc : UICollectionViewDataSource, UICollectionViewDele
             self.noImage.isHidden = true
             
         }
-        
         return self.myCampImgArr.count
         
     }
@@ -477,7 +486,23 @@ extension MyCampDescriptionVc : UICollectionViewDataSource, UICollectionViewDele
     }
     
     @objc func tapPlayBtn() {
-        var documentsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first! //This piece of code will return path of document directory."
+        if self.videoString != "" {
+            let player = AVPlayer(url: URL(string: self.videoString)!)
+            playerController = AVPlayerViewController()
+            NotificationCenter.default.addObserver(self, selector: #selector(didfinishplaying(note:)),name:NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
+            
+            playerController.player = player
+            playerController.allowsPictureInPicturePlayback = true
+            playerController.delegate = self
+            playerController.player?.play()
+            self.present(playerController,animated:true,completion:nil)
+            
+        } else {
+            CommonFunctions.showAlert(self, message: "Video corrupted", title: appName)
+            
+        }
+        
+//        var documentsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first! //This piece of code will return path of document directory."
         
 //        let video  = AVPlayer(url: URL(string: self.videoString)!)
 //        playerController = AVPlayerViewController()
@@ -495,16 +520,16 @@ extension MyCampDescriptionVc : UICollectionViewDataSource, UICollectionViewDele
 //
 //        self.present(playerController,animated:true,completion:nil)
         
-        let video  = AVPlayer(url: URL(string: self.videoString)!)
-
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = video
-        present(playerViewController, animated: true, completion:
-            {
-
-                playerViewController.player?.play()
-
-        })
+//        let video  = AVPlayer(url: URL(string: self.videoString)!)
+//
+//        let playerViewController = AVPlayerViewController()
+//        playerViewController.player = video
+//        present(playerViewController, animated: true, completion:
+//            {
+//
+//                playerViewController.player?.play()
+//
+//        })
     }
     
     @objc func didfinishplaying(note : NSNotification)
@@ -529,8 +554,8 @@ extension MyCampDescriptionVc : UICollectionViewDataSource, UICollectionViewDele
         
         if self.videoIndex != -1 {
             if indexPath.row == self.videoIndex - 1 {
-                cell.playBtn.isHidden = true
-                cell.playImg.isHidden = true
+                cell.playBtn.isHidden = false
+                cell.playImg.isHidden = false
                 
                 cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
                 cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)

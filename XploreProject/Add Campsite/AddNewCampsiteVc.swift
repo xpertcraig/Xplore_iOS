@@ -60,6 +60,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     
     @IBOutlet weak var takePhoto: UITextFieldCustomClass!
     @IBOutlet weak var price: UITextFieldCustomClass!
+    @IBOutlet weak var countryCode: UILabel!
     
     @IBOutlet weak var myLocationOnOffSwitch: UISwitch!
     @IBOutlet weak var myCampImgCollVIew: UICollectionView!
@@ -131,9 +132,12 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     var videoImg: UIImage?
     var videoImgIndex: Int = -1
     
+    
     //MARK:- Inbuild FUnction
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(Locale.currency["IN"])
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
@@ -286,13 +290,16 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             self.campType.isHidden = false
             self.campTypeLbl.isHidden = true
             
+            self.campType.textColor = UIColor.lightGray
+            
             self.campType.text = ""
             
         } else {
          //   self.campType.isHidden = true
             self.campTypeLbl.isHidden = false
             
-            self.campType.text = "0"
+            self.campType.textColor = UIColor.darkGray
+            self.campType.text = ""
             
         }
         
@@ -302,6 +309,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         self.campsiteAddress2.text! = self.recDraft.value(forKey: "campAddress2") as! String
         self.closetTown.text! = self.recDraft.value(forKey: "closestTown") as! String
         self.Country.text! = self.recDraft.value(forKey: "country") as! String
+        
         self.state.text! = self.recDraft.value(forKey: "state") as! String
         self.city.text! = self.recDraft.value(forKey: "city") as! String
         self.latitude.text! = self.recDraft.value(forKey: "latitude") as! String
@@ -535,7 +543,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValue = dict["result"] as! NSArray
-                   // print(dict)
+                 //   print(dict)
                     self.countiesArr = retValue
                     
                 } else {
@@ -693,6 +701,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 self.campType.isHidden = false
                 self.campTypeLbl.isHidden = true
                 
+                self.campType.textColor = UIColor.lightGray
                 self.campType.text = ""
                 
             } else {
@@ -704,7 +713,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 
                 self.campTypeIdsArr = campIds
                 
-                self.campType.text = "0"
+                self.campType.textColor = UIColor.darkGray
+                self.campType.text = ""
             }
         } else if key == "Select Amenities" {
             if campName == "" {
@@ -829,7 +839,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                                 }
                                 if (placemark?.addressDictionary!["Country"]) != nil {
                                     self.Country.text = (placemark?.addressDictionary!["Country"]) as? String
-                                    
+                                   
                                 }
                                 if (placemark?.addressDictionary!["City"]) != nil {
                                     self.city.text = (placemark?.addressDictionary!["City"]) as? String
@@ -993,6 +1003,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     func saveCamp() {
         if(((self.campsiteName.text!.trimmingCharacters(in: .whitespaces).isEmpty))){
             self.campsiteName.becomeFirstResponder()
+            
+            applicationDelegate.dismissProgressView(view: self.view)
             CommonFunctions.showAlert(self, message: campsiteEmptyAlert, title: appName)
             
         } else {
@@ -1061,21 +1073,19 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 alert.dismiss(animated: true, completion: nil)
                 
                 fromSaveDraft = true
+              //  self.navigationController?.removeViewController(AddNewCampsiteVc.self)
+                
                 if self.recDraftIndex != -1 {
                     if let vc = self.navigationController?.viewControllers.filter({ $0 is MyCampsiteVc }).first {
+                       
+                        applicationDelegate.dismissProgressView(view: self.view)
                         self.navigationController?.popToViewController(vc, animated: true)
                         
                     }
                 } else {
-                    if self.tabBarController?.selectedIndex == 3 {
-                        self.navigationController?.popViewController(animated: true)
-                        
-                    } else {
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-                        self.tabBarController?.selectedIndex = 3
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }
+                    applicationDelegate.dismissProgressView(view: self.view)
+                    self.navigationController?.tabBarController?.selectedIndex = 3
+                    
                 }
             })
             
@@ -1088,6 +1098,10 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     @IBAction func tapAddAsDraftBtn(_ sender: UIButton) {
         self.view.endEditing(true)
         
+        DispatchQueue.main.async {
+            applicationDelegate.startProgressView(view: self.view)
+            
+        }
         if self.videoImgIndex == -1 {
             self.saveCamp()
             
@@ -1102,6 +1116,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 })
                 
                 let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
+                    
+                    applicationDelegate.dismissProgressView(view: self.view)
                     alert.dismiss(animated: true, completion: nil)
                 })
                 alert.addAction(yesBtn)
@@ -1169,7 +1185,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     
     @IBAction func tapCameraBtn(_ sender: UIButton) {
         self.view.endEditing(true)
-        
+        imgPicker.modalPresentationStyle = .fullScreen
         imgPicker.mediaTypes = ["public.image"]
         if self.myCampImgArr.count < 5 {
             self.searchActive = false
@@ -1184,6 +1200,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 //self.openGallary()
                 
                 let imagePicker = OpalImagePickerController()
+                imagePicker.modalPresentationStyle = .fullScreen
                 imagePicker.navigationBar.barTintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
                 imagePicker.imagePickerDelegate = self
                 
@@ -1258,9 +1275,19 @@ extension AddNewCampsiteVc {
         let campAmentiesIdStr = self.campAmentiesIdArr.componentsJoined(by: ",")
         let campHokupsIdStr = self.campHokupsIdArr.componentsJoined(by: ",")
         
-        let param: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": campTypeIdsStr, "campAddress1": self.campsiteAddress1.text!, "campAddress2": self.campsiteAddress2.text!, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": self.city.text!, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*campHokupsIdStr*/, "amenities": campAmentiesIdStr, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "videoindex": self.videoImgIndex]
+        var addr2:String = ""
+        if self.campsiteAddress1.text! != self.campsiteAddress2.text! {
+            addr2 = self.campsiteAddress2.text!
+            
+        }
+        var cityF:String = ""
+        if self.state.text! != self.city.text! {
+            cityF = self.city.text!
+            
+        }
+        let param: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": campTypeIdsStr, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*campHokupsIdStr*/, "amenities": campAmentiesIdStr, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "videoindex": self.videoImgIndex]
         
-        print(param)
+     //   print(param)
         
         AlamoFireWrapper.sharedInstance.getPostMultipartForUploadMultipleImages(action: "addCampsite.php", param: param as! [String : Any], ImageArr: self.myCampImgArr, videoData: self.videoData, videoIndex: self.videoImgIndex, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
@@ -1284,6 +1311,8 @@ extension AddNewCampsiteVc {
                     }
                     
                     vc.comeFrom = addCampsiteComeFrom
+                    fromSaveDraft = false
+                    vc.firstTime = false
                     self.navigationController?.pushViewController(vc, animated: true)
                     
                 } else {
@@ -1977,6 +2006,39 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func currency(recStr: String) -> String? {
+        let firstTwoLtr = String(recStr.prefix(2))
+        let code = Locale.currency[firstTwoLtr.uppercased()]
+        
+        if code == nil {
+            let sepStr = recStr.components(separatedBy: " ")
+           // print(sepStr)
+            if sepStr.count == 2 {
+                if sepStr[0] != "" {
+                    if sepStr[1] != "" {
+                        let code = Locale.currency["\(String(describing: sepStr[0].first!))\(String(describing: sepStr[1].first!))"]
+                        
+                        return code?.code
+                    }
+                }
+            } else {
+                if sepStr[0] != "" {
+                    if sepStr[1] != "" {
+                        if sepStr[2] != "" {
+                            let code = Locale.currency["\(String(describing: sepStr[0].first!))\(String(describing: sepStr[1].first!))\(String(describing: sepStr[2].first!))"]
+                            
+                            return code?.code
+                            
+                        }
+                    }
+                }
+            }
+        }
+        
+        return code?.code
+    }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.searchActive == true {
             self.searchActive = false
@@ -1990,7 +2052,7 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
                 self.countryId = String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryId"))!)
                 self.stateApiCall()
                 self.Country.text! = (self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryName") as! String
-                
+               
                 self.getLatLong()
                 
               //  self.getLongiLatti(address: self.Country.text! + "," + self.campsiteAddress1.text! + "," + self.campsiteAddress2.text!)
@@ -2034,7 +2096,6 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
                 self.Country.text! = (self.countiesArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryName") as! String
                 
                 self.getLatLong()
-                
                // self.getLongiLatti(address: self.Country.text! + "," + self.campsiteAddress1.text! + "," + self.campsiteAddress2.text!)
                 
             } else if self.selectedType == "state" {
@@ -2072,6 +2133,15 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
         let addr2 = self.campsiteAddress1.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
         let addr3 = self.campsiteAddress2.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
         let addr4 = self.Country.text! + "," + self.state.text! + "," + self.city.text!
+        
+        if let cName = self.currency(recStr: self.Country.text!) {
+            self.countryCode.text! = cName
+            
+        } else {
+            self.countryCode.text! = ""
+            
+        }
+        
         
         self.getLongiLatti(address1: addr1, address2: addr2, address3: addr3, address4: addr4)
         
@@ -2188,5 +2258,20 @@ extension UIImage {
             }
         }
         return nil
+    }
+}
+
+extension Locale {
+    static let currency: [String: (code: String?, symbol: String?)] = Locale.isoRegionCodes.reduce(into: [:]) {
+        let locale = Locale(identifier: Locale.identifier(fromComponents: [NSLocale.Key.countryCode.rawValue: $1]))
+        $0[$1] = (locale.currencyCode, locale.currencySymbol)
+    }
+}
+
+extension Locale {
+    func isoCode(for countryName: String) -> String? {
+        return Locale.isoRegionCodes.first(where: { (code) -> Bool in
+            localizedString(forRegionCode: code)?.compare(countryName, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
+        })
     }
 }

@@ -48,7 +48,6 @@ class ReviewViewcontroller: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.notificationCountLbl.text! = String(describing: (notificationCount))
-        self.animateTbl()
         
     }
     
@@ -69,7 +68,7 @@ class ReviewViewcontroller: UIViewController {
     }
     
     func animateTableView() {
-        let leftAnimation = TableViewAnimation.Cell.left(duration: 0.5)
+        let leftAnimation = TableViewAnimation.Cell.left(duration: 1.0)
         self.reviewTableView.animate(animation: leftAnimation, indexPaths: nil, completion: nil)
         
     }
@@ -171,6 +170,7 @@ class ReviewViewcontroller: UIViewController {
                     }
                     
                     self.reviewTableView.reloadData()
+                    self.animateTbl()
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)

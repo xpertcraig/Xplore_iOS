@@ -16,6 +16,8 @@ import AVKit
 import AVFoundation
 
 import SimpleImageViewer
+import WebKit
+
 
 class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewControllerDelegate {
 
@@ -86,6 +88,9 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     @IBOutlet weak var autherImgView: UIImageViewCustomClass!
     @IBOutlet weak var autherNameLbl: UILabel!
     
+    @IBOutlet weak var googleMapView: WKWebView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     //MARK:- Variable Declaration
    // var nibContents = Bundle.main.loadNibNamed("MarkAbouseAlert", owner: nil, options: nil)
@@ -131,16 +136,28 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         
         //camp Description
         self.callAPI()
+        self.googleMapView.isHidden = true
+        self.activityIndicator.isHidden = true
         
+        self.googleMapView.uiDelegate = self
         //self.playerController.removeObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.view.endEditing(true)
-        
+        self.googleMapView.isHidden = true
+        self.activityIndicator.isHidden = true
     }
     
-    //MARK:- Function Definition    
+    //MARK:- Function Definition
+    func webViewSetUp(urlStr: String) {
+        let myUrl = URL(string: urlStr)
+        let myReq = URLRequest(url: myUrl!)
+        self.googleMapView.load(myReq)
+        
+        self.googleMapView.isHidden = false
+    }
+    
     func callAPI() {
         if connectivity.isConnectedToInternet() {
             self.campDetailsApiHit()
@@ -228,6 +245,9 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     @objc func tapDirectionView() {
         //Working in Swift new versions.
         if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
+            
+           // self.webViewSetUp(urlStr: "comgooglemaps://?saddr=&daddr=\(self.detailLongLat.coordinate.latitude),\(self.detailLongLat.coordinate.longitude)&directionsmode=driving")
+            
             UIApplication.shared.openURL(NSURL(string:
                 "comgooglemaps://?saddr=&daddr=\(self.detailLongLat.coordinate.latitude),\(self.detailLongLat.coordinate.longitude)&directionsmode=driving")! as URL)
             
@@ -426,8 +446,19 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     @IBAction func tapBackBtn(_ sender: UIButton) {
         self.view.endEditing(true)
       //   backBtnPressedForPublished = true
-        self.navigationController?.popViewController(animated: true)
-        
+        if self.googleMapView.isHidden == false {
+           // self.googleMapView.isHidden = true
+            
+            UIView.animate(withDuration: 3.0, delay: 2.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                self.googleMapView.isHidden = true
+                self.view.layoutIfNeeded()
+                
+            }, completion: nil)
+            
+        } else {
+            self.navigationController?.popViewController(animated: true)
+            
+        }
     }
     
     @IBAction func cancelAction(_ sender: UIButton) {
@@ -589,7 +620,7 @@ extension CampDescriptionVc {
             self.markAsFavBtn.isUserInteractionEnabled = true
             
             ///////
-            applicationDelegate.dismissProgressView(view: self.view)
+          //  applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
@@ -719,20 +750,12 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
     @objc func tapPlayBtn(sender: UIButton) {
         if (self.campDetailDict.value(forKey: "campsiteVideo") as! String) != "" {
             let player = AVPlayer(url: URL(string: (self.campDetailDict.value(forKey: "campsiteVideo") as! String))!)
-            
             playerController = AVPlayerViewController()
-            
-            
             NotificationCenter.default.addObserver(self, selector: #selector(didfinishplaying(note:)),name:NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
-            
             playerController.player = player
-            
             playerController.allowsPictureInPicturePlayback = true
-            
             playerController.delegate = self
-            
-            playerController.player?.play()
-            
+            playerController.player?.play()            
             self.present(playerController,animated:true,completion:nil)
             
         } else {
@@ -956,4 +979,27 @@ extension CampDescriptionVc: UITextViewDelegate, UITextFieldDelegate  {
         }
         return true
     }
+}
+
+extension CampDescriptionVc: WKUIDelegate, UIWebViewDelegate {
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        self.activityIndicator.isHidden = false
+        self.googleMapView.isHidden = false
+        self.activityIndicator.startAnimating()
+        
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
+        
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        self.googleMapView.isHidden = true
+        self.activityIndicator.isHidden = true
+        self.activityIndicator.startAnimating()
+        
+    }
+    
 }

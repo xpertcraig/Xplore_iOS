@@ -92,8 +92,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.userNameLbl.text! = name
                 
             } else {
-                self.userNameLbl.text! = String(describing: (userInfoDict.value(forKey: "authorName"))!)
-                
+                if let name = (userInfoDict.value(forKey: "authorName") as? String) {
+                    self.userNameLbl.text! = name
+                    
+                } else {
+                    self.userNameLbl.text! = ""
+                    
+                }
             }
             
             self.userIMgView.sd_setShowActivityIndicatorView(true)
@@ -157,6 +162,18 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.tabBarController?.tabBar.isHidden = true
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if self.chatArray.count == 0 {
+            let ref = Database.database().reference()
+            ref.child("Users").child(chatUnitId).removeValue()
+        } else {
+            //update message and time in user database
+            Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(((chatArray.lastObject as! NSDictionary)["message"]))
+            Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue((Double(String(describing: ((chatArray.lastObject as! NSDictionary)["postDate"])!))!))
+            
+        }
     }
     
 //    override func viewWillDisappear(_ animated: Bool) {
@@ -529,8 +546,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.msgTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: ((chatArray[indexPath.row] as! NSDictionary)["postDate"])!))!))
                 
                 //update message and time in user database
-                Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(cell.sendLabel.text)
-                Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue((Double(String(describing: ((chatArray[indexPath.row] as! NSDictionary)["postDate"])!))!))
+               // Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(cell.sendLabel.text)
+                //Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue((Double(String(describing: ((chatArray[indexPath.row] as! NSDictionary)["postDate"])!))!))
                 
                 return cell
             }
@@ -553,8 +570,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.msgRecTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: ((chatArray[indexPath.row] as! NSDictionary)["postDate"])!))!))
                 
                 //update message and time in user database
-                Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(cell.recieveLabel.text)
-                Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue((Double(String(describing: ((chatArray[indexPath.row] as! NSDictionary)["postDate"])!))!))
+            //    Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(cell.recieveLabel.text)
+                //Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue((Double(String(describing: ((chatArray[indexPath.row] as! NSDictionary)["postDate"])!))!))
                 
                 return cell
             } else {

@@ -16,7 +16,8 @@
 #if GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS
  #import <Protobuf/Duration.pbobjc.h>
 #else
- #import "google/protobuf/Duration.pbobjc.h"
+ //#import "google/protobuf/Duration.pbobjc.h"
+#import <googleapis/Duration.pbobjc.h>
 #endif
 // @@protoc_insertion_point(imports)
 

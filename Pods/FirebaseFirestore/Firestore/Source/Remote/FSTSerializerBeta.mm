@@ -16,7 +16,7 @@
 
 #import "Firestore/Source/Remote/FSTSerializerBeta.h"
 
-#import <GRPCClient/GRPCCall.h>
+//#import <GRPCClient/GRPCCall.h>
 
 #include <cinttypes>
 #include <string>
@@ -29,6 +29,8 @@
 #import "Firestore/Protos/objc/google/firestore/v1beta1/Query.pbobjc.h"
 #import "Firestore/Protos/objc/google/firestore/v1beta1/Write.pbobjc.h"
 #import "Firestore/Protos/objc/google/rpc/Status.pbobjc.h"
+//#import <googleapis/Status.pbobjc.h>
+
 #import "Firestore/Protos/objc/google/type/Latlng.pbobjc.h"
 
 #import "FIRFirestoreErrors.h"
