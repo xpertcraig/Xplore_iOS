@@ -12,6 +12,7 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     var tableViewArray = NSArray()
     var hasLoaded = Bool()
     var shownIndexes : [IndexPath] = []
+    var socialLogin: Bool = false
     
     //MARK:- Inbuild functions
     override func viewDidLoad() {
@@ -31,11 +32,17 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     //MARK:- Function definitions
     func startFunc() {
         settingTableView.tableFooterView = UIView()
-        tableViewArray = [ChangePassword/*,Help*/,PushNotification, payHistory, About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
-        
-//        self.hasLoaded = true
-       // self.settingTableView.reloadWithAnimation()
-        
+        if UserDefaults.standard.value(forKey: XPLoginStatus) as! String == facbookLogin || UserDefaults.standard.value(forKey: XPLoginStatus) as! String == gmailLogin || UserDefaults.standard.value(forKey: XPLoginStatus) as! String == appleLogin {
+            self.socialLogin = true
+            
+        }
+        if self.socialLogin == true {
+            tableViewArray = [PushNotification, payHistory, About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
+            
+        } else {
+            tableViewArray = [ChangePassword/*,Help*/,PushNotification, payHistory, About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
+            
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
             self.hasLoaded = true
             self.settingTableView.reloadWithAnimation()
@@ -188,6 +195,7 @@ extension SettingVc: UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath) as! MenuTableViewCell
         cell.settingTitleLabel.text = tableViewArray[indexPath.row] as? String
+            
         cell.settingSwitchBtn.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         if  cell.settingTitleLabel.text == PushNotification {
             cell.settingArrowImg.isHidden = true
@@ -307,6 +315,7 @@ extension SettingVc {
         sing.chatListArr = []
         sing.loginComeFrom = ""
         
+        DataManager.userId = "0" as AnyObject
     }
 }
 

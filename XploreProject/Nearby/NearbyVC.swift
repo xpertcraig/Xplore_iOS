@@ -90,7 +90,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         self.showMapVIew.isMyLocationEnabled = true
         self.showMapVIew.padding = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.showMapVIew.settings.myLocationButton = true
-        let camera = GMSCameraPosition.camera(withLatitude: myCurrentLatitude, longitude: myCurrentLongitude, zoom: 12)
+        let camera = GMSCameraPosition.camera(withLatitude: myCurrentLatitude, longitude: myCurrentLongitude, zoom: 16)
         self.showMapVIew.animate(to: camera)
         
     }
@@ -99,7 +99,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         self.showMapVIew.isMyLocationEnabled = true
         self.showMapVIew.padding = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.showMapVIew.settings.myLocationButton = true
-        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: 12)
+        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: 16)
 
         showMapVIew.camera = camera
         self.showMapVIew.animate(to: camera)

@@ -8,6 +8,10 @@
 
 import UIKit
 
+import Firebase
+import FirebaseDatabase
+import FirebaseStorage
+
 class MyProfileVC: UIViewController, updateProfileDelegate {
     //MARK:- IbOutlets
     @IBOutlet weak var myProfileImgView: UIImageViewCustomClass!
@@ -84,6 +88,8 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
             
         }
         
+        Database.database().reference().child("UsersProfile").child(DataManager.userId as! String).child("username").setValue(self.userNameLbl.text!)
+        Database.database().reference().child("UsersProfile").child(DataManager.userId as! String).child("userProfileImage").setValue(String(describing: (DataManager.profileImage)))
         self.myProfileScrollVIew.isHidden = false
         
     }
@@ -141,6 +147,8 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     }
     
     @objc func tapSavedCampSiteView() {
+        let tabbbar = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+        tabbbar.selectedIndex = 2
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "savedCompositeVc") as! savedCompositeVc
         vc.comeFrom = myProfile
         self.navigationController?.pushViewController(vc, animated: true)

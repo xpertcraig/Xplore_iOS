@@ -55,8 +55,18 @@ class AboutUsVC: UIViewController {
             applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
-                if (String(describing: (dict["success"])!)) == "1" {                   
-                    self.aboutUsTxtView.text! = (dict["result"]! as! NSDictionary).value(forKey: "content") as! String
+                if (String(describing: (dict["success"])!)) == "1" {
+                    
+                    let str = (dict["result"]! as! NSDictionary).value(forKey: "content") as! String
+                    let htmlData = NSString(string: str).data(using: String.Encoding.unicode.rawValue)
+
+                    let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
+
+                    let attributedString = try! NSAttributedString(data: htmlData!, options: options, documentAttributes: nil)
+
+                    self.aboutUsTxtView.attributedText = attributedString
+                    
+                 //   self.aboutUsTxtView.text! = (dict["result"]! as! NSDictionary).value(forKey: "content") as! String
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)

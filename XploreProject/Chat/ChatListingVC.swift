@@ -89,11 +89,13 @@ class ChatListingVC: UIViewController {
         var tempArr: [[String: AnyObject]] = []
         
         let ref = Database.database().reference()
+        ref.child("Users").observe(.value) { (snapShot) in
+            if snapShot.value as? Dictionary<String, AnyObject> == nil {
+                applicationDelegate.dismissProgressView(view: self.view)
+            }
+        }
         ref.child("Users").observe(.childAdded, with: { (shot) in
-            
             applicationDelegate.dismissProgressView(view: self.view)
-            
-            
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
                 
             //    print(postDict)
@@ -200,37 +202,9 @@ extension ChatListingVC :UITableViewDataSource ,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "ChatListCell") as! ChatListCell
-//        cell.textLabel?.text = userList[indexPath.row]
-//        return cell
-        
         let cell = self.chatListingTblView.dequeueReusableCell(withIdentifier: "NotificationCell", for: indexPath) as! NotificationTableViewCell
         
-     //   print(self.usersListDict[indexPath.row] as NSDictionary)
-        
-        if String(describing: (DataManager.userId)) == String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "userId"))!) {
-            cell.userNameLbl.text! = String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "otherUsername"))!)
-            
-            cell.userImgView.sd_setShowActivityIndicatorView(true)
-            cell.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.userImgView.sd_setImage(with: URL(string: String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "otherUserProfileImage"))!)), placeholderImage: UIImage(named: ""))
-            
-        } else {
-            cell.userNameLbl.text! = String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "username"))!)
-            
-            cell.userImgView.sd_setShowActivityIndicatorView(true)
-            cell.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.userImgView.sd_setImage(with: URL(string: String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "userProfileImage"))!)), placeholderImage: UIImage(named: ""))
-            
-        }
-        
-        cell.notificationTxtLbl.text! = String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "last_msg"))!)
-        
-        if (String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "last_msgTime"))!)) != "" {
-            cell.notificationTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: ((self.usersListDict[indexPath.row] as NSDictionary).value(forKey: "last_msgTime"))!))!))
-            
-        }
-        
+        cell.cellConfig(indexV: (self.usersListDict[indexPath.row] as NSDictionary))
         return cell
     }
     

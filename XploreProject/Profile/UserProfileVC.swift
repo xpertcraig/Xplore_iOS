@@ -127,13 +127,10 @@ class UserProfileVC: UIViewController {
         }
         
         let ref = Database.database().reference().child("Users").child(chatUnitId)
-       // let childRef = ref.childByAutoId()
-        
-     //   let ref = Database.database().reference()
-        
-        ref/*.child("Users")*/.observeSingleEvent(of: .value, with: { (snapshot) in
+       
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            if snapshot.hasChild("chatUnitId"){
+            if snapshot.hasChild(self.chatUnitId){
                 print("true rooms exist")
                 
                 

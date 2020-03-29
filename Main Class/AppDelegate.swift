@@ -336,6 +336,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             //get notification count
          //   self.notificationCountApi()
             
+        if DataManager.isUserLoggedIn! == false {
+            DataManager.userId = "0" as AnyObject
+            
+        }
+        
             let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
             (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
             
