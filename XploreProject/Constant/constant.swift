@@ -127,12 +127,12 @@ let Guidlines = "Guidelines"
 let TermsConditions = "Terms & Conditions"
 let PrivacyPolicy = "Privacy Policy"
 let ContactUs = "Contact Us"
-
+let validWebUrl = "Please enter valid weburl"
 let mismatchPass = "Password does not match."
 
 let verifyEmail = "A verification email sent to your email, please verify email and login into the app."
 let LogoutMessage = "Are you sure want to logout?"
-
+let loginRequired = "We are sorry please login"
 let videoNotSaved = "Video can not be saved in drafts. would you still wanted to save site without video?"
 
 let emailFieldEmptyAlertMessage = "Please enter your email address."
@@ -224,6 +224,7 @@ let Storyboard = UIStoryboard(name: "Main", bundle: nil)
 //ap delecgate
 let facbookLogin = "FacbookLogin"
 let gmailLogin = "GmailLogin"
+let appleLogin = "AppleLogin"
 
 //messages
 let addChangesAlert = "Please add changes."
@@ -315,6 +316,10 @@ let fromFavCamps = "loginFromMakeFav"
 let fromRevFavCamp = "loginFromMakeRevFav"
 let favIndex = "favIndexVal"
 let fromCampDes = "ForCampDescription"
+let fromViewProfile = "ForViewProfile"
+let campDescription = "ForCampDescription"
+let featuredCamp = "ForFeaturedCamp"
+
 
 let favouritesCampsStr = "featuredCampStr"
 let myCampsStr = "myCampsStr"

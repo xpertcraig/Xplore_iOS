@@ -45,6 +45,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var containerView: UIView!
     
+    @IBOutlet weak var topNavigationView: UIView!
+    @IBOutlet weak var topNavigationHeight: NSLayoutConstraint!
     
     //MARK:- Variable Declarations
     var countryId: String = ""
@@ -79,11 +81,22 @@ class FilterVc: UIViewController, selectTypeDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if !DataManager.isUserLoggedIn! {
+            self.topNavigationView.isHidden = true
+            self.topNavigationHeight.constant = 0
+            
+        }
         self.setUpOnLoad()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if DataManager.isUserLoggedIn! == true {
+            self.topNavigationView.isHidden = false
+            self.topNavigationHeight.constant = 44
+            
+        }
+        
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
         self.countryStateCityTblView.isHidden = true
@@ -129,16 +142,16 @@ class FilterVc: UIViewController, selectTypeDelegate {
         self.cityView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCityView)))
         
         
-        if DataManager.isUserLoggedIn! {
+    //    if DataManager.isUserLoggedIn! {
             callAPI()
             Singleton.sharedInstance.loginComeFrom = ""
             self.containerView.isHidden = true
             
-        } else {
-            Singleton.sharedInstance.loginComeFrom = filter
-            self.containerView.isHidden = false
-            
-        }
+//        } else {
+//            Singleton.sharedInstance.loginComeFrom = filter
+//            self.containerView.isHidden = false
+//
+//        }
         self.noDataFoundLbl.isHidden = true
         self.countryTxtfld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
         self.stateTxtFld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
@@ -429,7 +442,14 @@ class FilterVc: UIViewController, selectTypeDelegate {
     func countiesApiCall() {
         //applicationDelegate.startProgressView(view: self.view)
         
-        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "countries.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
+        var userLId: String = ""
+        if let userId = (DataManager.userId as? String) {
+            userLId = userId
+            
+        }
+        let api: String = "countries.php?userId=\(userLId)"
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: api , onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
@@ -458,7 +478,14 @@ class FilterVc: UIViewController, selectTypeDelegate {
     func stateApiCall() {
         applicationDelegate.startProgressView(view: self.view)
         
-        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "states.php?userId=" + (DataManager.userId as! String)+"&countryId="+countryId, onSuccess: { (responseData) in
+        var userLId: String = ""
+        if let userId = (DataManager.userId as? String) {
+            userLId = userId
+            
+        }
+        let api: String = "states.php?userId=\(userLId)&countryId=\(countryId)"
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: api, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
@@ -488,7 +515,14 @@ class FilterVc: UIViewController, selectTypeDelegate {
     func cityApiCall() {
         applicationDelegate.startProgressView(view: self.view)
         
-        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "cities.php?userId=" + (DataManager.userId as! String)+"&stateId="+stateId, onSuccess: { (responseData) in
+        var userLId: String = ""
+        if let userId = (DataManager.userId as? String) {
+            userLId = userId
+            
+        }
+        let api: String = "cities.php?userId=\(userLId)&stateId=\(stateId)"
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: api, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {

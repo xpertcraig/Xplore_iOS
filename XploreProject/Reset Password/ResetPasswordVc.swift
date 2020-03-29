@@ -25,7 +25,15 @@ class ResetPasswordVc: UIViewController {
         super.viewDidLoad()
        addKeyBoardObservers()
         
-        UIApplication.shared.statusBarView?.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+        if #available(iOS 13, *)
+        {
+            let statusBar = UIView(frame: (UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame)!)
+            statusBar.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            UIApplication.shared.keyWindow?.addSubview(statusBar)
+        } else {
+             UIApplication.shared.statusBarView?.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            
+        }
         
          self.notificationCountLbl.text! = String(describing: (notificationCount))
         

@@ -24,23 +24,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E5080446-F231-4D51-8D16-8A01903D2D1D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/HomeClass/HomeVc.swift"
-            timestampString = "602010582.6874599"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "881"
-            endingLineNumber = "881"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "E362FFEE-DFED-441D-8BB1-3766F9312375"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -49,9 +32,9 @@
             timestampString = "601718943.144452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1765"
-            endingLineNumber = "1765"
-            landmarkName = "generateThumbnail(url:)"
+            startingLineNumber = "1811"
+            endingLineNumber = "1811"
+            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -66,8 +49,8 @@
             timestampString = "601718943.144521"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1784"
-            endingLineNumber = "1784"
+            startingLineNumber = "1830"
+            endingLineNumber = "1830"
             landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -83,9 +66,9 @@
             timestampString = "601718943.144567"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1810"
-            endingLineNumber = "1810"
-            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
+            startingLineNumber = "1856"
+            endingLineNumber = "1856"
+            landmarkName = "imagePickerControllerDidCancel(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -100,8 +83,8 @@
             timestampString = "601718943.144611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1796"
-            endingLineNumber = "1796"
+            startingLineNumber = "1842"
+            endingLineNumber = "1842"
             landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -117,8 +100,8 @@
             timestampString = "601718943.14465"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1325"
-            endingLineNumber = "1325"
+            startingLineNumber = "1352"
+            endingLineNumber = "1352"
             landmarkName = "addCampSiteApiHit()"
             landmarkType = "7">
          </BreakpointContent>
@@ -127,17 +110,17 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "9C85C589-26C5-44BC-8844-AAE12953BFE5"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
             timestampString = "602010582.687673"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "773"
-            endingLineNumber = "773"
-            landmarkName = "didfinishplaying(note:)"
-            landmarkType = "7">
+            startingLineNumber = "787"
+            endingLineNumber = "787"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -168,10 +151,10 @@
             timestampString = "602010582.687765"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
-            landmarkType = "7">
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "ChatListingVC"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -185,76 +168,10 @@
             timestampString = "602010582.688145"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "658"
-            endingLineNumber = "658"
+            startingLineNumber = "664"
+            endingLineNumber = "664"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "45F16463-6BA9-4697-B050-7DC4DA625AFF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
-            timestampString = "602010582.688192"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "521"
-            endingLineNumber = "521"
-            landmarkName = "campDetailsApiHit()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7CA752DB-1CCF-4D99-A4F3-22D2FD10C93D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
-            timestampString = "601729237.742263"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "859"
-            endingLineNumber = "859"
-            landmarkName = "tapReviewProfilePicBtn(sender:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "7CA752DB-1CCF-4D99-A4F3-22D2FD10C93D - eff70567f3ef7402"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XploreProject.FeaturedVc.tapReviewProfilePicBtn(sender: __C.UIButton) -&gt; ()"
-                  moduleName = "XploreProject"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS-master/XploreProject/FeaturedItems/FeaturedVc.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "859"
-                  endingLineNumber = "859"
-                  offsetFromSymbolStart = "904">
-               </Location>
-               <Location
-                  uuid = "7CA752DB-1CCF-4D99-A4F3-22D2FD10C93D - eff70567f3ef7402"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XploreProject.FeaturedVc.tapReviewProfilePicBtn(sender: __C.UIButton) -&gt; ()"
-                  moduleName = "XploreProject"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS-master/XploreProject/FeaturedItems/FeaturedVc.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "859"
-                  endingLineNumber = "859"
-                  offsetFromSymbolStart = "2000">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -285,8 +202,8 @@
             timestampString = "602010582.688262"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
+            startingLineNumber = "375"
+            endingLineNumber = "375"
             landmarkName = "filterApiHit(pageNum:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -338,7 +255,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
             endingLineNumber = "219"
-            landmarkName = "updateKmsLabel(sender:)"
+            landmarkName = "callAPI()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -355,7 +272,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
             endingLineNumber = "214"
-            landmarkName = "updateKmsLabel(sender:)"
+            landmarkName = "callAPI()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -370,10 +287,10 @@
             timestampString = "602010582.6884069"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "987"
-            endingLineNumber = "987"
-            landmarkName = "webViewDidStartLoad(_:)"
-            landmarkType = "7">
+            startingLineNumber = "1001"
+            endingLineNumber = "1001"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -387,10 +304,10 @@
             timestampString = "602010582.688447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "993"
-            endingLineNumber = "993"
-            landmarkName = "webViewDidFinishLoad(_:)"
-            landmarkType = "7">
+            startingLineNumber = "1007"
+            endingLineNumber = "1007"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -404,27 +321,27 @@
             timestampString = "602010582.688486"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "999"
-            endingLineNumber = "999"
-            landmarkName = "webView(_:didFailLoadWithError:)"
-            landmarkType = "7">
+            startingLineNumber = "1013"
+            endingLineNumber = "1013"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "D5E9A9FD-EFB8-4C20-9EBF-0C0C1890E9E2"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
             timestampString = "602010582.688524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "webViewSetUp(urlStr:)"
-            landmarkType = "7">
+            startingLineNumber = "161"
+            endingLineNumber = "161"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -447,23 +364,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2A5E04F3-BAFA-45E1-AD16-35808736052A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
-            timestampString = "601718943.144919"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
-            landmarkName = "setDraftData()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "12549A11-DCC5-4466-9C88-62DDF8606510"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -472,8 +372,8 @@
             timestampString = "601718943.144963"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "704"
-            endingLineNumber = "704"
+            startingLineNumber = "712"
+            endingLineNumber = "712"
             landmarkName = "selectType(campName:campIds:key:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -489,9 +389,9 @@
             timestampString = "601718943.145003"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2014"
-            endingLineNumber = "2014"
-            landmarkName = "currency(recStr:)"
+            startingLineNumber = "2069"
+            endingLineNumber = "2069"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -499,7 +399,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "2231EA9B-83C2-464B-A593-BC5F375BB956"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XploreProject/My Camosite/MyCampsiteVc.swift"
@@ -510,40 +410,38 @@
             endingLineNumber = "729"
             landmarkName = "publishApiHit(pageNum:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8B8FB70B-1942-4A16-830C-95CCE7849A52"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
-            timestampString = "601729237.742584"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
-            landmarkName = "revieweBasedAPIHit(pageNum:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FF0EA155-5C6F-4EBE-ABB6-32BA9643562F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
-            timestampString = "601729237.742626"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
-            landmarkName = "featuredAPIHit(pageNum:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2231EA9B-83C2-464B-A593-BC5F375BB956 - a2b7b039fc3abacc"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in XploreProject.MyCampsiteVc.publishApiHit(pageNum: Swift.Int) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/My%20Camosite/MyCampsiteVc.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "732"
+                  endingLineNumber = "732"
+                  offsetFromSymbolStart = "1708">
+               </Location>
+               <Location
+                  uuid = "2231EA9B-83C2-464B-A593-BC5F375BB956 - a2b7b039fc3abacc"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in XploreProject.MyCampsiteVc.publishApiHit(pageNum: Swift.Int) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/My%20Camosite/MyCampsiteVc.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "732"
+                  endingLineNumber = "732"
+                  offsetFromSymbolStart = "1764">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -557,78 +455,10 @@
             timestampString = "601928989.551151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "573"
-            endingLineNumber = "573"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "574"
+            endingLineNumber = "574"
+            landmarkName = "sendBtnActn(_:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3E9067FA-C162-4D59-8BA0-B7198C257683"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/New Group/ChatViewController.swift"
-            timestampString = "601928989.552283"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "observeChannels()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "15CB1870-D9B4-49BE-AB37-51C06F193756"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/Chat/ChatListingVC.swift"
-            timestampString = "602010582.688692"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "observeChannels()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "15CB1870-D9B4-49BE-AB37-51C06F193756 - d9098ab205258584"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XploreProject.ChatListingVC.observeChannels() -&gt; ()"
-                  moduleName = "XploreProject"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS-master/XploreProject/Chat/ChatListingVC.swift"
-                  timestampString = "601928990.664048"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92"
-                  offsetFromSymbolStart = "1532">
-               </Location>
-               <Location
-                  uuid = "15CB1870-D9B4-49BE-AB37-51C06F193756 - 716c7209a4649cfd"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.FIRDataSnapshot) -&gt; () in XploreProject.ChatListingVC.observeChannels() -&gt; ()"
-                  moduleName = "XploreProject"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS-master/XploreProject/Chat/ChatListingVC.swift"
-                  timestampString = "601928990.668539"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "89"
-                  endingLineNumber = "89"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -650,86 +480,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F43101BB-0B14-4990-95DB-A6CB7F589A8E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Main Class/AlamoFireWrapper.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "getPost(action:param:onSuccess:onFailure:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "72B2D04F-0FFD-4D17-86AC-A1348D545C25"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/Login/LoginVc.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "710"
-            endingLineNumber = "710"
-            landmarkName = "authorizationController(controller:didCompleteWithAuthorization:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "68101DB9-BC80-4826-BDB8-BDDEDAC907C4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/Login/LoginVc.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "702"
-            endingLineNumber = "702"
-            landmarkName = "authorizationController(controller:didCompleteWithAuthorization:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F425138A-AB57-4E74-AC6F-CA2E29BE1AA8"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/Login/LoginVc.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
-            landmarkName = "handleAppleIdRequest()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E746D064-B426-417F-8975-10B8E9F13F08"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XploreProject/TabbarController/MytabbarControllerVc.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "tabBar(_:didSelect:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "10A0E9A8-29B7-4BD7-8634-AA696AD32E54"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -739,8 +489,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "529"
             endingLineNumber = "529"
-            landmarkName = "hasViewController(ofKind:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
             <Locations>
                <Location
                   uuid = "10A0E9A8-29B7-4BD7-8634-AA696AD32E54 - e9309edd8f9f4ee4"
@@ -785,8 +535,8 @@
             filePath = "XploreProject/HomeClass/HomeVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1085"
-            endingLineNumber = "1085"
+            startingLineNumber = "1105"
+            endingLineNumber = "1105"
             landmarkName = "HomeAPIHit()"
             landmarkType = "7">
          </BreakpointContent>
@@ -859,7 +609,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "53A3D1B2-9800-4841-AB1A-040E361D37D4"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XploreProject/MyCampDescription/MyCampDescriptionVc.swift"
@@ -885,6 +635,886 @@
             endingLineNumber = "555"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A4B6F39-355C-46F8-9E1E-8E3A14F9559A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1310"
+            endingLineNumber = "1310"
+            landmarkName = "addCampSiteApiHit()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9C785CA9-B77B-4DE3-B68C-2328CFC38158"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main Class/AlamoFireWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "getPost(action:param:onSuccess:onFailure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2D9A65A1-5FB2-466B-A839-427284AF242D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main Class/AlamoFireWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "getPost(action:param:onSuccess:onFailure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EFA3B606-47A5-41F4-8F66-E3806403A593"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main Class/AlamoFireWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "getPost(action:param:onSuccess:onFailure:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EFA3B606-47A5-41F4-8F66-E3806403A593 - 17d27d534d9a7707"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XploreProject.AlamoFireWrapper.getPost(action: Swift.String, param: Swift.Dictionary&lt;Swift.String, Any&gt;, onSuccess: (Alamofire.DataResponse&lt;Any&gt;) -&gt; (), onFailure: (Swift.Error) -&gt; ()) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/Main%20Class/AlamoFireWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "139"
+                  endingLineNumber = "139"
+                  offsetFromSymbolStart = "532">
+               </Location>
+               <Location
+                  uuid = "EFA3B606-47A5-41F4-8F66-E3806403A593 - df364aeb316a69b7"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in XploreProject.AlamoFireWrapper.getPost(action: Swift.String, param: Swift.Dictionary&lt;Swift.String, Any&gt;, onSuccess: (Alamofire.DataResponse&lt;Any&gt;) -&gt; (), onFailure: (Swift.Error) -&gt; ()) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/Main%20Class/AlamoFireWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
+                  offsetFromSymbolStart = "172">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61EF4623-0F0F-44CF-A4E9-D0377376759B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main Class/AlamoFireWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "getPost(action:param:onSuccess:onFailure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "82F84568-82C4-4AB3-A7E5-93CD873A04F7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/HomeClass/HomeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "644"
+            endingLineNumber = "644"
+            landmarkName = "tapPayNowBtn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BFFD8F0D-0873-44CE-940D-A7AB85D35949"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "399"
+            endingLineNumber = "399"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  uuid = "BFFD8F0D-0873-44CE-940D-A7AB85D35949 - a95e09c45ad724d8"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XploreProject.FeaturedVc.featuredAPIHit(pageNum: Swift.Int) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/FeaturedItems/FeaturedVc.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "400"
+                  endingLineNumber = "400"
+                  offsetFromSymbolStart = "4461">
+               </Location>
+               <Location
+                  uuid = "BFFD8F0D-0873-44CE-940D-A7AB85D35949 - b70dd69af8b25574"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in XploreProject.FeaturedVc.featuredAPIHit(pageNum: Swift.Int) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/FeaturedItems/FeaturedVc.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "401"
+                  endingLineNumber = "401"
+                  offsetFromSymbolStart = "182">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FF8527E6-348D-48E9-B392-9B71A70B5267"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "407"
+            endingLineNumber = "407"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9FF8D618-E741-4CC7-AD44-222959CB3B11"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "75F8B572-046B-4370-8FBE-293F8F1D7E83"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "618"
+            endingLineNumber = "618"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "78C4CB55-7A46-464D-AF4E-572668B0F2BF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Search CampSite/SearchCampVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
+            landmarkName = "searchAPIHit(pageNum:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "31E56DD3-BCB3-422D-B0EB-F1DEA7F4F016"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Search CampSite/SearchCampVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
+            landmarkName = "searchAPIHit(pageNum:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "308EA716-7F84-456E-8DFD-CAB96360513B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Search CampSite/SearchCampVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
+            landmarkName = "searchAPIHit(pageNum:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A47458DE-F690-4EC4-BC21-2C00A599D24B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Search CampSite/SearchCampVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "searchAPIHit(pageNum:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "251FC523-A534-4C0A-8188-8793A620291E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Search CampSite/SearchCampVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "searchAPIHit(pageNum:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ABABA4D4-D79C-4F8C-8971-E4E805A0C561"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "511"
+            endingLineNumber = "511"
+            landmarkName = "stateApiCall()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "50B0A3D7-9635-425C-A27B-F50C35C4F554"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "474"
+            endingLineNumber = "474"
+            landmarkName = "countiesApiCall()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3B827609-0CE5-4D5E-921C-F905D5D07E9A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "491"
+            endingLineNumber = "491"
+            landmarkName = "stateApiCall()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C503B272-F184-48C6-AAC5-EA02538C936E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
+            landmarkName = "cityApiCall()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2060F67C-1929-4A85-BA02-7CF2C6719FD2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/TabbarController/MytabbarControllerVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "tabBar(_:didSelect:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ABD6C6E4-6F16-4284-A31C-76B0AD8C1A4E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "973"
+            endingLineNumber = "973"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7DA54EDE-D815-4650-9878-84493858FF98"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1555"
+            endingLineNumber = "1555"
+            landmarkName = "textViewDidBeginEditing(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F424B981-D168-4AE5-ADA5-36D302B8FEC5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1553"
+            endingLineNumber = "1553"
+            landmarkName = "textViewDidBeginEditing(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BE8C6C06-F6A5-4470-8181-A93B3B38A11D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2151"
+            endingLineNumber = "2151"
+            landmarkName = "getLatLong()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C74884AB-19D6-4976-AF14-2A3C4E55B1DC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1129"
+            endingLineNumber = "1129"
+            landmarkName = "tapAddAsDraftBtn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AD8BD699-3FDD-42DB-A44D-55D74A13F0C0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/My Camosite/MyCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2C1EA397-55BA-4279-A62E-5934F9F79AFC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/My Camosite/MyCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7B4D47C3-F02D-4BBE-9F64-990D9EA33DFA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/My Camosite/MyCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "452"
+            endingLineNumber = "452"
+            landmarkName = "onDraftBtn()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E51D6E0C-D086-4389-802B-AC281219972F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/My Camosite/MyCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
+            landmarkName = "onDraftBtn()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "615887C2-1E96-4A78-86E2-FACCDCA0CBCB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/My Camosite/MyCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "reloadTbl()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3FAFA716-C54C-432D-9952-E47E089F5637"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1104"
+            endingLineNumber = "1104"
+            landmarkName = "saveCamp()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F45D7AB0-304B-48CC-BFEF-416097C4AF4D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Add Campsite/AddNewCampsiteVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1114"
+            endingLineNumber = "1114"
+            landmarkName = "saveCamp()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6DE30D33-DDD0-465F-B919-3C1F2C854DC5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "570"
+            endingLineNumber = "570"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8BD7A3B8-DF8E-4FCB-8CD5-2D07C065DB63"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Camp Description/CampDescriptionVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "573"
+            endingLineNumber = "573"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "94E16127-2809-47FB-AFFE-E35CC773AB4F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "487"
+            endingLineNumber = "487"
+            landmarkName = "stateApiCall()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "94E16127-2809-47FB-AFFE-E35CC773AB4F - 71b8662cfc39a642"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XploreProject.FilterVc.stateApiCall() -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/Filter/FilterVc.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "488"
+                  endingLineNumber = "488"
+                  offsetFromSymbolStart = "1180">
+               </Location>
+               <Location
+                  uuid = "94E16127-2809-47FB-AFFE-E35CC773AB4F - 203255a535774ef2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in XploreProject.FilterVc.stateApiCall() -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/Filter/FilterVc.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "489"
+                  endingLineNumber = "489"
+                  offsetFromSymbolStart = "136">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D3365DD-1B5F-4E0F-B1CB-493D2260F990"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "809"
+            endingLineNumber = "809"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1BB24792-DCFC-470C-8A18-2F281327E8B7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "849"
+            endingLineNumber = "849"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2AE5E37F-9D45-4110-BAC0-3869DE8A5983"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Filter/FilterVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "480"
+            endingLineNumber = "480"
+            landmarkName = "stateApiCall()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D0DD0E4-D38E-48EA-8D1E-85B2D2789C69"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/FeaturedItems/FeaturedVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7353A84E-C365-4AEF-A079-A0A64D88A037"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/SavedComposite/savedCompositeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "setInitialDesign()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B6B32652-32AD-44C7-AA2A-46963D77506F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/SavedComposite/savedCompositeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "tapSaveCampSiteBtn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0B429C5C-7952-43B8-AB98-945A269A5A6E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/SavedComposite/savedCompositeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "tapSavedBtn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A6367515-18FE-4ECE-B955-2725BAC1E0CD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/SavedComposite/savedCompositeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "favoutiteAction(sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BE236EF4-1802-4220-8007-83C5E4048A12"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/SavedComposite/savedCompositeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
+            landmarkName = "favBtnAction()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E75BA22E-220C-4445-85F4-32A494E7F492"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/SavedComposite/savedCompositeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "328"
+            endingLineNumber = "328"
+            landmarkName = "tapFavouriteBtn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "75ECBDF1-0B85-4343-BAC7-454739239638"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/HomeClass/HomeVc.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "650"
+            endingLineNumber = "650"
+            landmarkName = "tapLogoutBtn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CDA7354B-7AA2-4760-9DBA-028276FCD5B6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XploreProject/Notification/NotificationTableViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "getUserInfo(userId:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CDA7354B-7AA2-4760-9DBA-028276FCD5B6 - d016f464dd89d105"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XploreProject.NotificationTableViewCell.getUserInfo(userId: Swift.String) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/Notification/NotificationTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "332">
+               </Location>
+               <Location
+                  uuid = "CDA7354B-7AA2-4760-9DBA-028276FCD5B6 - d0a80b964892ee23"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.FIRDataSnapshot) -&gt; () in XploreProject.NotificationTableViewCell.getUserInfo(userId: Swift.String) -&gt; ()"
+                  moduleName = "XploreProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dharmendra/Desktop/Xplore_iOS/XploreProject/Notification/NotificationTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "172">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

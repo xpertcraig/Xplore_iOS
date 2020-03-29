@@ -13,7 +13,7 @@ import GooglePlaces
 
 import OpalImagePicker
 import Photos
-
+import IQKeyboardManagerSwift
 import MobileCoreServices
 
 class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
@@ -153,6 +153,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         self.stateview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapStateView)))
         self.cityView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCityView)))
         
+        self.webSiteTxtView.text! = "example: www.google.com"
+        self.webSiteTxtView.textColor = UIColor.lightGray
         //
         self.callAPI()
         
@@ -407,6 +409,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     @objc func tapClosestView() {
         let acController = GMSAutocompleteViewController()
         
+        self.closetTown.text = ""
         // Sets the background of results - top line
         acController.primaryTextColor = UIColor.black
         UINavigationBar.appearance().barTintColor = appThemeColor
@@ -658,6 +661,11 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             CommonFunctions.showAlert(self, message: descriptionEmptyAlert, title: appName)
             
             return true
+        } else if !(self.webSiteTxtView.text!.trimmingCharacters(in: .whitespaces).isEmpty) {
+            if !self.webSiteTxtView.text!.isValidURL {
+                CommonFunctions.showAlert(self, message: validWebUrl, title: appName)
+            }
+            return true
         } else if (self.elevation.text!.trimmingCharacters(in: .whitespaces).isEmpty) {
             self.elevation.becomeFirstResponder()
             CommonFunctions.showAlert(self, message: elevationEmptyAlert, title: appName)
@@ -898,6 +906,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                                 //self.campsiteAddress2.text = (placemark?.addressDictionary!["SubLocality"]) as? String
                                 
                             }
+                            self.getLatLong()
                         }
                     }
                 }
@@ -979,6 +988,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     @IBAction func backAction(_ sender: Any) {
         self.searchActive = false
         self.view.endEditing(true)
+        
+        
         self.navigationController?.popViewController(animated: true)
         
     }
@@ -1001,6 +1012,11 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     }
     
     func saveCamp() {
+        if self.webSiteTxtView.text! == "example: www.google.com" {
+            self.webSiteTxtView.text = ""
+            
+        }
+        
         if(((self.campsiteName.text!.trimmingCharacters(in: .whitespaces).isEmpty))){
             self.campsiteName.becomeFirstResponder()
             
@@ -1034,7 +1050,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                     
                 }
                 
-                // print(myCampImgArr)
+              //   print(tempCampDict)
                 
                 self.mySavedCampSites.add(tempCampDict)
                 let tempArr: NSArray = self.mySavedCampSites.reversed() as NSArray
@@ -1053,6 +1069,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                     self.mySavedCampSites = tempArr
                     
                 }
+                
+             //   print(tempCampDict)
                 
                 let tempArr1: NSArray = self.mySavedCampSites.reversed() as NSArray
                 self.mySavedCampSites = tempArr1.mutableCopy() as! NSMutableArray
@@ -1084,8 +1102,18 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                     }
                 } else {
                     applicationDelegate.dismissProgressView(view: self.view)
-                    self.navigationController?.tabBarController?.selectedIndex = 3
-                    
+                    if let navController = self.navigationController, navController.viewControllers.count >= 2 {
+                        let viewController = navController.viewControllers[navController.viewControllers.count - 2]
+                        if viewController is MyCampsiteVc {
+                            self.navigationController?.popViewController(animated: true)
+                            
+                        } else {
+                            self.navigationController?.tabBarController?.selectedIndex = 3
+                        }
+                    } else {
+                        self.navigationController?.tabBarController?.selectedIndex = 3
+                        
+                    }
                 }
             })
             
@@ -1285,9 +1313,15 @@ extension AddNewCampsiteVc {
             cityF = self.city.text!
             
         }
+        
+        if self.webSiteTxtView.text! == "example: www.google.com" {
+            self.webSiteTxtView.text = ""
+            
+        }
+        
         let param: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": campTypeIdsStr, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*campHokupsIdStr*/, "amenities": campAmentiesIdStr, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "videoindex": self.videoImgIndex]
         
-     //   print(param)
+        print(param)
         
         AlamoFireWrapper.sharedInstance.getPostMultipartForUploadMultipleImages(action: "addCampsite.php", param: param as! [String : Any], ImageArr: self.myCampImgArr, videoData: self.videoData, videoIndex: self.videoImgIndex, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
@@ -1510,6 +1544,29 @@ extension AddNewCampsiteVc :UITextFieldDelegate, UITextViewDelegate {
         
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView == webSiteTxtView {
+            if self.webSiteTxtView.text! == "example: www.google.com" {
+                self.webSiteTxtView.text = ""
+                self.webSiteTxtView.textColor = UIColor.darkGray
+                
+            }
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView == webSiteTxtView {
+            if !textView.text!.isValidURL {
+                CommonFunctions.showAlert(self, message: validWebUrl, title: appName)
+            }
+            if self.webSiteTxtView.text! == "" {
+                self.webSiteTxtView.text = "example: www.google.com"
+                self.webSiteTxtView.textColor = UIColor.lightGray
+                
+            }
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -1552,52 +1609,6 @@ extension AddNewCampsiteVc :UITextFieldDelegate, UITextViewDelegate {
         }
         return true
     }
-    
-    
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        if (textField == hookupsAvailable ) {
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier:"SelectOptionVC") as! SelectOptionVC
-//            vc.key = "Select Hookups"
-//            vc.delegate = self
-//            
-//            vc.setCampNameIfAvailable = self.hookupLbl.text!
-//            
-//            self.navigationController?.pushViewController(vc, animated: true)
-//            return false
-//            
-//        } else if (textField == amenities ) {
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier:"SelectOptionVC") as! SelectOptionVC
-//            vc.key = "Select Amenities"
-//            vc.delegate = self
-//            
-//            vc.setCampNameIfAvailable = self.amentiesLbl.text!
-//            
-//            self.navigationController?.pushViewController(vc, animated: true)
-//            return false
-//            
-//        } else if (textField == bestMonthToVisit ) {
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier:"SelectOptionVC") as! SelectOptionVC
-//            vc.key = "Select Months"
-//            vc.delegate = self
-//            
-//            vc.setCampNameIfAvailable = self.bestMonthLbl.text!
-//            
-//            self.navigationController?.pushViewController(vc, animated: true)
-//            return false
-//            
-//        }else if (textField == campType ) {
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier:"SelectOptionVC") as! SelectOptionVC
-//            vc.key = "Select Type"
-//            vc.delegate = self
-//            
-//            vc.setCampNameIfAvailable = self.campTypeLbl.text!
-//            
-//            self.navigationController?.pushViewController(vc, animated: true)
-//            return false
-//            
-//        }
-//        return true
-//    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == self.Country || textField == state || textField == city {
@@ -2021,7 +2032,16 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
                         return code?.code
                     }
                 }
-            } else {
+            } else if sepStr.count == 1 {
+                if sepStr[0] != "" {
+                    let code = Locale.currency["\(String(describing: sepStr[0].first!))"]                    
+                    return code?.code
+                   
+                }
+            } else if sepStr.count == 0 {
+                return ""
+                
+            } else if sepStr.count > 2 {
                 if sepStr[0] != "" {
                     if sepStr[1] != "" {
                         if sepStr[2] != "" {

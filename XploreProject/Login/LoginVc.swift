@@ -104,6 +104,7 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
         payPalConfig.acceptCreditCards = acceptCreditCards
         payPalConfig.merchantName = "Xplore"//Your Company Name
         
+        UINavigationBar.appearance().barTintColor = appThemeColor
         //Url's are just Paypal Merchant Policy
         payPalConfig.merchantPrivacyPolicyURL = URL(string: "https://www.paypal.com/webapps/mpp/ua/privacy-full")
         payPalConfig.merchantUserAgreementURL = URL(string: "https://www.paypal.com/webapps/mpp/ua/useragreement-full")
@@ -143,6 +144,8 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
         
         if (payment.processable) {
             let paymentViewController = PayPalPaymentViewController(payment: payment, configuration: payPalConfig, delegate: self)
+            UINavigationBar.appearance().barTintColor = appThemeColor
+            UINavigationBar.appearance().tintColor = nil
             present(paymentViewController!, animated: true, completion: nil)
         }
         else {
@@ -182,24 +185,6 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
             print("\(error.localizedDescription)")
             
         } else {
-            // Perform any operations on signed in user here.
-            //            let userId = user.userID                  // For client-side use only!
-            //            let idToken = user.authentication.idToken // Safe to send to the server
-            //            let fullName = user.profile.name
-            //            let givenName = user.profile.givenName
-            //            let familyName = user.profile.familyName
-            //            let email = user.profile.email
-            // ...
-            
-//            print(user.profile.email!)
-//            print(user.userID!)
-//            print(user.authentication.idToken!)
-//            print(user.profile.name!)
-            
-            //            user.profile.familyName
-            //            user.profile.givenName
-            //            user.profile.imageURL(withDimension: 200*400)
-            
             self.googleLoginApiHit(email: user.profile.email!, userId: user.userID!, tokenId: user.authentication.idToken!, userFirstName: user.profile.givenName, userLastName: user.profile.familyName, userFullName: user.profile.name)
             
             GIDSignIn.sharedInstance().signOut()
@@ -379,7 +364,7 @@ extension LoginVc {
             userDefault.set(0, forKey: "DeviceToken")
             
         }
-        let param: [String:Any] = ["name": String(describing: (fbbDataDict["name"]!)), "email": String(describing: (fbbDataDict["email"]!)),"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": String(describing: (fbbDataDict["id"]!)), "googleToken": "", "longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        let param: [String:Any] = ["name": String(describing: (fbbDataDict["name"]!)), "email": String(describing: (fbbDataDict["email"]!)),"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": String(describing: (fbbDataDict["id"]!)), "googleToken": "", "appleToken" : "" ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
         
       //  print(param)
         
@@ -398,6 +383,7 @@ extension LoginVc {
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     
+                    applicationDelegate.notificationCountApi()
                     //objUser.parseUserData(recUserDict: retValues)
                     self.checkSubscription(recValue: retValues)
                     
@@ -426,7 +412,7 @@ extension LoginVc {
             
         }
         
-        let param: [String:Any] = ["name": userFullName, "email": email,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": userId, "longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        let param: [String:Any] = ["name": userFullName, "email": email,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": userId, "appleToken" : "" ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
         
       //  print(param)
         
@@ -445,6 +431,7 @@ extension LoginVc {
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     
+                    applicationDelegate.notificationCountApi()
                     //objUser.parseUserData(recUserDict: retValues)
                     self.checkSubscription(recValue: retValues)
                     
@@ -467,14 +454,19 @@ extension LoginVc {
     
     //Apple login
     func appleLoginApiHit(appleDict: [String: Any]){
-        applicationDelegate.startProgressView(view: self.view)
-        
+        DispatchQueue.main.async {
+            applicationDelegate.startProgressView(view: self.view)
+            
+        }
         if userDefault.value(forKey: "DeviceToken") as? String == nil {
             userDefault.set(0, forKey: "DeviceToken")
             
         }
         var emailR: String = ""
-         if appleDict["email"] as! String == "" {
+         if let email = appleDict["email"] as? String {
+            emailR = email
+            
+         } else {
             emailR = "\(String(describing: (appleDict["id"])!))@xploreCamps.com"
             
         }
@@ -484,8 +476,10 @@ extension LoginVc {
       //  print(param)
         
         AlamoFireWrapper.sharedInstance.getPost(action: "register.php", param: param , onSuccess: { (responseData) in
-            applicationDelegate.dismissProgressView(view: self.view)
-            
+            DispatchQueue.main.async {
+                applicationDelegate.dismissProgressView(view: self.view)
+                
+            }
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
@@ -498,6 +492,7 @@ extension LoginVc {
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     
+                    applicationDelegate.notificationCountApi()
                     //objUser.parseUserData(recUserDict: retValues)
                     self.checkSubscription(recValue: retValues)
                     
@@ -507,7 +502,10 @@ extension LoginVc {
                 }
             }
         }) { (error) in
-            applicationDelegate.dismissProgressView(view: self.view)
+            DispatchQueue.main.async {
+                applicationDelegate.dismissProgressView(view: self.view)
+                
+            }
             if connectivity.isConnectedToInternet() {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
@@ -677,6 +675,7 @@ extension UINavigationController {
 @available(iOS 13.0, *)
 extension LoginVc: ASAuthorizationControllerDelegate {
     func setUpSignInAppleButton() {
+        UserDefaults.standard.set(appleLogin, forKey: XPLoginStatus)
         let authorizationButton = ASAuthorizationAppleIDButton()
         authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
         

@@ -76,7 +76,7 @@ class MyCampsiteVc: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.stopAnimateAcitivity()
         
-        if Singleton.sharedInstance.myCampsArr.count > 0 {
+        if Singleton.sharedInstance.myCampsArr.count > 0 && fromSaveDraft == false {
             self.reloadTbl()
             
         }
@@ -594,9 +594,26 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             cell.ttlReviewLbl.isHidden = true
             
             cell.addressTopConstraint.constant = 0
-            
-            if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "closestTown") as? String) == "" {
+//            
+//            if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "closestTown") as? String) == "" {
+//                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
+//                
+//            }
+            if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) != "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) != "" {
                 cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
+                
+            } else if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) == "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) == "" {
+                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
+                
+            } else if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) != "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) == "" {
+                
+                cell.locationAddressLbl.text! = "\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String),\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String),\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String),\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)"
+                
+                
+                //((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
+                
+            } else if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) == "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) != "" {
+                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
                 
             }
             cell.playImg.isHidden = true

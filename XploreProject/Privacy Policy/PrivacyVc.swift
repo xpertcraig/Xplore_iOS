@@ -56,7 +56,16 @@ class PrivacyVc: UIViewController {
             
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
-                    self.privacyTxtVIew.text! = (dict["result"]! as! String)
+                    //self.privacyTxtVIew.text! = (dict["result"]! as! String)
+                    
+                    let str = (dict["result"]! as! String)
+                    let htmlData = NSString(string: str).data(using: String.Encoding.unicode.rawValue)
+
+                    let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
+
+                    let attributedString = try! NSAttributedString(data: htmlData!, options: options, documentAttributes: nil)
+
+                    self.privacyTxtVIew.attributedText = attributedString
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)

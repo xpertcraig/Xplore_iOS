@@ -21,9 +21,30 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet weak var passwordTextfeild: UITextFieldCustomClass!
     @IBOutlet weak var confirmPassowrd: UITextFieldCustomClass!
     @IBOutlet weak var applePayBtn: UIView!
+    @IBOutlet weak var overlayView: UIView!
+    @IBOutlet weak var paymentView: UIView!
+    @IBOutlet weak var amountLbl: UILabel!
     
     //MARK:- Variable Declarations
     var fbbDataDict: NSDictionary = [:]
+    
+    //Pappal Config Object
+    var payPalConfig = PayPalConfiguration() // default
+    //PayPal Environment Closure
+    var environment:String = PayPalEnvironmentNoNetwork {
+        willSet(newEnvironment) {
+            if (newEnvironment != environment) {
+                PayPalMobile.preconnect(withEnvironment: newEnvironment)
+            }
+        }
+    }
+    
+    var acceptCreditCards: Bool = true {
+        didSet {
+            payPalConfig.acceptCreditCards = acceptCreditCards
+            
+        }
+    }
     
     //MARK:- Inbuild Functions
     override func viewDidLoad() {
@@ -35,12 +56,18 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
             self.applePayBtn.isHidden = true
             // Fallback on earlier versions
         }
+        self.overlayView.isHidden = true
         //call googleSignIn delegate
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
     
         /////
         self.addKeyBoardObservers()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.setUpPaypal()
         
     }
     
@@ -162,6 +189,12 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
             
         }
     }
+    
+    @IBAction func tapPayNowBtn(_ sender: UIButton) {
+        self.payPalButtonPressed()
+        
+    }
+    
 }
 
 extension RegisterVc {
@@ -217,9 +250,9 @@ extension RegisterVc {
             
         }
         
-        let param: [String:Any] = ["name": self.nameTxtFld.text!.trimmingCharacters(in: .whitespaces), "email": self.emailTextFeild.text!.trimmingCharacters(in: .whitespaces),"password": self.passwordTextfeild.text!.trimmingCharacters(in: .whitespaces), "cpwd": self.confirmPassowrd.text!.trimmingCharacters(in: .whitespaces), "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": "", "longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        let param: [String:Any] = ["name": self.nameTxtFld.text!.trimmingCharacters(in: .whitespaces), "email": self.emailTextFeild.text!.trimmingCharacters(in: .whitespaces),"password": self.passwordTextfeild.text!.trimmingCharacters(in: .whitespaces), "cpwd": self.confirmPassowrd.text!.trimmingCharacters(in: .whitespaces), "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": "", "appleToken" : "" , "longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
         
-     //   print(param)
+       // print(param)
         
         AlamoFireWrapper.sharedInstance.getPost(action: "register.php", param: param , onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
@@ -284,7 +317,7 @@ extension RegisterVc {
             userDefault.set(0, forKey: "DeviceToken")
             
         }
-        let param: [String:Any] = ["name": String(describing: (fbbDataDict["name"]!)), "email": String(describing: (fbbDataDict["email"]!)),"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": String(describing: (fbbDataDict["id"]!)), "googleToken": "", "longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        let param: [String:Any] = ["name": String(describing: (fbbDataDict["name"]!)), "email": String(describing: (fbbDataDict["email"]!)),"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": String(describing: (fbbDataDict["id"]!)), "googleToken": "", "appleToken" : "" ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
         
       //  print(param)
         
@@ -295,15 +328,17 @@ extension RegisterVc {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
                     
-                    self.verifyEmailAndLogin()
+                //    self.verifyEmailAndLogin()
                 //    print(retValues)
                     
-//                    DataManager.userId = retValues["userId"] as AnyObject
-//                    DataManager.emailAddress = retValues["email"] as AnyObject
-//                    DataManager.name = retValues["name"] as AnyObject
-//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-//
+                    DataManager.userId = retValues["userId"] as AnyObject
+                    DataManager.emailAddress = retValues["email"] as AnyObject
+                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+
+                    self.checkSubscription(recValue: retValues)
+                    
 //                    self.moveBackToApp()
                     //objUser.parseUserData(recUserDict: retValues)
 //                    DataManager.isUserLoggedIn = true
@@ -336,7 +371,7 @@ extension RegisterVc {
             
         }
         
-        let param: [String:Any] = ["name": userFullName, "email": email,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": userId, "longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
+        let param: [String:Any] = ["name": userFullName, "email": email,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": userId, "appleToken" : "" ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
         
        // print(param)
         
@@ -346,15 +381,17 @@ extension RegisterVc {
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
-                    self.verifyEmailAndLogin()
+                  //  self.verifyEmailAndLogin()
                //     print(retValues)
                     
-//                    DataManager.userId = retValues["userId"] as AnyObject
-//                    DataManager.emailAddress = retValues["email"] as AnyObject
-//                    DataManager.name = retValues["name"] as AnyObject
-//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-//
+                    DataManager.userId = retValues["userId"] as AnyObject
+                    DataManager.emailAddress = retValues["email"] as AnyObject
+                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+                    
+                    self.checkSubscription(recValue: retValues)
+                    
 //                    self.moveBackToApp()
                     
                     //objUser.parseUserData(recUserDict: retValues)
@@ -382,7 +419,10 @@ extension RegisterVc {
     
     //Apple login
     func appleLoginApiHit(appleDict: [String: Any]){
-        applicationDelegate.startProgressView(view: self.view)
+        DispatchQueue.main.async {
+            applicationDelegate.startProgressView(view: self.view)
+            
+        }
         
         if userDefault.value(forKey: "DeviceToken") as? String == nil {
             userDefault.set(0, forKey: "DeviceToken")
@@ -399,12 +439,15 @@ extension RegisterVc {
       //  print(param)
         
         AlamoFireWrapper.sharedInstance.getPost(action: "register.php", param: param , onSuccess: { (responseData) in
-            applicationDelegate.dismissProgressView(view: self.view)
+            DispatchQueue.main.async {
+                applicationDelegate.dismissProgressView(view: self.view)
+                
+            }
             
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
-                    self.verifyEmailAndLogin()
+                  //  self.verifyEmailAndLogin()
                     
                  //   print(retValues)
                     
@@ -416,13 +459,25 @@ extension RegisterVc {
 //
 //                    self.moveBackToApp()
                     
+                    DataManager.userId = retValues["userId"] as AnyObject
+                    DataManager.emailAddress = retValues["email"] as AnyObject
+                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
+                    DataManager.isPaid = retValues["isPaid"] as AnyObject
+                    
+                    //objUser.parseUserData(recUserDict: retValues)
+                    self.checkSubscription(recValue: retValues)
+                    
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
             }
         }) { (error) in
-            applicationDelegate.dismissProgressView(view: self.view)
+            DispatchQueue.main.async {
+                applicationDelegate.dismissProgressView(view: self.view)
+                
+            }
             if connectivity.isConnectedToInternet() {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
@@ -476,6 +531,7 @@ extension RegisterVc :UITextFieldDelegate {
 @available(iOS 13.0, *)
 extension RegisterVc: ASAuthorizationControllerDelegate {
     func setUpSignInAppleButton() {
+        UserDefaults.standard.set(appleLogin, forKey: XPLoginStatus)
         let authorizationButton = ASAuthorizationAppleIDButton()
         authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
         
@@ -534,4 +590,205 @@ extension RegisterVc: ASAuthorizationControllerDelegate {
         // Handle error.
     }
 
+}
+
+//check and update subscription
+extension RegisterVc: PayPalPaymentDelegate {
+    func checkSubscription(recValue: [String : Any]) {
+        applicationDelegate.startProgressView(view: self.view)
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "isPaid.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
+            
+            applicationDelegate.dismissProgressView(view: self.view)
+            if let dict:NSDictionary = responseData.result.value as? NSDictionary {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    
+                  //  print(dict)
+                    if String(describing: (dict["result"])!) == "1" {
+                        self.moveBackToApp()
+                        
+                    } else {
+                        
+                        self.subscriptionCargesAPIHit()
+                        objUser.parseUserData(recUserDict: recValue)
+                        
+                        self.overlayView.isHidden = false
+                        
+                    }
+                } else {
+                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    
+                }
+            }
+        }) { (error) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            if connectivity.isConnectedToInternet() {
+                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                
+            }
+        }
+    }
+    
+    func subscriptionCargesAPIHit(){
+        applicationDelegate.startProgressView(view: self.view)
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "subscriptioncharges.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            
+            if let dict:NSDictionary = responseData.result.value as? NSDictionary {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    
+                    //  print(dict)
+                    self.amountLbl.text = "$" + String(describing: ((dict["result"] as! NSDictionary).value(forKey: "charges"))!)
+                    
+                } else {
+                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    
+                }
+            }
+        }) { (error) in
+            applicationDelegate.dismissProgressView(view: self.view)
+            if connectivity.isConnectedToInternet() {
+                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                
+            }
+        }
+    }
+    
+        func paymentDoneSendToBackendAPI(transactionId: String) {
+            applicationDelegate.startProgressView(view: self.view)
+            
+            let param: NSDictionary = ["userId": DataManager.userId, "transactionId": transactionId, "transactionAmount": (amountLbl.text!).replacingOccurrences(of: "$", with: "")]
+            
+            //   print(param)
+            
+            AlamoFireWrapper.sharedInstance.getPost(action: "paypalpayment.php", param: param as! [String : Any], onSuccess: { (responseData) in
+                applicationDelegate.dismissProgressView(view: self.view)
+                
+                if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                    if (String(describing: (dict["success"])!)) == "1" {
+                        
+                        let alert = UIAlertController(title: appName, message: paySuccAlert, preferredStyle: .alert)
+                        let okBtn = UIAlertAction(title: okBtnTitle, style: .default, handler: { (UIAlertAction) in
+                            alert.dismiss(animated: true, completion: nil)
+                            
+                            self.overlayView.isHidden = true
+    //                        objUser.parseUserData(recUserDict: recValue)
+                            
+                            self.moveBackToApp()
+    //                        DataManager.isUserLoggedIn = true
+    //
+    //                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+    //                        self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        })
+                        
+                        alert.addAction(okBtn)
+                        
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    } else {
+                        CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                        
+                    }
+                }
+            }) { (error) in
+              //  print(error.localizedDescription)
+                
+                applicationDelegate.dismissProgressView(view: self.view)
+                if connectivity.isConnectedToInternet() {
+                    CommonFunctions.showAlert(self, message: serverError, title: appName)
+                    
+                } else {
+                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    
+                }
+            }
+        }
+    
+    func setUpPaypal() {
+        //PayPal SetUp
+        // Set up payPalConfig
+        payPalConfig.acceptCreditCards = acceptCreditCards
+        payPalConfig.merchantName = "Xplore"//Your Company Name
+        
+        //Url's are just Paypal Merchant Policy
+        payPalConfig.merchantPrivacyPolicyURL = URL(string: "https://www.paypal.com/webapps/mpp/ua/privacy-full")
+        payPalConfig.merchantUserAgreementURL = URL(string: "https://www.paypal.com/webapps/mpp/ua/useragreement-full")
+        
+        //language in which paypal sdk is shown. 0 for default language of app
+        payPalConfig.languageOrLocale = Locale.preferredLanguages[0]
+        
+        //If you use paypal, it is use address which is register in paypal. if you use both customer have the option to choose different or use paypal address
+        payPalConfig.payPalShippingAddressOption = .both
+        
+    }
+    
+    //MARK:- Paypal Button Pressed
+    //By Palpal
+    func payPalButtonPressed() {
+        //these are items which are being sold by merchant
+        //if there is no amount in "NSDecimalNumber" paypal gives message "Payment not processalbe" and amount sholud be what the user enter reward for help request
+        // NSDecimalNumber(string: "\(bidamount)")
+        let amnt: String = (amountLbl.text!).replacingOccurrences(of: "$", with: "")
+        
+        let item1 = PayPalItem(name: "Subscription", withQuantity: 1, withPrice: NSDecimalNumber(string: "\(amnt)"), withCurrency: "USD", withSku: "Hip-0037")
+        
+        let items = [item1]
+        let subtotal = PayPalItem.totalPrice(forItems: items)
+        
+        // Optional: include payment details
+        let shipping = NSDecimalNumber(string: "0.00")
+        let tax = NSDecimalNumber(string: "0.00")
+        let paymentDetails = PayPalPaymentDetails(subtotal: subtotal, withShipping: shipping, withTax: tax)
+        
+        let total = subtotal.adding(shipping).adding(tax)
+        
+        let payment = PayPalPayment(amount: total, currencyCode: "USD", shortDescription: "Subscription", intent: .sale)
+        
+        payment.items = items
+        payment.paymentDetails = paymentDetails
+        
+        if (payment.processable) {
+            let paymentViewController = PayPalPaymentViewController(payment: payment, configuration: payPalConfig, delegate: self)
+            UINavigationBar.appearance().barTintColor = appThemeColor
+            UINavigationBar.appearance().tintColor = nil
+            present(paymentViewController!, animated: true, completion: nil)
+        }
+        else {
+            // This particular payment will always be processable. If, for
+            // example, the amount was negative or the shortDescription was
+            // empty, this payment wouldn't be processable, and you'd want
+            // to handle that here.
+            print("Payment not processalbe: \(payment)")
+        }
+    }
+    
+    // PayPalPaymentDelegate
+    func payPalPaymentDidCancel(_ paymentViewController: PayPalPaymentViewController) {
+        print("PayPal Payment Cancelled")
+        
+        paymentViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func payPalPaymentViewController(_ paymentViewController: PayPalPaymentViewController, didComplete completedPayment: PayPalPayment) {
+        
+        print("PayPal Payment Success !")
+        
+        paymentViewController.dismiss(animated: true, completion: { () -> Void in
+            // send completed confirmaion to your server
+            print("Here is your proof of payment:\n\n\(completedPayment.confirmation)\n\nSend this to your server for confirmation and fulfillment.")
+            
+           // self.paypalTransaction_id = String(describing: ((completedPayment.confirmation as NSDictionary).value(forKey: "response") as! NSDictionary).value(forKey: "id")!)
+            
+            self.paymentDoneSendToBackendAPI(transactionId: String(describing: ((completedPayment.confirmation as NSDictionary).value(forKey: "response") as! NSDictionary).value(forKey: "id")!))
+            
+        })
+    }
 }

@@ -84,8 +84,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //print(userInfoDict)
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
+        if #available(iOS 13, *)
+        {
+            let statusBar = UIView(frame: (UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame)!)
+            statusBar.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            UIApplication.shared.keyWindow?.addSubview(statusBar)
+        } else {
+             UIApplication.shared.statusBarView?.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+            
+        }
         
-        UIApplication.shared.statusBarView?.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
+       
         
         if self.comeFrom == "UserProfile" {
             if let name = (userInfoDict.value(forKey: "name") as? String) {
@@ -106,16 +115,32 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.userIMgView.sd_setImage(with: URL(string: String(describing: (userInfoDict.value(forKey: "profileImage") as! String))), placeholderImage: UIImage(named: ""))
             
         } else {
-            if let uName = (userInfoDict.value(forKey: "otherUsername") as? String) {
-                self.userNameLbl.text! = String(describing: uName)
-                
-                if let profileImg = (userInfoDict.value(forKey: "otherUserProfileImage") as? String) {
-                    
-                    self.userIMgView.sd_setShowActivityIndicatorView(true)
-                    self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    self.userIMgView.sd_setImage(with: URL(string: String(describing: profileImg)), placeholderImage: UIImage(named: ""))
-                    
-                }
+            if String(describing: (DataManager.userId)) == (userInfoDict.value(forKey: "userId") as? String) {
+                self.getUserInfo(userId: String(describing: (userInfoDict.value(forKey: "othersUserId"))!))
+//                if let uName = (userInfoDict.value(forKey: "otherUsername") as? String) {
+//                    self.userNameLbl.text! = String(describing: uName)
+//
+//                    if let profileImg = (userInfoDict.value(forKey: "otherUserProfileImage") as? String) {
+//
+//                        self.userIMgView.sd_setShowActivityIndicatorView(true)
+//                        self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+//                        self.userIMgView.sd_setImage(with: URL(string: String(describing: profileImg)), placeholderImage: UIImage(named: ""))
+//
+//                    }
+//                }
+            } else {
+                self.getUserInfo(userId: String(describing: (userInfoDict.value(forKey: "userId"))!))
+//                if let uName = (userInfoDict.value(forKey: "username") as? String) {
+//                    self.userNameLbl.text! = String(describing: uName)
+//
+//                    if let profileImg = (userInfoDict.value(forKey: "userProfileImage") as? String) {
+//
+//                        self.userIMgView.sd_setShowActivityIndicatorView(true)
+//                        self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+//                        self.userIMgView.sd_setImage(with: URL(string: String(describing: profileImg)), placeholderImage: UIImage(named: ""))
+//
+//                    }
+//                }
             }
         }
         
@@ -150,6 +175,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        applicationDelegate.startProgressView(view: self.view)
         observeChannels()
         observeChannelsToRemove()
         
@@ -245,6 +271,22 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     //MARK:- Save data to the firebase
+    func getUserInfo(userId: String) {
+        let ref = Database.database().reference().child("UsersProfile")
+        ref.child(userId).observe(.value, with: { (shot) in
+            
+            if let postDict = shot.value as? Dictionary<String, AnyObject> {
+                print(postDict)
+                self.userNameLbl.text! = String(describing: postDict["username"]!)
+                
+                self.userIMgView.sd_setShowActivityIndicatorView(true)
+                self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                self.userIMgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
+                
+            }
+        })
+    }
+    
     func sendMessageData() {
         
         let ref = Database.database().reference().child("Messages").child(chatUnitId)
@@ -266,8 +308,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK:- Fetch data from the firebase
     func observeChannels() {
         let ref = Database.database().reference()
-        
+        ref.child("Messages").child(chatUnitId).observe(.value) { (snapShot) in
+            if snapShot.value as? Dictionary<String, AnyObject> == nil {
+                applicationDelegate.dismissProgressView(view: self.view)
+            }
+        }
         ref.child("Messages").child(chatUnitId).observe(.childAdded, with: { (shot) in
+            applicationDelegate.dismissProgressView(view: self.view)
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
                 
                 if postDict["sender_id"] as? String == String(describing: (DataManager.userId)) && postDict["receiver_id"] as? String == self.receiverId {
@@ -299,11 +346,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         })
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            applicationDelegate.dismissProgressView(view: self.view)
-            
-        }
     }
     
     //MARK:- Changed data in firebase

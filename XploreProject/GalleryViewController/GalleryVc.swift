@@ -22,7 +22,7 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
     @IBOutlet weak var leftBtn: UIButton!
     @IBOutlet weak var rightBtn: UIButton!
     @IBOutlet weak var noImgLbl: UILabel!
-    
+    @IBOutlet weak var pageControl: UIPageControl!
     
     //MARK:- Variable Declarations
     var campId: String = ""
@@ -183,8 +183,8 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
                     self.videoindex = String(describing: ((dict["result"] as! NSDictionary).value(forKey: "videoindex"))!)
                     
                     if self.gallaryArr.count != 0 {
-                        self.leftBtn.isHidden = false
-                        self.rightBtn.isHidden = false
+                        self.leftBtn.isHidden = true
+                        self.rightBtn.isHidden = true
                         
                         self.noImgLbl.isHidden = true
                         
@@ -192,7 +192,7 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
                         self.noImgLbl.isHidden = false
                         
                     }                    
-                    
+                    self.pageControl.numberOfPages = self.gallaryArr.count
                     self.gallaryCollView.reloadData()
                     self.previewGalleryCollView.reloadData()
                     
@@ -273,6 +273,11 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         return self.gallaryArr.count
         
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) -> () {
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width);
+        self.pageControl.currentPage = Int(pageNumber)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -111,6 +111,12 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if DataManager.isUserLoggedIn! == true {
+            self.topNavigationView.isHidden = false
+            self.topNavigationHeight.constant = 44
+            
+        }
+        
         self.stopAnimateAcitivity()
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
@@ -399,7 +405,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSArray)
                     
-                 //   print(retValues)
+                    print(retValues)
                     self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -566,27 +572,45 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     
     //MARK:- Button Action
     @IBAction func tapProfileBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            self.loginAlertFunc(vc: "profile")
+        }
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "nearByUser")
+            
+       }
     }
     
     @IBAction func tapAddCampsiteBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "addCamps")
+            
+        }
     }
     
     @IBAction func tapNotificationBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "fromNoti")
+            
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -727,23 +751,28 @@ extension FeaturedVc {
     }
     
     @objc func favoutiteAction(sender: UIButton) {
-        self.campIndex = sender.tag
-        if String(describing: ((self.featuredReviewArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
-            self.markAsFavBtn.setTitle("Mark as favourite", for: .normal)
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "featured")
             
         } else {
-            self.markAsFavBtn.setTitle("Delete from favourite", for: .normal)
+            self.campIndex = sender.tag
+            if String(describing: ((self.featuredReviewArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
+                self.markAsFavBtn.setTitle("Mark as favourite", for: .normal)
+                
+            } else {
+                self.markAsFavBtn.setTitle("Delete from favourite", for: .normal)
+                
+            }
+            
+            self.campId = Int(String(describing: ((self.featuredReviewArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!))!
+            
+            self.favMarkbottomConstraint.constant = 150
+            
+            self.overlayview.tag = sender.tag
+            self.overlayview.isHidden = false
+            self.view.layoutIfNeeded()
             
         }
-        
-        self.campId = Int(String(describing: ((self.featuredReviewArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!))!
-        
-        self.favMarkbottomConstraint.constant = 150
-        
-        self.overlayview.tag = sender.tag
-        self.overlayview.isHidden = false
-        self.view.layoutIfNeeded()
-      
     }
 }
 
@@ -853,16 +882,21 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
     }
     
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
-        let indexVal: NSDictionary = (self.featuredReviewArr.object(at: sender.tag) as! NSDictionary)
-        
-        if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            vc.userInfoDict = indexVal
-            self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "campUserProfile")
             
+        } else {
+            let indexVal: NSDictionary = (self.featuredReviewArr.object(at: sender.tag) as! NSDictionary)
+            
+            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                vc.userInfoDict = indexVal
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
         }
     }
     
@@ -910,3 +944,44 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
     }    
 }
 
+//MARK:- login alert
+extension FeaturedVc {
+    func loginAlertFunc(vc: String) {
+        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
+        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            if vc == "profile" {
+                Singleton.sharedInstance.loginComeFrom = fromProfile
+                
+            } else if vc == "nearByUser" {
+                Singleton.sharedInstance.loginComeFrom = fromNearByuser
+               
+            } else if vc == "addCamps" {
+                Singleton.sharedInstance.loginComeFrom = fromAddCamps
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromNoti
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromFavCamps
+                
+            } else if vc == "viewProfile" {
+                Singleton.sharedInstance.loginComeFrom = fromViewProfile
+                
+            } else if vc == "featured" || vc == "campUserProfile" {
+                Singleton.sharedInstance.loginComeFrom = featuredCamp
+               
+            }
+            self.navigationController?.pushViewController(controller, animated: false)
+        })
+        
+        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(yesBtn)
+        alert.addAction(noBtn)
+        present(alert, animated: true, completion: nil)
+        
+    }
+}

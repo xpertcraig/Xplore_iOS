@@ -233,6 +233,10 @@ class PaymentVC: UIViewController, PayPalPaymentDelegate {
         
         if (payment.processable) {
             let paymentViewController = PayPalPaymentViewController(payment: payment, configuration: payPalConfig, delegate: self)
+            
+            UINavigationBar.appearance().barTintColor = appThemeColor
+            UINavigationBar.appearance().tintColor = nil
+            
             present(paymentViewController!, animated: true, completion: nil)
         }
         else {

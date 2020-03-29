@@ -91,6 +91,8 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     @IBOutlet weak var googleMapView: WKWebView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var topNavigationView: UIView!
+    @IBOutlet weak var topNavigationHeight: NSLayoutConstraint!
     
     //MARK:- Variable Declaration
    // var nibContents = Bundle.main.loadNibNamed("MarkAbouseAlert", owner: nil, options: nil)
@@ -111,6 +113,11 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if !DataManager.isUserLoggedIn! {
+            self.topNavigationView.isHidden = true
+            self.topNavigationHeight.constant = 0
+            
+        }
         //////
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
@@ -132,6 +139,12 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if DataManager.isUserLoggedIn! == true {
+            self.topNavigationView.isHidden = false
+            self.topNavigationHeight.constant = 44
+            
+        }
+        
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
         //camp Description
@@ -286,14 +299,23 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     
     //MARK:- Button Action
     @IBAction func profileAction(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            self.loginAlertFunc(vc: "profile")
+        }
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "nearByUser")
+            
+       }
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -301,25 +323,40 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     }
     
     @IBAction func notificationAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "fromNoti")
+            
+        }
     }
     
     @IBAction func addCampAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "addCamps")
+            
+        }
     }
     
     @IBAction func addReviewAction(_ sender: Any) {
-        if String(describing: (DataManager.userId)) == String(describing: (self.campDetailDict.value(forKey: "campAuthor"))!) {
-            CommonFunctions.showAlert(self, message: selfPost, title: appName)
-            
+        if DataManager.isUserLoggedIn! {
+            if String(describing: (DataManager.userId)) == String(describing: (self.campDetailDict.value(forKey: "campAuthor"))!) {
+                CommonFunctions.showAlert(self, message: selfPost, title: appName)
+                
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "addReviewVc") as! addReviewVc
+                vc.campId = self.campId
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "addReviewVc") as! addReviewVc
-            vc.campId = self.campId
-            self.navigationController?.pushViewController(vc, animated: true)
+            self.loginAlertFunc(vc: "campDescription")
             
         }
     }
@@ -330,21 +367,30 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     }
     
     @IBAction func viewAllReview(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewcontroller") as! ReviewViewcontroller
-      //  vc.reviewArr = self.campDetailDict.value(forKey: "review") as! NSArray
-        vc.campId = self.campId
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReviewViewcontroller") as! ReviewViewcontroller
+            vc.campId = self.campId
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "campDescription")
+            
+        }
     }
     
     @IBAction func abuseAction(_ sender: Any) {
-        if String(describing: (self.campDetailDict.value(forKey: "isAbuse"))!) == "0" {
-            self.overlayview.isHidden = false
-            self.favoriteMarkView.isHidden = true
-            self.abouseView.isHidden = false
-            
+        if DataManager.isUserLoggedIn! {
+            if String(describing: (self.campDetailDict.value(forKey: "isAbuse"))!) == "0" {
+                self.overlayview.isHidden = false
+                self.favoriteMarkView.isHidden = true
+                self.abouseView.isHidden = false
+                
+            } else {
+                CommonFunctions.showAlert(self, message: alreadyMarkAbuseAlert, title: appName)
+                
+            }
         } else {
-            CommonFunctions.showAlert(self, message: alreadyMarkAbuseAlert, title: appName)
+            self.loginAlertFunc(vc: "campDescription")
             
         }
     }
@@ -366,17 +412,22 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     }
     
     @IBAction func favoutiteAction(_ sender: UIButton) {
-        self.campId = (String(describing: (self.campDetailDict.value(forKey: "campId"))!))
-        
-        self.favMarkbottomConstraint.constant = 0
-        UIView.animate(withDuration: 1) {
-            self.favMarkbottomConstraint.constant = 150
+        if DataManager.isUserLoggedIn! {
+            self.campId = (String(describing: (self.campDetailDict.value(forKey: "campId"))!))
             
-            self.overlayview.tag = sender.tag
-            self.overlayview.isHidden = false
-            self.favoriteMarkView.isHidden = false
-            self.abouseView.isHidden = true
-            self.view.layoutIfNeeded()
+            self.favMarkbottomConstraint.constant = 0
+            UIView.animate(withDuration: 1) {
+                self.favMarkbottomConstraint.constant = 150
+                
+                self.overlayview.tag = sender.tag
+                self.overlayview.isHidden = false
+                self.favoriteMarkView.isHidden = false
+                self.abouseView.isHidden = true
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.loginAlertFunc(vc: "campDescription")
+            
         }
     }
     
@@ -481,16 +532,21 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     
     @IBAction func tapAutherProfileImg(_ sender: Any) {
         self.view.endEditing(true)
-        if String(describing: (DataManager.userId)) == String(describing: (campDetailDict.value(forKey: "campAuthor"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            let dict: NSDictionary = ["userId": String(describing: (campDetailDict.value(forKey: "campAuthor"))!), "profileImage": String(describing: (campDetailDict.value(forKey: "profileImage"))!), "name": String(describing: (campDetailDict.value(forKey: "authorName"))!)]
-            
-            vc.userInfoDict = dict
-            self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            if String(describing: (DataManager.userId)) == String(describing: (campDetailDict.value(forKey: "campAuthor"))!) {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                let dict: NSDictionary = ["userId": String(describing: (campDetailDict.value(forKey: "campAuthor"))!), "profileImage": String(describing: (campDetailDict.value(forKey: "profileImage"))!), "name": String(describing: (campDetailDict.value(forKey: "authorName"))!)]
+                
+                vc.userInfoDict = dict
+                self.navigationController?.pushViewController(vc, animated: true)
 
+            }
+        } else {
+            self.loginAlertFunc(vc: "campDescription")
+            
         }
     }
     
@@ -509,7 +565,14 @@ extension CampDescriptionVc {
             applicationDelegate.startProgressView(view: self.view)
             
         }
-        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "campDetails.php?userId=" + (DataManager.userId as! String) + "&campId=" + String(describing: (self.campId)), onSuccess: { (responseData) in
+        var userLId: String = ""
+        if let userId = (DataManager.userId as? String) {
+            userLId = userId
+            
+        }
+        let api: String = "campDetails.php?userId=\(userLId)&campId=\((self.campId))"
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: api, onSuccess: { (responseData) in
             
             applicationDelegate.dismissProgressView(view: self.view)
             self.scroolView.isHidden = false
@@ -1002,4 +1065,46 @@ extension CampDescriptionVc: WKUIDelegate, UIWebViewDelegate {
         
     }
     
+}
+
+//MARK:- login alert
+extension CampDescriptionVc {
+    func loginAlertFunc(vc: String) {
+        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
+        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            if vc == "profile" {
+                Singleton.sharedInstance.loginComeFrom = fromProfile
+                
+            } else if vc == "nearByUser" {
+                Singleton.sharedInstance.loginComeFrom = fromNearByuser
+               
+            } else if vc == "addCamps" {
+                Singleton.sharedInstance.loginComeFrom = fromAddCamps
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromNoti
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromFavCamps
+                
+            } else if vc == "viewProfile" {
+                Singleton.sharedInstance.loginComeFrom = fromViewProfile
+                
+            }  else if vc == "campDescription" {
+                Singleton.sharedInstance.loginComeFrom = campDescription
+               
+           }
+            self.navigationController?.pushViewController(controller, animated: false)
+        })
+        
+        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(yesBtn)
+        alert.addAction(noBtn)
+        present(alert, animated: true, completion: nil)
+        
+    }
 }

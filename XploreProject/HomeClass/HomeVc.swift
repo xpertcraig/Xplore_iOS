@@ -45,6 +45,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     var campIndex: Int = -1
     var campType: String = ""
     let disptchG = DispatchGroup()
+    var fromCross: Bool = false
     
     //Pappal Config Object
     var payPalConfig = PayPalConfiguration() // default
@@ -80,6 +81,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         self.recallAPIView.isHidden = true
         
         self.overlayView.isHidden = true
+        self.favoriteMarkView.isHidden = true
         favMarkbottomConstraint.constant = 150
 //        let tapper = UITapGestureRecognizer(target: self, action:#selector(endEditing))
 //        self.overlayView.addGestureRecognizer(tapper)
@@ -310,6 +312,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
         if (payment.processable) {
             let paymentViewController = PayPalPaymentViewController(payment: payment, configuration: payPalConfig, delegate: self)
+            UINavigationBar.appearance().barTintColor = appThemeColor
+            UINavigationBar.appearance().tintColor = nil
             present(paymentViewController!, animated: true, completion: nil)
         }
         else {
@@ -348,17 +352,17 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     @objc func tapSearchView() {
-        if DataManager.isUserLoggedIn! {
+       // if DataManager.isUserLoggedIn! {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchCampVC") as! SearchCampVC
             vc.searchType = "Home"
             self.navigationController?.pushViewController(vc, animated: false )
             
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromSearch
-            self.navigationController?.pushViewController(vc, animated: false)
-            
-        }
+//        } else {
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+//            Singleton.sharedInstance.loginComeFrom = fromSearch
+//            self.navigationController?.pushViewController(vc, animated: false)
+//
+//        }
     }
     
     func getLocationNameAndImage() {
@@ -446,16 +450,20 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
     }
     //MARK:- Button Actions
+    @IBAction func tapClosePaymentView(_ sender: Any) {
+        self.view.endEditing(true)
+        self.fromCross = true
+        self.hitLogoutApi()
+        
+    }
+    
+    
     @IBAction func profileAction(_ sender: Any) {
         if DataManager.isUserLoggedIn! {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
             self.navigationController?.pushViewController(vc, animated: true)
-            
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromProfile
-            self.navigationController?.pushViewController(vc, animated: false)
-            
+            self.loginAlertFunc(vc: "profile")
         }
     }
     
@@ -465,10 +473,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
             
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromNearByuser
-            self.navigationController?.pushViewController(vc, animated: false)
-           
+            self.loginAlertFunc(vc: "nearByUser")
+            
        }
     }
     
@@ -478,9 +484,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.navigationController?.pushViewController(swRevealObj, animated: true)
             
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromAddCamps
-            self.navigationController?.pushViewController(vc, animated: false)
+            self.loginAlertFunc(vc: "addCamps")
             
         }
     }
@@ -491,9 +495,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.navigationController?.pushViewController(swRevealObj, animated: true)
             
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromNoti
-            self.navigationController?.pushViewController(vc, animated: false)
+            self.loginAlertFunc(vc: "fromNoti")
             
         }
     }
@@ -644,7 +646,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     @IBAction func tapLogoutBtn(_ sender: UIButton) {
-        self.hitLogoutApi()
+        hitLogoutApi()
         
     }
 }
@@ -885,36 +887,48 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     }
     
     @objc func tapFeaturedProfilePicBtn(sender: UIButton) {
-        let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
-      
-        if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            vc.userInfoDict = indexVal
-            self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "viewProfile")
             
+        } else {
+            let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
+            
+            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                self.loginAlertFunc(vc: "viewProfile")
+              
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                vc.userInfoDict = indexVal
+                self.navigationController?.pushViewController(vc, animated: true)
+              
+            }
         }
     }
     
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
-        let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
-        
-        if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            vc.userInfoDict = indexVal
-            self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "viewProfile")
             
+        } else {
+            let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
+            
+            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                vc.userInfoDict = indexVal
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
         }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if DataManager.isUserLoggedIn! {
+   //     if DataManager.isUserLoggedIn! {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
             if collectionView.tag == 1 {
                 vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
@@ -923,17 +937,17 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             }
             self.navigationController?.pushViewController(vc, animated: true)
             
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromCampDes
-            if collectionView.tag == 1 {
-                Singleton.sharedInstance.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-            } else {
-                Singleton.sharedInstance.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-            }
-            self.navigationController?.pushViewController(vc, animated: false)
-            
-        }
+//        } else {
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+//            Singleton.sharedInstance.loginComeFrom = fromCampDes
+//            if collectionView.tag == 1 {
+//                Singleton.sharedInstance.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+//            } else {
+//                Singleton.sharedInstance.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+//            }
+//            self.navigationController?.pushViewController(vc, animated: false)
+//
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -964,10 +978,8 @@ extension HomeVc : UITextFieldDelegate {
             openfavView(index: sender.tag)
             
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromFavCamps
+            self.loginAlertFunc(vc: "markFav")
             Singleton.sharedInstance.favIndex = sender.tag
-            self.navigationController?.pushViewController(vc, animated: false)
             
         }
     }
@@ -1279,6 +1291,14 @@ extension HomeVc {
                     var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
                     vcArray.removeAll()
                     vcArray.append(loginVcObj)
+                    
+                    if self.fromCross == true {
+                        self.overlayView.isHidden = true
+                        self.fromCross = false
+                        return
+                        
+                    }
+                    
                     (applicationDelegate.window?.rootViewController as! UINavigationController).setViewControllers(vcArray, animated: false)
                     
                 } else {
@@ -1381,5 +1401,44 @@ extension HomeVc {
                 
             }
         }
+    }
+}
+
+//MARK:- login alert
+extension HomeVc {
+    func loginAlertFunc(vc: String) {
+        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
+        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            if vc == "profile" {
+                Singleton.sharedInstance.loginComeFrom = fromProfile
+                
+            } else if vc == "nearByUser" {
+                Singleton.sharedInstance.loginComeFrom = fromNearByuser
+               
+            } else if vc == "addCamps" {
+                Singleton.sharedInstance.loginComeFrom = fromAddCamps
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromNoti
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromFavCamps
+                
+            } else if vc == "viewProfile" {
+                Singleton.sharedInstance.loginComeFrom = fromViewProfile
+                
+            }
+            self.navigationController?.pushViewController(controller, animated: false)
+        })
+        
+        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(yesBtn)
+        alert.addAction(noBtn)
+        present(alert, animated: true, completion: nil)
+        
     }
 }

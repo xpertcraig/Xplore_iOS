@@ -57,11 +57,6 @@ class savedCompositeVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-       // self.setInitialDesign()
-        
-        //api
-      //  self.callAPI()
-        
         backBtnPressedForPublished = false
         
         //refresh controll
@@ -79,11 +74,6 @@ class savedCompositeVc: UIViewController {
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
-       // if self.checkVar == false {
-            //self.setInitialDesign()
-            //api
-          //  self.callAPI()
-       // }
         if DataManager.isUserLoggedIn! {
             if backBtnPressedForPublished == false {
                 self.callAPI()
@@ -726,8 +716,11 @@ extension savedCompositeVc {
                     self.collArr = self.favouriteCampArr
                     
                     Singleton.sharedInstance.favouritesCampArr = self.collArr
-                    self.setDelegateAndDataSource()
                     
+                    if self.firstTime == false {
+                        self.setDelegateAndDataSource()
+                        
+                    }
                 } else {
                     self.setInitialDesign()
                     

@@ -263,7 +263,13 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             self.categoryCollectionView.isHidden = true
             
         }
-        let apo1: String = "new-search.php?userId=" + (DataManager.userId as! String)
+        var userLId: String = ""
+        if let userid = DataManager.userId as? String {
+            userLId = userid
+            
+        }
+        
+        let apo1: String = "new-search.php?userId=\(userLId)"
         
         var api2: String = ""
         if String(describing: (selectedLatti)) == "" {
