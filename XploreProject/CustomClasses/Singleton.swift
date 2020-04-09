@@ -8,10 +8,6 @@
 import UIKit
 import Foundation
 
-import Firebase
-import FirebaseDatabase
-import FirebaseStorage
-
 final class Singleton {
     private init() {}
     static let sharedInstance: Singleton = Singleton()
@@ -30,7 +26,8 @@ final class Singleton {
     var loginComeFrom: String = ""
     var favIndex: Int = -1
     var campId: String = ""
-    
+    var notiType: String = ""
+    var messageSentUserId: String = ""
 }
 
 extension UIViewController {
@@ -48,22 +45,7 @@ extension UIViewController {
             tabBarItem2.isEnabled = true
             tabBarItem3.isEnabled = true
         }
-        
-        let ref = Database.database().reference().child("UsersProfile").child(DataManager.userId as! String)
-        ref.observeSingleEvent(of: .value) { (snapShot) in
-            if snapShot.hasChild(DataManager.userId as! String) {
-                print("true rooms exist")
                 
-            } else {
-                print("false room doesn't exist")
-                
-                let dictMessage: [String: Any] = ["userId": String(describing: (DataManager.userId)), "username": String(describing: (DataManager.name)) , "userProfileImage": String(describing: (DataManager.profileImage))]
-                                
-                ref.updateChildValues(dictMessage)
-                
-            }
-        }
-        
         let sing = Singleton.sharedInstance
         if sing.loginComeFrom == campDescription || sing.loginComeFrom == featuredCamp {
             self.navigationController?.popViewController(animated: false)

@@ -662,7 +662,7 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
             
         }
         
-        cell.imagLocNameLbl.text = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as? String)
+        cell.imagLocNameLbl.text = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as? String)
         
         cell.ttlRatingLbl.text! = String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campRating"))!) //String(describing: (reducedNumberSum))
         cell.reviewFeaturedStarView.rating = Double(String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campRating"))!))!
@@ -715,14 +715,16 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
     @objc func tapSearchProfilePicBtn(sender: UIButton) {
         let indexVal: NSDictionary = (self.searchDataArr.object(at: sender.tag) as! NSDictionary)
         
-        if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            vc.userInfoDict = indexVal
-            self.navigationController?.pushViewController(vc, animated: true)
-            
+        if let campAuth = indexVal.value(forKey: "campAuthor") as? String {
+            if String(describing: (DataManager.userId)) == campAuth {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                vc.userInfoDict = indexVal
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
         }
     }
     

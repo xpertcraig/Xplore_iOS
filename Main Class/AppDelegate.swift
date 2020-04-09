@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     
     var window: UIWindow?    
-    var notiType: String = ""
+    
     let gcmMessageIDKey = "gcm.message_id"
     
     //location
@@ -294,13 +294,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func notificationRec() {
         if UIApplication.shared.applicationState == UIApplicationState.active {
-            if (self.notiType == "") {
+          //  if (self.notiType == "") {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 self.window?.makeKeyAndVisible()
                 
-            } else  if (self.notiType == "") {
-                
-            }
+//            } else  if (self.notiType == "chatMessage") {
+//
+//            }
             
             /* active stage is working */
         } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
@@ -375,7 +375,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         myCurrentLongitude = (userLocation.coordinate.longitude).roundToDecimal(4)
         myCurrentLatitude = (userLocation.coordinate.latitude).roundToDecimal(4)
+        self.getLocationNameAndImage()
         
+    }
+    
+    func getLocationNameAndImage() {
+            let geocoder = CLGeocoder()
+            if userLocation != nil {
+                geocoder.reverseGeocodeLocation(userLocation!) { (placemarksArray, error) in
+                    if placemarksArray != nil {
+                        if (placemarksArray?.count)! > 0 {
+                            let placemark = placemarksArray?.first
+                      
+                            if placemark?.addressDictionary != nil {
+                                if (placemark?.addressDictionary!["Country"]) != nil {
+                                    countryOnMyCurrentLatLong = (placemark?.addressDictionary!["Country"]) as? String ?? ""
+                                   
+                                }
+                            }
+                        }
+                    }
+                }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -473,6 +494,12 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
       //  notificationCount += 1
         
      //   self.notiType = String(describing: (notificationRecdict.value(forKey: "gcm.notification.type"))!)
+        if let notyType = notificationRecdict.value(forKey: "gcm.notification.type") as? String {
+            Singleton.sharedInstance.notiType = notyType
+        }
+        if let senderId = notificationRecdict.value(forKey: "user") as? String {
+            Singleton.sharedInstance.messageSentUserId = senderId
+        }
         self.notificationRec()
         completionHandler([.alert])
     }
@@ -492,7 +519,12 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         notificationCount += 1
         
-    //    self.notiType = String(describing: (notificationRecdict.value(forKey: "gcm.notification.type"))!)
+        if let notyType = notificationRecdict.value(forKey: "gcm.notification.type") as? String {
+           Singleton.sharedInstance.notiType = notyType
+        }
+        if let senderId = notificationRecdict.value(forKey: "user") as? String {
+           Singleton.sharedInstance.messageSentUserId = senderId
+        }
         self.notificationRec()
         completionHandler()
     }
@@ -505,6 +537,11 @@ extension AppDelegate : MessagingDelegate {
         userDefault.set(fcmToken, forKey: "DeviceToken")
         
     }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        userDefault.set(fcmToken, forKey: "DeviceToken")
+    }
+    
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
         //  print("Received data message: \(remoteMessage.appData)")
         

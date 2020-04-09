@@ -31,13 +31,14 @@ class ChatListingVC: UIViewController {
         super.viewDidLoad()
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
+        self.noChatFound.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.usersListDict = []
         if Singleton.sharedInstance.chatListArr.count > 0 {
+            self.noChatFound.isHidden = true
             self.reloadTbl()
             
         }
@@ -91,6 +92,7 @@ class ChatListingVC: UIViewController {
         let ref = Database.database().reference()
         ref.child("Users").observe(.value) { (snapShot) in
             if snapShot.value as? Dictionary<String, AnyObject> == nil {
+                self.noChatFound.isHidden = false
                 applicationDelegate.dismissProgressView(view: self.view)
             }
         }
@@ -119,28 +121,19 @@ class ChatListingVC: UIViewController {
                         }
                         
                         Singleton.sharedInstance.chatListArr = self.usersListDict
+                        self.chatListingTblView.delegate = self
+                        self.chatListingTblView.dataSource = self
                         self.chatListingTblView.reloadData()
                     }
                     
+                } else {
+                    self.noChatFound.isHidden = false
                 }
+            } else {
+                self.noChatFound.isHidden = false
             }
             
         })
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            applicationDelegate.dismissProgressView(view: self.view)
-//
-//            print(tempArr)
-//
-//            let a = NSArray.init(array: tempArr)
-//            let filArray = a.ascendingArrayWithKeyValue(key: "last_msgTime")
-//
-//            print(filArray)
-//
-//            self.usersListDict = filArray as! [[String : Any]]
-//            Singleton.sharedInstance.chatListArr = self.usersListDict
-//            self.chatListingTblView.reloadData()
-//        }
     }
     
     //MARK: - Status Color
@@ -182,7 +175,7 @@ class ChatListingVC: UIViewController {
 extension ChatListingVC :UITableViewDataSource ,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.usersListDict.count == 0 {
-            self.noChatFound.isHidden = false
+            //self.noChatFound.isHidden = false
             self.chatListingTblView.isHidden = true
             
         } else {

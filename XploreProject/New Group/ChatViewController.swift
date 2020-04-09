@@ -114,33 +114,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             self.userIMgView.sd_setImage(with: URL(string: String(describing: (userInfoDict.value(forKey: "profileImage") as! String))), placeholderImage: UIImage(named: ""))
             
+        } else if self.comeFrom == "Notification" {
+            self.getUserInfo(userId: String(describing: (userInfoDict.value(forKey: "othersUserId"))!))
         } else {
             if String(describing: (DataManager.userId)) == (userInfoDict.value(forKey: "userId") as? String) {
                 self.getUserInfo(userId: String(describing: (userInfoDict.value(forKey: "othersUserId"))!))
-//                if let uName = (userInfoDict.value(forKey: "otherUsername") as? String) {
-//                    self.userNameLbl.text! = String(describing: uName)
-//
-//                    if let profileImg = (userInfoDict.value(forKey: "otherUserProfileImage") as? String) {
-//
-//                        self.userIMgView.sd_setShowActivityIndicatorView(true)
-//                        self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-//                        self.userIMgView.sd_setImage(with: URL(string: String(describing: profileImg)), placeholderImage: UIImage(named: ""))
-//
-//                    }
-//                }
+
             } else {
                 self.getUserInfo(userId: String(describing: (userInfoDict.value(forKey: "userId"))!))
-//                if let uName = (userInfoDict.value(forKey: "username") as? String) {
-//                    self.userNameLbl.text! = String(describing: uName)
-//
-//                    if let profileImg = (userInfoDict.value(forKey: "userProfileImage") as? String) {
-//
-//                        self.userIMgView.sd_setShowActivityIndicatorView(true)
-//                        self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-//                        self.userIMgView.sd_setImage(with: URL(string: String(describing: profileImg)), placeholderImage: UIImage(named: ""))
-//
-//                    }
-//                }
+
             }
         }
         
@@ -300,9 +282,19 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(self.chatTextView.text!)
         Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue(ServerValue.timestamp())
         
-        chatTextView.text = ""
-        chatTextViewHeight.constant = 33.0
-        
+        let sender = PushNotificationSender()
+        let refU = Database.database().reference().child("UsersProfile")
+        refU.child(receiverId).observe(.value, with: { (shot) in
+            
+            if let postDict = shot.value as? Dictionary<String, AnyObject> {
+                print(postDict)
+                if let deviceToken = postDict["deviceToken"] as? String {
+                    sender.sendPushNotification(to: "\(String(describing: postDict["deviceToken"]!))", title: "\(String(describing: (DataManager.name))) sent you a message", body: self.chatTextView.text!, userId: DataManager.userId as! String)
+                }
+                self.chatTextView.text = ""
+                self.chatTextViewHeight.constant = 33.0
+            }
+        })
     }
     
     //MARK:- Fetch data from the firebase

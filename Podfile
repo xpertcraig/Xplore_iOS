@@ -31,6 +31,7 @@ pod 'Firebase/Storage'
 pod 'Firebase/Firestore'
 
 pod 'SimpleImageViewer'
+pod 'SwiftKeychainWrapper'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|

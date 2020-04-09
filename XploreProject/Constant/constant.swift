@@ -176,6 +176,7 @@ let userDefault = UserDefaults.standard
 var userLocation: CLLocation!
 var myCurrentLongitude: Double = 0.0
 var myCurrentLatitude: Double = 0.0
+var countryOnMyCurrentLatLong: String = ""
 
 // MARK: showAlert Function
 struct login
@@ -226,6 +227,11 @@ let facbookLogin = "FacbookLogin"
 let gmailLogin = "GmailLogin"
 let appleLogin = "AppleLogin"
 
+//apple String
+let appleUserId: String = "apple user id"
+let appleuserName: String = "apple user name"
+let appleUserEmail: String = "apple user email"
+
 //messages
 let addChangesAlert = "Please add changes."
 let NoImageAlert = "Please select Image to add."
@@ -250,6 +256,7 @@ let sureClearNoti = "Are you sure you want to clear the notifications?"
 let delete: String = "Delete"
 
 let updatedAlert = "Info updated successfully."
+let success: String = "Success"
 
 //store image locally
 var userChosenImage : UIImage?
@@ -264,6 +271,8 @@ var backBtnPressedForPublished: Bool = false
 let noInternet = "You seems to be offline, please check your internet connection."
 let serverError = "Somthing went wrong, please try again in sometimes."
 let DeleteAlert = "Are you sure you want to delete?"
+let errorInAppleLigin = "Error in getting AppleId."
+let NoEmailinAppleId = "Unable to login, your AppleId does not have email"
 
 let deviceType = "iOS"
 let facebookEmailNotExist = "Email-Id not found."
