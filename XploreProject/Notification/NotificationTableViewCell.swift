@@ -24,21 +24,13 @@ class NotificationTableViewCell: UITableViewCell {
     
     func cellConfig(indexV: NSDictionary) {
          if String(describing: (DataManager.userId)) == String(describing: (indexV.value(forKey: "userId"))!) {
-            self.getUserInfo(userId: String(describing: (indexV.value(forKey: "othersUserId"))!))
-            
+            self.getUserInfo(userId: String(describing: (indexV.value(forKey: "othersUserId"))!), indexV: indexV)
         } else {
-            self.getUserInfo(userId: String(describing: (indexV.value(forKey: "userId"))!))
-        }
-        
-        self.notificationTxtLbl.text! = String(describing: (indexV.value(forKey: "last_msg"))!)
-        
-        if (String(describing: (indexV.value(forKey: "last_msgTime"))!)) != "" {
-            self.notificationTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: (indexV.value(forKey: "last_msgTime"))!))!))
-            
+            self.getUserInfo(userId: String(describing: (indexV.value(forKey: "userId"))!), indexV: indexV)
         }
     }
     
-    func getUserInfo(userId: String) {
+    func getUserInfo(userId: String, indexV: NSDictionary) {
         let ref = Database.database().reference().child("UsersProfile")
         ref.child(userId).observe(.value, with: { (shot) in
             
@@ -50,6 +42,11 @@ class NotificationTableViewCell: UITableViewCell {
                 self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 self.userImgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
                 
+               self.notificationTxtLbl.text! = String(describing: (indexV.value(forKey: "last_msg"))!)
+               if (String(describing: (indexV.value(forKey: "last_msgTime"))!)) != "" {
+                   self.notificationTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: (indexV.value(forKey: "last_msgTime"))!))!))
+                   
+               }
             }
         })
     }

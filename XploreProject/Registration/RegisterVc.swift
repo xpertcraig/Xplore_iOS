@@ -11,6 +11,7 @@ import FacebookLogin
 import FBSDKLoginKit
 import GoogleSignIn
 import AuthenticationServices
+import SwiftKeychainWrapper
 
 class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     
@@ -27,6 +28,7 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     
     //MARK:- Variable Declarations
     var fbbDataDict: NSDictionary = [:]
+    private let commonViewModel = CommonUseViewModel()
     
     //Pappal Config Object
     var payPalConfig = PayPalConfiguration() // default
@@ -262,20 +264,8 @@ extension RegisterVc {
             //    print(dict)
                 
                 if (String(describing: (dict["success"])!)) == "1" {
-                    let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
+                   // let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
                     self.verifyEmailAndLogin()
-                    
-//                    DataManager.userId = retValues["userId"] as AnyObject
-//                    DataManager.emailAddress = retValues["email"] as AnyObject
-//                    DataManager.name = retValues["name"] as AnyObject
-//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-//
-//                   // objUser.parseUserData(recUserDict: retValues)
-//                    DataManager.isUserLoggedIn = true
-//
-//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//                    self.navigationController?.pushViewController(vc, animated: true)
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -292,10 +282,6 @@ extension RegisterVc {
                 
             }
         }
-        
-        //userDefault.set(true,forKey: login.USER_DEFAULT_LOGIN_CHECK_Key)
-//        let Obj = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//        self.navigationController?.pushViewController(Obj, animated: true)
     }
     
     func verifyEmailAndLogin() {
@@ -327,25 +313,13 @@ extension RegisterVc {
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
-                    
-                //    self.verifyEmailAndLogin()
-                //    print(retValues)
-                    
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
                     DataManager.name = retValues["name"] as AnyObject
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
-
                     self.checkSubscription(recValue: retValues)
-                    
-//                    self.moveBackToApp()
-                    //objUser.parseUserData(recUserDict: retValues)
-//                    DataManager.isUserLoggedIn = true
-                    
-//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//                    self.navigationController?.pushViewController(vc, animated: true)
-                    
+                    self.commonViewModel.updateFirebaseProfile()
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
@@ -381,25 +355,13 @@ extension RegisterVc {
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
-                  //  self.verifyEmailAndLogin()
-               //     print(retValues)
-                    
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
                     DataManager.name = retValues["name"] as AnyObject
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
-                    
                     self.checkSubscription(recValue: retValues)
-                    
-//                    self.moveBackToApp()
-                    
-                    //objUser.parseUserData(recUserDict: retValues)
-//                    DataManager.isUserLoggedIn = true
-//
-//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//                    self.navigationController?.pushViewController(vc, animated: true)
-                    
+                    self.commonViewModel.updateFirebaseProfile()
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
@@ -407,77 +369,6 @@ extension RegisterVc {
             }
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
-            if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
-                
-            } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
-            }
-        }
-    }
-    
-    //Apple login
-    func appleLoginApiHit(appleDict: [String: Any]){
-        DispatchQueue.main.async {
-            applicationDelegate.startProgressView(view: self.view)
-            
-        }
-        
-        if userDefault.value(forKey: "DeviceToken") as? String == nil {
-            userDefault.set(0, forKey: "DeviceToken")
-            
-        }
-        var emailR: String = ""
-         if appleDict["email"] as! String == "" {
-            emailR = "\(String(describing: (appleDict["id"])!))@xploreCamps.com"
-            
-        }
-        
-        let param: [String:Any] = ["name": appleDict["fullName"] ?? "", "email": emailR ,"password": "", "cpwd": "", "deviceToken": userDefault.value(forKey: "DeviceToken")!, "deviceType": deviceType, "deviceId": UIDevice.current.identifierForVendor!.uuidString, "facebookToken": "", "googleToken": "", "appleToken": String(describing: (appleDict["id"])!) ,"longitude": myCurrentLongitude, "latitude": myCurrentLatitude]
-        
-      //  print(param)
-        
-        AlamoFireWrapper.sharedInstance.getPost(action: "register.php", param: param , onSuccess: { (responseData) in
-            DispatchQueue.main.async {
-                applicationDelegate.dismissProgressView(view: self.view)
-                
-            }
-            
-            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
-                if (String(describing: (dict["success"])!)) == "1" {
-                    let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
-                  //  self.verifyEmailAndLogin()
-                    
-                 //   print(retValues)
-                    
-//                    DataManager.userId = retValues["userId"] as AnyObject
-//                    DataManager.emailAddress = retValues["email"] as AnyObject
-//                    DataManager.name = retValues["name"] as AnyObject
-//                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-//                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-//
-//                    self.moveBackToApp()
-                    
-                    DataManager.userId = retValues["userId"] as AnyObject
-                    DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
-                    DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
-                    DataManager.isPaid = retValues["isPaid"] as AnyObject
-                    
-                    //objUser.parseUserData(recUserDict: retValues)
-                    self.checkSubscription(recValue: retValues)
-                    
-                } else {
-                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-                    
-                }
-            }
-        }) { (error) in
-            DispatchQueue.main.async {
-                applicationDelegate.dismissProgressView(view: self.view)
-                
-            }
             if connectivity.isConnectedToInternet() {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
@@ -532,30 +423,45 @@ extension RegisterVc :UITextFieldDelegate {
 extension RegisterVc: ASAuthorizationControllerDelegate {
     func setUpSignInAppleButton() {
         UserDefaults.standard.set(appleLogin, forKey: XPLoginStatus)
-        let authorizationButton = ASAuthorizationAppleIDButton()
+        let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .white)
         authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
         
-        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 42)
-        authorizationButton.cornerRadius = 21
+        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 30)
+        authorizationButton.cornerRadius = 15
+        
           //Add button on some view or stack
         self.applePayBtn.addSubview(authorizationButton)
     }
 
     @objc func handleAppleIdRequest() {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
+        let appleIDProvider = ASAuthorizationAppleIDProvider().createRequest()
+    //    let passwordProvider = ASAuthorizationPasswordProvider().createRequest()
+        let request = appleIDProvider
         request.requestedScopes = [.fullName, .email]
+
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.performRequests()
     }
-
+    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential {
+            
             let userIdentifier = appleIDCredential.user
             let fullName = appleIDCredential.fullName
             let email = appleIDCredential.email
-
+            if email != "" && email != nil {
+                var dict: [String: String] = [:]
+                dict["id"] = userIdentifier
+                dict["fullName"] = "\(fullName!.givenName!) \(fullName!.familyName!)"
+                dict["email"] = email
+                self.commonViewModel.saveToKeychaine(dict: dict)
+            } else if let name = fullName?.givenName {
+                if name == "" && email! == "" {
+                    CommonFunctions.showAlert(self, message: NoEmailinAppleId, title: appName)
+                }
+            }
+            
             print("User id is \(userIdentifier) Full Name is \(fullName) Email id is \(email)")
             
             let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -563,12 +469,21 @@ extension RegisterVc: ASAuthorizationControllerDelegate {
                  switch credentialState {
                     case .authorized:
                         // The Apple ID credential is valid.
-                        
-                        var dict: [String: Any] = [:]
-                        dict["id"] = userIdentifier
-                        dict["fullName"] = fullName
-                        dict["email"] = email
-                        self.appleLoginApiHit(appleDict: dict)
+                        DispatchQueue.main.async {
+                            applicationDelegate.startProgressView(view: self.view)
+                        }
+                        self.commonViewModel.appleLoginApiHit { (message, retValues) in
+                            DispatchQueue.main.async {
+                                applicationDelegate.dismissProgressView(view: self.view)
+                            }
+                            if message == success {
+                                applicationDelegate.notificationCountApi()
+                                self.commonViewModel.updateFirebaseProfile()
+                                self.checkSubscription(recValue: retValues)
+                            } else {
+                                CommonFunctions.showAlert(self, message: message, title: appName)
+                            }
+                        }
                         
                         print("authorization")
                         break
@@ -582,7 +497,6 @@ extension RegisterVc: ASAuthorizationControllerDelegate {
                         break
                  }
             }
-
         }
     }
 
@@ -605,10 +519,10 @@ extension RegisterVc: PayPalPaymentDelegate {
                     
                   //  print(dict)
                     if String(describing: (dict["result"])!) == "1" {
+                        objUser.parseUserData(recUserDict: recValue)
                         self.moveBackToApp()
                         
                     } else {
-                        
                         self.subscriptionCargesAPIHit()
                         objUser.parseUserData(recUserDict: recValue)
                         

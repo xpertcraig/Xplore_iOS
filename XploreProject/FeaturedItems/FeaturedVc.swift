@@ -98,9 +98,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         
         self.overlayview.isHidden = true
         favMarkbottomConstraint.constant = 150
-//        let tapper = UITapGestureRecognizer(target: self, action:#selector(endEditing))
-//        self.overlayview.addGestureRecognizer(tapper)
-        
         //call api
         self.callAPI()
         
@@ -176,10 +173,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 self.filterApiHit(pageNum: pageNo)
                 
             } else {
-//                if comeFrom == featuredBased || comeFrom == myProfile || comeFrom == allCamps {
-//                    self.featuredAPIHit(pageNum: pageNo)
-//
-//                }
                 if comeFrom == reviewBased {
                     self.revieweBasedAPIHit(pageNum: pageNo)
                     
@@ -224,22 +217,12 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     
                 } else {
                     self.limit = self.limit + 5
-                   // print("pagenum====\(pageNo)")
-                    
-                  //  self.spineerRotate()
                     
                     self.startAnimateAcitivity()
                     if self.searchType == filter {
                         self.filterApiHit(pageNum: self.pageNo)
 
                     } else {
-//                        if comeFrom == featuredBased {
-//                            self.featuredAPIHit(pageNum: self.pageNo)
-//
-//                        } else if comeFrom == myProfile {
-//                            self.featuredAPIHit(pageNum: self.pageNo)
-//
-//                        }
                         if self.comeFrom == reviewBased {
                             self.revieweBasedAPIHit(pageNum: self.pageNo)
 
@@ -253,50 +236,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         }
     }
     
-    
-//    func spineerRotate() {
-//
-//        let fadeView:UIView = UIView()
-//        fadeView.frame = self.view.frame
-//        fadeView.backgroundColor = UIColor.white
-//        fadeView.alpha = 0.4
-//
-//        self.view.addSubview(fadeView)
-//
-//        self.view.addSubview(activityView)
-//        activityView.hidesWhenStopped = true
-//        activityView.center = self.view.center
-//        activityView.startAnimating()
-//
-//        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
-//            if self.searchType == filter {
-//                self.filterApiHit(pageNum: self.pageNo)
-//
-//            } else {
-//                if self.comeFrom == featuredBased {
-//                    self.featuredAPIHit(pageNum: self.pageNo)
-//
-//                } else if self.comeFrom == myProfile {
-//                    self.featuredAPIHit(pageNum: self.pageNo)
-//
-//                } else {
-//                    self.revieweBasedAPIHit(pageNum: self.pageNo)
-//
-//                }
-//            }
-//
-//        }
-//
-//        DispatchQueue.main.async {
-//            UIView.animate(withDuration: 9, delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-//                self.categoryCollectionView?.reloadData()
-//                self.categoryCollectionView?.alpha = 1
-//                fadeView.removeFromSuperview()
-//                self.activityView.stopAnimating()
-//            }, completion: nil)
-//        }
-//    }
-    
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         //call Api's
         self.callAPI()
@@ -305,10 +244,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     
     //MARK:- Api's Hit
     func filterApiHit(pageNum: Int) {
-        //if self.featuredReviewArr.count == 0 {
-          //  applicationDelegate.startProgressView(view: self.view)
-            
-        //}
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "filter.php/?userId=\(DataManager.userId as! String)"+"&latitude=\(String(describing: (self.filterDataDict.value(forKey: "lattitude"))!))"+"&longitude=\(String(describing: (self.filterDataDict.value(forKey: "longitude"))!))"+"&distance=\(String(describing: (self.filterDataDict.value(forKey: "selectedDistance"))!))"+"&type=\(String(describing: (self.filterDataDict.value(forKey: "type"))!))"+"&offset=\(pageNum)", onSuccess: { (responseData) in
             
@@ -379,7 +314,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         }
         
      //   http://clientstagingdev.com/explorecampsite/api/userPublished.php?userId=43&offset=0&userCamps=33
-        
+        //&country\(countryOnMyCurrentLatLong)
         if comeFrom == myProfile {
             api1 = "userPublished.php?userId=" + userId //+ userId
             
@@ -387,11 +322,11 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         } else if comeFrom == featuredBased {
             api1 = "featuredCampsites.php?userId=" + userId
             
-            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)"
+            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)&country\(countryOnMyCurrentLatLong)"
         } else {
             api1 = "nearbynew.php?userId=" + userId
             
-            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)"
+            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)&country\(countryOnMyCurrentLatLong)"
             
         }
         
@@ -424,7 +359,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
          
         }
         let apo1: String = "reviewCampsites.php?userId=" + userId
-        let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)"
+        let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)&country\(countryOnMyCurrentLatLong)"
         
         let api:String = apo1 + api2
         
@@ -533,15 +468,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     let pagN = self.campIndex/5
                     self.pageNo = pagN
                     self.limit = (pagN+1)*5
-                    
-//                    if self.comeFrom == featuredBased {
-//                        self.featuredAPIHit(pageNum: self.pageNo)
-//
-//                    } else if self.comeFrom == myProfile {
-//                        self.featuredAPIHit(pageNum: self.pageNo)
-//
-//                    }
-                    
                     if self.comeFrom == reviewBased {
                         self.revieweBasedAPIHit(pageNum: self.pageNo)
                         
@@ -700,14 +626,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         self.recallAPIView.isHidden = true
         if connectivity.isConnectedToInternet() {
             self.resetPaginationVar()
-//            if comeFrom == featuredBased {
-//                self.featuredAPIHit(pageNum: pageNo)
-//
-//            } else if comeFrom == myProfile {
-//                self.featuredAPIHit(pageNum: pageNo)
-//
-//            }
-            
             if self.comeFrom == reviewBased {
                 self.revieweBasedAPIHit(pageNum: pageNo)
                 
@@ -810,7 +728,7 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
             cell.noImgLbl.isHidden = false
         }
         
-        cell.imagLocNameLbl.text = ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as?
+        cell.imagLocNameLbl.text = ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as?
             String)
         
         cell.ttlRatingLbl.text! = String(describing: ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campRating"))!) //String(describing: (reducedNumberSum))
@@ -838,9 +756,6 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
             cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
             
         }
-        
-//        cell.showImgBtn.tag = indexPath.row
-//        cell.showImgBtn.addTarget(self, action: #selector(tapTripsShowImgView(sender:)), for: .touchUpInside)
         
         if comeFrom == myProfile {
             cell.userProfileAndNameView.isHidden = false

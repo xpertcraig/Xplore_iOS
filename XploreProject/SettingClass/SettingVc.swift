@@ -7,12 +7,14 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     @IBOutlet weak var settingTableView: UITableView!
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var tblViewHeight: NSLayoutConstraint!
     
     //MARK:- Variable Declarations
     var tableViewArray = NSArray()
     var hasLoaded = Bool()
     var shownIndexes : [IndexPath] = []
     var socialLogin: Bool = false
+    private let commonDataViewModel = CommonUseViewModel()
     
     //MARK:- Inbuild functions
     override func viewDidLoad() {
@@ -28,6 +30,11 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
             
         }
     }
+    
+//    override func viewWillLayoutSubviews() {
+//        super.updateViewConstraints()
+//        self.tblViewHeight.constant = self.settingTableView.contentSize.height
+//    }
     
     //MARK:- Function definitions
     func startFunc() {
@@ -45,6 +52,7 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
             self.hasLoaded = true
+            self.tblViewHeight.constant = CGFloat(52*self.tableViewArray.count)
             self.settingTableView.reloadWithAnimation()
 
         }
@@ -279,7 +287,7 @@ extension SettingVc {
                     var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
                     vcArray.removeAll()
                     vcArray.append(homeVc)
-                    self.removeDataonLogout()
+                    self.commonDataViewModel.removeDataonLogout()
                     (applicationDelegate.window?.rootViewController as! UINavigationController).setViewControllers(vcArray, animated: false)
                     
                 } else {
@@ -297,25 +305,6 @@ extension SettingVc {
                 
             }
         }
-    }
-    
-    func removeDataonLogout() {
-        let deviceToken = userDefault.value(forKey: "DeviceToken")!
-        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
-        userDefault.set(deviceToken, forKey: "DeviceToken")
-        
-        let sing = Singleton.sharedInstance
-        sing.homeFeaturesCampsArr = []
-        sing.homeReviewBasedCampsArr = []
-        sing.myCurrentLocDict = [:]
-        sing.favouritesCampArr = []
-        sing.myCampsArr = []
-        sing.myProfileDict = [:]
-        sing.notificationListingArr = []
-        sing.chatListArr = []
-        sing.loginComeFrom = ""
-        
-        DataManager.userId = "0" as AnyObject
     }
 }
 

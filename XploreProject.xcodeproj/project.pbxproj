@@ -58,6 +58,8 @@
 		6347FFB62E03D414F33ADC92 /* Pods_XploreProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16618643E92023492CB801C3 /* Pods_XploreProject.framework */; };
 		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
 		E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931F9A922882E8900DA6054 /* myCustomSlider.swift */; };
+		E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93733802438431E00D69C4B /* CommonUseViewModel.swift */; };
+		E95EFED3243CA44C004A6B91 /* PushNotificationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */; };
 		E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */; };
 		E9BA7E762358BAA600E84A89 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BA7E752358BAA600E84A89 /* Singleton.swift */; };
 		E9BCA98C22E47E6E0079B8FD /* TOCropViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E9BCA95B22E47E6E0079B8FD /* TOCropViewControllerLocalizable.strings */; };
@@ -187,6 +189,8 @@
 		D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.debug.xcconfig"; sourceTree = "<group>"; };
 		E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xplore.xcdatamodel; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
+		E93733802438431E00D69C4B /* CommonUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseViewModel.swift; sourceTree = "<group>"; };
+		E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationSender.swift; sourceTree = "<group>"; };
 		E985F1F92388459F00A3F26C /* XploreProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XploreProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E9BA7E752358BAA600E84A89 /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
@@ -528,6 +532,7 @@
 		18BB687E205F9BA5002C2151 /* XploreProject */ = {
 			isa = PBXGroup;
 			children = (
+				E95EFED1243CA3F9004A6B91 /* PushNotification */,
 				FF6606BD2181CC6300D5F570 /* Chat */,
 				FF130E93217F4B430053A567 /* Payment */,
 				FFA08BD4217DDFB000E7967B /* Search CampSite */,
@@ -643,8 +648,17 @@
 		E93FF7E82406DFE30027535E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				E93733802438431E00D69C4B /* CommonUseViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E95EFED1243CA3F9004A6B91 /* PushNotification */ = {
+			isa = PBXGroup;
+			children = (
+				E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */,
+			);
+			path = PushNotification;
 			sourceTree = "<group>";
 		};
 		E9BCA95722E47E6E0079B8FD /* TOCropViewController */ = {
@@ -1069,6 +1083,7 @@
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SimpleImageViewer/SimpleImageViewer.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
@@ -1100,6 +1115,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleImageViewer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
@@ -1124,6 +1140,7 @@
 				E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */,
 				FF57DBE2217703B4005D9CB8 /* NotificationTableViewCell.swift in Sources */,
 				E9BCA99422E47E6E0079B8FD /* TOCropOverlayView.m in Sources */,
+				E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */,
 				1867ABA920663E49009DE2C8 /* addReviewVc.swift in Sources */,
 				FF8C5D932171AFA200CA7A58 /* CountryStateCityTableViewCell.swift in Sources */,
 				FF5F121A217064F9007EE157 /* addPhotosCollectionViewCell.swift in Sources */,
@@ -1142,6 +1159,7 @@
 				FF863491215C9A4B00E73CF5 /* ContactUsVC.swift in Sources */,
 				1867ABAD20665E9A009DE2C8 /* ReviewViewcontroller.swift in Sources */,
 				FF5972A5216C68B100E34CCB /* SkyLabelTextField.swift in Sources */,
+				E95EFED3243CA44C004A6B91 /* PushNotificationSender.swift in Sources */,
 				FF57DBE521770EDB005D9CB8 /* GuidelinesVC.swift in Sources */,
 				FF9B4C53216DD311003EF188 /* CampDetailsTableViewCell.swift in Sources */,
 				1867ABB1206660C6009DE2C8 /* UILabelFontSize.swift in Sources */,
@@ -1293,6 +1311,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
+				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1353,6 +1372,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = XG37H7NQ28;
+				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1383,6 +1403,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = XploreProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1548,6 +1569,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = exploreDev29.03.20;
 				SWIFT_OBJC_BRIDGING_HEADER = "Data Manager/XploreProject-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1564,6 +1586,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = XploreProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1728,6 +1751,7 @@
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
 				PROVISIONING_PROFILE_SPECIFIER = exploreDev29.03.20;
 				SWIFT_OBJC_BRIDGING_HEADER = "Data Manager/XploreProject-Bridging-Header.h";
+				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

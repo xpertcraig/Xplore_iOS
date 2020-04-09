@@ -113,11 +113,6 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if !DataManager.isUserLoggedIn! {
-            self.topNavigationView.isHidden = true
-            self.topNavigationHeight.constant = 0
-            
-        }
         //////
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
@@ -783,7 +778,7 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
         cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (self.myCampImgArr.object(at: indexPath.row))))), placeholderImage: UIImage(named: ""))
        
-        cell.imagLocNameLbl.text = (self.campDetailDict.value(forKey: "campState") as? String)
+        cell.imagLocNameLbl.text = (self.campDetailDict.value(forKey: "campTitle") as? String)
         
         if (self.campDetailDict.value(forKey: "videoindex") as! String) != "-1" && (self.campDetailDict.value(forKey: "videoindex") as! String) != "0" && (self.campDetailDict.value(forKey: "videoindex") as! String) != "" && (self.campDetailDict.value(forKey: "campsiteVideo") as! String) != "" {
             if indexPath.row == Int(self.campDetailDict.value(forKey: "videoindex") as! String)! - 1 {

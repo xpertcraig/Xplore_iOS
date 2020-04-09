@@ -152,7 +152,7 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         self.priceLbl.text! = self.recDraft.value(forKey: "price") as! String
         
         self.addressLbl.text! = (self.recDraft.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
-        self.stateLbl.text = self.recDraft.value(forKey: "campState") as? String
+        self.stateLbl.text = self.recDraft.value(forKey: "campTitle") as? String
       
         //pageControl
         self.pageControl.isHidden = true
@@ -224,7 +224,7 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         self.priceLbl.text! = self.recDraft.value(forKey: "price") as! String
         
         self.addressLbl.text! = (self.recDraft.value(forKey: "campAddress1") as! String) + ", " + (self.recDraft.value(forKey: "campAddress2") as! String) + " " + (self.recDraft.value(forKey: "city") as! String) + ", " + (self.recDraft.value(forKey: "state") as! String) + ", " + (self.recDraft.value(forKey: "country") as! String)
-        self.stateLbl.text! = self.recDraft.value(forKey: "state") as! String
+        self.stateLbl.text! = self.recDraft.value(forKey: "campName") as! String
         
         //pageControl
         self.pageControl.isHidden = true

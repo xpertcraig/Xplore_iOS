@@ -202,6 +202,7 @@ PODS:
   - SDWebImage/Core (4.4.2)
   - SimpleImageViewer (1.1.1)
   - SplunkMint (5.2.4)
+  - SwiftKeychainWrapper (3.4.0)
   - SwiftyJSON (4.2.0)
 
 DEPENDENCIES:
@@ -228,6 +229,7 @@ DEPENDENCIES:
   - SDWebImage
   - SimpleImageViewer
   - SplunkMint
+  - SwiftKeychainWrapper
   - SwiftyJSON
 
 SPEC REPOS:
@@ -235,7 +237,6 @@ SPEC REPOS:
     - Alamofire
     - Bolts
     - BoringSSL
-    - CardIO
     - Cosmos
     - FacebookCore
     - FacebookLogin
@@ -269,15 +270,17 @@ SPEC REPOS:
     - MessageKit
     - nanopb
     - OpalImagePicker
-    - PayPal-iOS-SDK
     - Protobuf
     - SDWebImage
     - SimpleImageViewer
     - SplunkMint
     - SwiftyJSON
   trunk:
+    - CardIO
     - GoogleMaps
     - GooglePlaces
+    - PayPal-iOS-SDK
+    - SwiftKeychainWrapper
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
@@ -324,8 +327,9 @@ SPEC CHECKSUMS:
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SimpleImageViewer: 34c3a2cde2d9ac022146772cefc27fca14b0c8b1
   SplunkMint: 5f1c0e0b34568af22c811c5f3a8943d99a51aabf
+  SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: e2a2c5dd69f71fb75ddf3876c9f6553aae532631
+PODFILE CHECKSUM: 4a4d24b69113af61ef7028afffef2db240e1b894
 
 COCOAPODS: 1.8.4

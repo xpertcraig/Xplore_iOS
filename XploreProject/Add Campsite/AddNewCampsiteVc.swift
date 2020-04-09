@@ -661,11 +661,12 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             CommonFunctions.showAlert(self, message: descriptionEmptyAlert, title: appName)
             
             return true
-        } else if !(self.webSiteTxtView.text!.trimmingCharacters(in: .whitespaces).isEmpty) {
-            if !self.webSiteTxtView.text!.isValidURL {
+        } else if (self.webSiteTxtView.text != "example: www.google.com") && !self.webSiteTxtView.text!.isValidURL {
+           // if !self.webSiteTxtView.text!.isValidURL {
                 CommonFunctions.showAlert(self, message: validWebUrl, title: appName)
-            }
-            return true
+                return true
+          //  }
+            
         } else if (self.elevation.text!.trimmingCharacters(in: .whitespaces).isEmpty) {
             self.elevation.becomeFirstResponder()
             CommonFunctions.showAlert(self, message: elevationEmptyAlert, title: appName)

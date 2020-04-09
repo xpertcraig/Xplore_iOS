@@ -46,6 +46,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     var campType: String = ""
     let disptchG = DispatchGroup()
     var fromCross: Bool = false
+    private let commonDataViewModel = CommonUseViewModel()
     
     //Pappal Config Object
     var payPalConfig = PayPalConfiguration() // default
@@ -102,6 +103,17 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if Singleton.sharedInstance.notiType == "chatMessage" {
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+            vc.comeFrom = "Notification"
+            vc.receiverId = Singleton.sharedInstance.messageSentUserId
+            vc.userInfoDict = ["othersUserId": Singleton.sharedInstance.messageSentUserId]
+            Singleton.sharedInstance.notiType = ""
+            Singleton.sharedInstance.messageSentUserId = ""
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
         if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
             self.setMyCurrentLoc()
             
@@ -376,6 +388,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                         
 //                        myCurrentLatitude = 32.265942
 //                        myCurrentLongitude = 75.646873
+                        if placemark?.addressDictionary != nil {
+                            if (placemark?.addressDictionary!["Country"]) != nil {
+                                countryOnMyCurrentLatLong = (placemark?.addressDictionary!["Country"]) as? String ?? ""
+                               
+                            }
+                        }
                         
                         AlamoFireWrapper.sharedInstance.getOnlyApiForGooglePlace(action: ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(myCurrentLatitude),\(myCurrentLongitude)&radius=500&types=&name=&key=" + googleApiKey), onSuccess: { (responseData) in
 
@@ -535,7 +553,6 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                     cell.favouriteButton.setImage(UIImage(named: "Favoutites"), for: .normal)
                     
                 }
-                //cell.favouriteButton.isUserInteractionEnabled = false
             }
             self.FavUnfavAPIHit()
             
@@ -714,11 +731,6 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             
             let cell = self.tripsCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
             
-            //print(self.featuredArr.object(at: indexPath.row) as! NSDictionary)
-            
-//            cell.viewAll.tag = indexPath.row
-//            cell.viewAll.addTarget(self, action:#selector(buttonPressed(_:)), for:.touchUpInside)
-            
             cell.numberOfCellLbl.text! =  String(describing: (indexPath.row + 1)) + "/" + String(describing: (self.featuredArr.count))
             
             cell.favouriteButton.tag = indexPath.row
@@ -738,7 +750,7 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 cell.noImgLbl.isHidden = false
                 
             }
-            cell.imagLocNameLbl.text = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as? String)
+            cell.imagLocNameLbl.text = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as? String)//((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as? String)
             
             if let img = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
                 
@@ -767,37 +779,16 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             }
             
             if String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
-             //   cell.playBtn.isHidden = false
+             
                 cell.playImg.isHidden = false
                 
                 cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
                 cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
                 
             } else {
-               // cell.playBtn.isHidden = true
                 cell.playImg.isHidden = true
                 
             }
-            
-//            cell.showImgBtn.tag = indexPath.row
-//            cell.showImgBtn.addTarget(self, action: #selector(tapTripsShowImgView(sender:)), for: .touchUpInside)
-            
-//            if (self.campDetailDict.value(forKey: "videoindex") as! String) != "-1" && (self.campDetailDict.value(forKey: "videoindex") as! String) != "0" && (self.campDetailDict.value(forKey: "videoindex") as! String) != "" && (self.campDetailDict.value(forKey: "campsiteVideo") as! String) != "" {
-//                if indexPath.row == Int(self.campDetailDict.value(forKey: "videoindex") as! String)! - 1 {
-//                    cell.playImg.isHidden = false
-//
-//                    cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
-//                    cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
-//
-//                } else {
-//                    cell.playImg.isHidden = true
-//
-//                }
-//            } else {
-//                cell.playImg.isHidden = true
-//
-//            }
-            
             cell.tapProfilePicBtn.tag = indexPath.row
             cell.tapProfilePicBtn.addTarget(self, action: #selector(tapFeaturedProfilePicBtn(sender:)), for: .touchUpInside)
             
@@ -809,9 +800,6 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             let cell = self.reviewCollView.dequeueReusableCell(withReuseIdentifier: "ReviewCell", for: indexPath) as! CustomCell
             
             cell.numberOfCellLbl.text! =  String(describing: (indexPath.row + 1)) + "/" + String(describing: (self.reviewBasedArr.count))
-            
-//            cell.viewAll.tag = indexPath.row
-//            cell.viewAll.addTarget(self, action:#selector(buttonPressed(_:)), for:.touchUpInside)
             
             cell.favouriteButton.tag = indexPath.row
             cell.favouriteButton.addTarget(self, action:#selector(revfavAction(sender:)), for:.touchUpInside)
@@ -829,8 +817,8 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 
             }
             
-            if ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as? String) != nil {
-                cell.imagLocNameLbl.text! = ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as! String)
+            if ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as? String) != nil {
+                cell.imagLocNameLbl.text! = ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as! String)
                 
             }
             
@@ -859,10 +847,6 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
                 
             }
-            
-//            cell.showImgBtn.tag = indexPath.row
-//            cell.showImgBtn.addTarget(self, action: #selector(tapReviewShowImgView(sender:)), for: .touchUpInside)
-            
             if String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
                // cell.playBtn.isHidden = true
                 cell.playImg.isHidden = false
@@ -928,26 +912,14 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-   //     if DataManager.isUserLoggedIn! {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
-            if collectionView.tag == 1 {
-                vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-            } else {
-                vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-            }
-            self.navigationController?.pushViewController(vc, animated: true)
-            
-//        } else {
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-//            Singleton.sharedInstance.loginComeFrom = fromCampDes
-//            if collectionView.tag == 1 {
-//                Singleton.sharedInstance.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-//            } else {
-//                Singleton.sharedInstance.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-//            }
-//            self.navigationController?.pushViewController(vc, animated: false)
-//
-//        }
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
+        if collectionView.tag == 1 {
+            vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+        } else {
+            vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -1066,10 +1038,6 @@ extension HomeVc {
             applicationDelegate.startProgressView(view: self.view)
             
         }
-        
-//        myCurrentLatitude = 32.265942
-//        myCurrentLongitude = 75.646873
-        
         // start the timer
          DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             var userId: String = ""
@@ -1080,7 +1048,7 @@ extension HomeVc {
                 userId = ""
                 
             }
-            let param: NSDictionary = ["userId": userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude]
+            let param: NSDictionary = ["userId": userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude, "country": countryOnMyCurrentLatLong]
             
             print(param)
             
@@ -1298,6 +1266,7 @@ extension HomeVc {
                         return
                         
                     }
+                    self.commonDataViewModel.removeDataonLogout()
                     
                     (applicationDelegate.window?.rootViewController as! UINavigationController).setViewControllers(vcArray, animated: false)
                     
