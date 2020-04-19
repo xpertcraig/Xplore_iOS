@@ -637,7 +637,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             
             return true
         } else if (self.campsiteAddress1.text!.trimmingCharacters(in: .whitespaces).isEmpty) {
-            self.campsiteName.becomeFirstResponder()
+            self.campsiteAddress1.becomeFirstResponder()
             CommonFunctions.showAlert(self, message: campsiteAddressAlert, title: appName)
             
             return true
@@ -1040,9 +1040,24 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 switchStatus = "1"
                 
             }
+            self.campsiteAddress1.text! = self.campsiteAddress1.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            var addr2:String = ""
+            if self.campsiteAddress1.text! != self.campsiteAddress2.text! {
+                addr2 = self.campsiteAddress2.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            }
+            var cityF:String = ""
+            if self.state.text! != self.city.text! {
+                cityF = self.city.text!
+            }
+            if self.webSiteTxtView.text! == "example: www.google.com" {
+                self.webSiteTxtView.text = ""
+            }
+            if self.closetTown.text! == cityF || self.closetTown.text! == self.state.text! {
+                self.closetTown.text! = ""
+            }
             
             if self.recDraftIndex != -1 {
-                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": self.campsiteAddress2.text!, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": self.city.text!, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text! ,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString]
+                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text! ,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString]
                 
                 if (userDefault.value(forKey: myDraft)) != nil {
                     let tempArr: NSMutableArray = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
@@ -1050,19 +1065,13 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                     self.mySavedCampSites = tempArr
                     
                 }
-                
-              //   print(tempCampDict)
-                
                 self.mySavedCampSites.add(tempCampDict)
                 let tempArr: NSArray = self.mySavedCampSites.reversed() as NSArray
                 self.mySavedCampSites = tempArr.mutableCopy() as! NSMutableArray
                 
                 userDefault.set(NSKeyedArchiver.archivedData(withRootObject: mySavedCampSites), forKey: myDraft)
-                
-                // print((NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray))
-                
             } else {
-                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": self.campsiteAddress2.text!, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": self.city.text!, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!, "latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString]
+                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!, "latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString]
                 
                 if (userDefault.value(forKey: myDraft)) != nil {
                     let tempArr: NSMutableArray = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
@@ -1070,9 +1079,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                     self.mySavedCampSites = tempArr
                     
                 }
-                
-             //   print(tempCampDict)
-                
                 let tempArr1: NSArray = self.mySavedCampSites.reversed() as NSArray
                 self.mySavedCampSites = tempArr1.mutableCopy() as! NSMutableArray
                 self.mySavedCampSites.add(tempCampDict)
@@ -1083,8 +1089,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 
                 userDefault.set(NSKeyedArchiver.archivedData(withRootObject: mySavedCampSites), forKey: myDraft)
                 
-                //  print((NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray))
-                
             }
             
             let alert = UIAlertController(title: appName, message: campsavedasDraft, preferredStyle: .alert)
@@ -1092,8 +1096,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 alert.dismiss(animated: true, completion: nil)
                 
                 fromSaveDraft = true
-              //  self.navigationController?.removeViewController(AddNewCampsiteVc.self)
-                
                 if self.recDraftIndex != -1 {
                     if let vc = self.navigationController?.viewControllers.filter({ $0 is MyCampsiteVc }).first {
                        
@@ -1129,7 +1131,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         
         DispatchQueue.main.async {
             applicationDelegate.startProgressView(view: self.view)
-            
         }
         if self.videoImgIndex == -1 {
             self.saveCamp()
@@ -1304,22 +1305,22 @@ extension AddNewCampsiteVc {
         let campAmentiesIdStr = self.campAmentiesIdArr.componentsJoined(by: ",")
         let campHokupsIdStr = self.campHokupsIdArr.componentsJoined(by: ",")
         
+        self.campsiteAddress1.text! = self.campsiteAddress1.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         var addr2:String = ""
         if self.campsiteAddress1.text! != self.campsiteAddress2.text! {
-            addr2 = self.campsiteAddress2.text!
-            
+            addr2 = self.campsiteAddress2.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
         var cityF:String = ""
         if self.state.text! != self.city.text! {
             cityF = self.city.text!
-            
         }
-        
         if self.webSiteTxtView.text! == "example: www.google.com" {
             self.webSiteTxtView.text = ""
-            
         }
-        
+        if self.closetTown.text! == cityF || self.closetTown.text! == self.state.text! {
+            self.closetTown.text! = ""
+        }
+                
         let param: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": campTypeIdsStr, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*campHokupsIdStr*/, "amenities": campAmentiesIdStr, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "videoindex": self.videoImgIndex]
         
         print(param)

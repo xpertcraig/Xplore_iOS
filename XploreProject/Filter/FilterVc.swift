@@ -12,7 +12,6 @@ import CoreLocation
 // set up protocol
 @objc protocol filterValuesDelegate{
     func passFilterData(fillDict: NSDictionary)
-    
 }
 
 class FilterVc: UIViewController, selectTypeDelegate {
@@ -147,11 +146,6 @@ class FilterVc: UIViewController, selectTypeDelegate {
             Singleton.sharedInstance.loginComeFrom = ""
             self.containerView.isHidden = true
             
-//        } else {
-//            Singleton.sharedInstance.loginComeFrom = filter
-//            self.containerView.isHidden = false
-//
-//        }
         self.noDataFoundLbl.isHidden = true
         self.countryTxtfld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)
         self.stateTxtFld.addTarget(self, action: #selector(searchFieldValueChanged), for: .editingChanged)

@@ -233,9 +233,6 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         
         self.videoIndex = -1
         self.videoString = ""
-//        self.videoIndex = (self.recDraft.value(forKey: "videoIndex")) as! Int
-//        self.videoString = (self.recDraft.value(forKey: "videoUrl")) as! String
-        
         self.myDraftCollVIew.reloadData()
     }
    
@@ -356,8 +353,6 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         self.view.endEditing(true)
         if connectivity.isConnectedToInternet() {
             if !(self.checkValidations()) {
-               // self.addCampSiteApiHit()
-                
                 self.publishCampSiteApiHit()
             }
         } else {
@@ -386,8 +381,6 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         applicationDelegate.startProgressView(view: self.view)
         
         let param: NSDictionary = ["userId": DataManager.userId, "campName": (self.recDraft.value(forKey: "campName") as! String), "campType": (self.recDraft.value(forKey: "campTypeIdsStr") as! String), "campAddress1": (self.recDraft.value(forKey: "campAddress1") as! String), "campAddress2": (self.recDraft.value(forKey: "campAddress2") as! String), "closestTown": (self.recDraft.value(forKey: "closestTown") as! String), "country": (self.recDraft.value(forKey: "country") as! String), "state": (self.recDraft.value(forKey: "state") as! String), "city": (self.recDraft.value(forKey: "city") as! String), "elevation": (self.recDraft.value(forKey: "elevation") as! String), "numberofsites": (self.recDraft.value(forKey: "numberofsites") as! String), "climate": (self.recDraft.value(forKey: "climate") as! String), "bestMonths": (self.recDraft.value(forKey: "bestMonths") as! String), "hookups": "antiquing", "amenities": (self.recDraft.value(forKey: "campAmentiesIdStr") as! String), "price": (self.recDraft.value(forKey: "price") as! String), "description": (self.recDraft.value(forKey: "description") as! String),"latitude": (self.recDraft.value(forKey: "latitude") as! String), "longitude": (self.recDraft.value(forKey: "longitude") as! String)]
-        
-        print(param)
         
         AlamoFireWrapper.sharedInstance.getPostMultipartForUploadMultipleImages(action: "addCampsite.php", param: param as! [String : Any], ImageArr: self.myCampImgArr, videoData: nil, videoIndex: -1, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)

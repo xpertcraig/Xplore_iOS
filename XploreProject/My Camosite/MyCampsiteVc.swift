@@ -57,7 +57,6 @@ class MyCampsiteVc: UIViewController {
         super.viewDidLoad()
 
         backBtnPressedForPublished = false
-        
         if fromSaveDraft == true {
             self.onDraftBtn()
             
@@ -78,7 +77,6 @@ class MyCampsiteVc: UIViewController {
         
         if Singleton.sharedInstance.myCampsArr.count > 0 && fromSaveDraft == false {
             self.reloadTbl()
-            
         }
         
         self.notificationCountLbl.text! = String(describing: (notificationCount))
@@ -86,16 +84,13 @@ class MyCampsiteVc: UIViewController {
         if DataManager.isUserLoggedIn! {
             if backBtnPressedForPublished == false {
                 self.callAPI()
-                
             } else {
                 backBtnPressedForPublished = false
-                
             }
             self.containerView.isHidden = true
         } else {
             Singleton.sharedInstance.loginComeFrom = myCampsStr
             self.containerView.isHidden = false
-            
         }
     }
 
@@ -133,65 +128,40 @@ class MyCampsiteVc: UIViewController {
         }
         
         if fromSaveDraft == true {
-            fromSaveDraft = false
             self.onDraftBtn()
-            
         } else if self.firstTime == false {
             self.setInitialDesign()
             self.firstTime = true
-            
         }
         
         self.mainAllContentView.isHidden = false
         self.recallAPIView.isHidden = true
-        
     }
     
     func startAnimateAcitivity() {
         self.activityView.isHidden = false
         self.activityViewHeight.constant = 80
         self.activityIndicator.startAnimating()
-        
     }
     
     func stopAnimateAcitivity() {
         self.activityView.isHidden = true
         self.activityViewHeight.constant = 0
         self.activityIndicator.stopAnimating()
-        
     }
     
     func resetPaginationVar() {
         isDataLoading = false
         pageNo = 0
         limit = 5
-        
     }
     
     func setInitialDesign() {
         self.noDataLbl.isHidden = true
-        
-//        self.campType = draftCamp
-//        self.collArr = []
-//        DispatchQueue.main.async {
-//            if (userDefault.value(forKey: myDraft)) != nil {
-//                self.draftArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
-//
-//                self.collArr = self.draftArr
-//
-//                self.publishSavedCollView.delegate = self
-//                self.publishSavedCollView.dataSource = self
-//                self.publishSavedCollView.reloadData()
-//
-//            }
-//        }
-        
+ 
         self.mainAllContentView.isHidden = true
         self.recallAPIView.isHidden = true
         self.overlayView.isHidden = true
-     //   favMarkbottomConstraint.constant = 150
-//        let tapper = UITapGestureRecognizer(target: self, action:#selector(endEditing))
-//        self.overlayView.addGestureRecognizer(tapper)
      
         if self.comeFrom == myProfile {
             //self.comeFrom = ""
@@ -201,32 +171,23 @@ class MyCampsiteVc: UIViewController {
         } else {
             self.backBtn.isHidden = true
             self.backBtnImgView.isHidden = true
-            
-            
         }
-        
         self.campType = publishCamp
         self.collArr = []
-        
         self.collArr = self.publishCampArr
-        
         self.publishSavedCollView.reloadData()
-    
     }
     
     func callAPI() {
         if connectivity.isConnectedToInternet() {
             self.resetPaginationVar()
             self.publishApiHit(pageNum: pageNo)
-            
         } else {
             if self.publishCampArr.count == 0 {
                 self.recallAPIView.isHidden = false
                 self.noDataLbl.isHidden = true
-                
             }           
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
         }
     }
     
@@ -234,14 +195,12 @@ class MyCampsiteVc: UIViewController {
         self.favouriteSavedRefreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.favouriteSavedRefreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
         self.publishSavedCollView.addSubview(self.favouriteSavedRefreshControl)
-        
     }
     
     //MARK:- ScrollView Delegate
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if campType == publishCamp {
             isDataLoading = false
-            
         }
     }
     
@@ -255,9 +214,7 @@ class MyCampsiteVc: UIViewController {
                  //   print(self.limit)
                 //    print(upToLimit)
                     if self.limit >= upToLimit {
-                        
                         //
-                        
                     } else {
                         self.limit = self.limit + 5
                       //  print(pageNo)
@@ -274,7 +231,6 @@ class MyCampsiteVc: UIViewController {
         if campType == publishCamp {
             //call Api's
             self.callAPI()
-            
         }
     }
     
@@ -290,22 +246,15 @@ class MyCampsiteVc: UIViewController {
         self.campIndex = sender.tag
         if String(describing: ((self.collArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
             self.markAsFavBtn.setTitle("Mark as favourite", for: .normal)
-            
         } else {
             self.markAsFavBtn.setTitle("Delete from favourite", for: .normal)
-            
         }
         
         self.campId = Int(String(describing: ((self.collArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!))!
         
-        // favMarkbottomConstraint.constant = 0
-        //   UIView.animate(withDuration: 1) {
-        //self.favMarkbottomConstraint.constant = 150
-        
         self.overlayView.tag = sender.tag
         self.overlayView.isHidden = false
         self.view.layoutIfNeeded()
-        //  }
     }
     
     //MARK:- Button Actions
@@ -314,7 +263,6 @@ class MyCampsiteVc: UIViewController {
         UIView.animate(withDuration: 1) {
             self.overlayView.isHidden = true
             self.view.layoutIfNeeded()
-            
         }
     }
     
@@ -328,16 +276,12 @@ class MyCampsiteVc: UIViewController {
             
             if cell.favouriteButton.currentImage == #imageLiteral(resourceName: "Favoutites") {
                 cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
-                
             } else {
                 cell.favouriteButton.setImage(UIImage(named: "Favoutites"), for: .normal)
-                
             }
             self.FavUnfavAPIHit()
-            
         } else {
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
         }
     }
     
@@ -355,7 +299,6 @@ class MyCampsiteVc: UIViewController {
                     matched = true
                     break
                 }
-                
             }
             
             if matched == false {
@@ -367,7 +310,6 @@ class MyCampsiteVc: UIViewController {
                 matched = false
                 DispatchQueue.main.async {
                     CommonFunctions.showAlert(self, message: alreadySavedCampAlert, title: appName)
-                    
                 }
             }
         } else {
@@ -375,7 +317,6 @@ class MyCampsiteVc: UIViewController {
             userDefault.set(NSKeyedArchiver.archivedData(withRootObject: tempArr), forKey: mySavesCamps)
             
             CommonFunctions.showAlert(self, message: campSavedAlert, title: appName)
-            
         }
     }
     
@@ -385,30 +326,24 @@ class MyCampsiteVc: UIViewController {
         if connectivity.isConnectedToInternet() {
             self.resetPaginationVar()
             self.publishApiHit(pageNum: pageNo)
-            
         } else {
             if self.publishCampArr.count == 0  {
                 self.recallAPIView.isHidden = false
                 self.noDataLbl.isHidden = true
-                
             }
-            
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
         }
     }
     
     //MARK: - Status Color
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
-        
     }
     
     //MARK:- Button Action
     @IBAction func tapProfileBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
@@ -419,20 +354,16 @@ class MyCampsiteVc: UIViewController {
     @IBAction func addCampsite(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @IBAction func tapNotifivationBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @IBAction func draftAction(_ sender: Any) {
         fromSaveDraft = true
-        
         self.onDraftBtn()
-        
     }
     
     func onDraftBtn() {
@@ -443,14 +374,9 @@ class MyCampsiteVc: UIViewController {
         if self.draftArr.count == 0 {
             if (userDefault.value(forKey: myDraft)) != nil {
                 self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
-                
-            } else {
-                //applicationDelegate.dismissProgressView(view: self.view)
-                
             }
         } else {
             self.collArr = self.draftArr
-            
         }
         draftButton.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
         draftButton.setTitleColor(UIColor.white , for: .normal)
@@ -459,7 +385,6 @@ class MyCampsiteVc: UIViewController {
         publishedButton.setTitleColor(UIColor.darkGray, for: .normal)
         
         self.publishSavedCollView.reloadData()
-        
     }
     
     @IBAction func publishedAction(_ sender: Any) {
@@ -480,23 +405,16 @@ class MyCampsiteVc: UIViewController {
         self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
         
         self.publishSavedCollView.reloadData()
-        
     }
     
     @objc func editDraftBtnActions(sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
         
-//        vc.comeFrom = draftCamp
-//        vc.recDraftIndex = recDraftIndex
-//        vc.recDraft = recDraft
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
-        
+        fromSaveDraft = true
         vc.comeFrom = draftCamp
         vc.recDraftIndex = sender.tag
         vc.recDraft = (self.collArr.object(at: sender.tag) as! NSDictionary)
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @objc func discardDraftBtnActions(sender: UIButton) {
@@ -520,12 +438,10 @@ class MyCampsiteVc: UIViewController {
         alert.addAction(yesBtn)
         alert.addAction(noBtn)
         present(alert, animated: true, completion: nil)
-        
     }
     
     @IBAction func backAction(_ sender: Any) {       
         self.navigationController?.popViewController(animated: true)
-        
     }
 }
 
@@ -534,11 +450,9 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
         if self.collArr.count == 0 {
             if recallAPIView.isHidden == true {
                 self.noDataLbl.isHidden = false
-                
             }
         } else {
             self.noDataLbl.isHidden = true
-            
         }
         return self.collArr.count
     }
@@ -552,7 +466,6 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             config.imageView = cell.featuredReviewImgView
             
         }
-        
         present(ImageViewerController(configuration: configuration), animated: true)
         
     }
@@ -585,7 +498,6 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             } else {
                 cell.featuredReviewImgView.image = UIImage(named: "")
                 cell.noImgLbl.isHidden = false
-                
             }
             
             cell.imagLocNameLbl.text = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campName") as? String)
@@ -594,27 +506,16 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             cell.ttlReviewLbl.isHidden = true
             
             cell.addressTopConstraint.constant = 0
-//            
-//            if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "closestTown") as? String) == "" {
-//                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
-//                
-//            }
+
             if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) != "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) != "" {
-                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
-                
+                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
             } else if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) == "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) == "" {
-                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
-                
+                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
             } else if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) != "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) == "" {
                 
-                cell.locationAddressLbl.text! = "\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String),\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String),\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String),\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)"
-                
-                
-                //((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+","((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
-                
+                cell.locationAddressLbl.text! = "\((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String), \((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String), \((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String), \((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)"
             } else if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) == "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) != "" {
-                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+","+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
-                
+                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
             }
             cell.playImg.isHidden = true
         } else {
@@ -641,7 +542,6 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             } else {
                 cell.featuredReviewImgView.image = UIImage(named: "")
                 cell.noImgLbl.isHidden = false
-                
             }
             
             cell.imagLocNameLbl.text = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as? String)
@@ -652,19 +552,14 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             cell.addressTopConstraint.constant = 8
             if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
                 cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
-                
             }
-            
-            // cell.autherImgView.sd_setImage(with: URL(string: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as! String)), placeholderImage: UIImage(named: ""))
             cell.autherNameLbl.text = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
             
             
             if String(describing: ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
                 cell.favouriteButton.setImage(UIImage(named: "Favoutites"), for: .normal)
-                
             } else {
                 cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
-                
             }
             
             if String(describing: ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "videoindex"))!) == "1" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count == 1 {
@@ -673,17 +568,11 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
                 
                 cell.playImg.image = cell.playImg.image?.withRenderingMode(.alwaysTemplate)
                 cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
-                
             } else {
                // cell.playBtn.isHidden = true
                 cell.playImg.isHidden = true
-                
             }
         }
-        
-//        cell.showImgBtn.tag = indexPath.row
-//        cell.showImgBtn.addTarget(self, action: #selector(tapDraftShowImgView(sender:)), for: .touchUpInside)
-        
         return cell
     }
     
@@ -697,7 +586,7 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             
         } else {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyCampDescriptionVc") as! MyCampDescriptionVc
-            
+            fromSaveDraft = true
             vc.comeFrom = draftCamp
             vc.recDraftIndex = indexPath.row
             vc.recDraft = (self.collArr.object(at: indexPath.row) as! NSDictionary)
@@ -727,35 +616,27 @@ extension MyCampsiteVc {
                     
                     let retValues = (dict["result"]! as! NSArray)
                     
-                  //  print(retValues)
-                    
                     if (retValues.count) % 5 == 0 {
                         self.upToLimit = (pageNum+1)*5 + 1
-                        
                     } else {
                         self.upToLimit = self.upToLimit + (retValues.count)
-                        
                     }
                     
                     if pageNum == 0 {
                         self.publishCampArr = []
-                        
                     }
                     if self.campIndex != -1 {
                         for _ in 0..<(retValues.count) {
                             self.publishCampArr.removeLastObject()
-                            
                         }
                     }
                     
                     for i in 0..<retValues.count {
                         self.publishCampArr.add(retValues.object(at: i) as! NSDictionary)
-                        
                     }
                     self.collArr = self.publishCampArr
                     Singleton.sharedInstance.myCampsArr = self.collArr
                     self.setDelegateAndDataSource()
-                    
                 } else {
                     self.setInitialDesign()
                     
@@ -767,16 +648,13 @@ extension MyCampsiteVc {
             if self.publishCampArr == [] {
                 self.recallAPIView.isHidden = false
                 self.noDataLbl.isHidden = true
-                
             }
             
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
-                
             } else {
                 CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
             }
         }
     }
@@ -791,24 +669,15 @@ extension MyCampsiteVc {
             let cell = self.publishSavedCollView.cellForItem(at: indexPath as IndexPath) as! CustomCell
             cell.favouriteButton.isUserInteractionEnabled = true
             
-            ///////
-           // applicationDelegate.dismissProgressView(view: self.view)
-            
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
-                    
-                  //  print(dict)
-                    
-                   // self.resetPaginationVar()
                     
                     let pagN = self.campIndex/5
                     self.pageNo = pagN
                     self.limit = (pagN+1)*5
                     self.publishApiHit(pageNum: self.pageNo)
-                    
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-                    
                 }
             }
         }) { (error) in
@@ -819,10 +688,8 @@ extension MyCampsiteVc {
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
-                
             } else {
                 CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
             }
         }
     }
