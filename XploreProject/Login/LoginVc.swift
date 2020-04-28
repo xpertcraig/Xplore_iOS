@@ -614,11 +614,11 @@ extension UINavigationController {
 extension LoginVc: ASAuthorizationControllerDelegate {
     func setUpSignInAppleButton() {
         UserDefaults.standard.set(appleLogin, forKey: XPLoginStatus)
-        let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .white)
+        let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .whiteOutline)
         authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
         
-        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 30)
-        authorizationButton.cornerRadius = 15
+        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 42)
+        authorizationButton.cornerRadius = 21
         
           //Add button on some view or stack
         self.applePayBtn.addSubview(authorizationButton)
