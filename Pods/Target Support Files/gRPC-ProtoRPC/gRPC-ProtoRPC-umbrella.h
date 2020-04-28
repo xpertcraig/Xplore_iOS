@@ -11,7 +11,7 @@
 #endif
 
 #import "ProtoMethod.h"
-#import "ProtoRPC.h"
+//#import "ProtoRPC.h"
 #import "ProtoService.h"
 
 FOUNDATION_EXPORT double ProtoRPCVersionNumber;
