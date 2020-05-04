@@ -183,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             
         }
         if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
-            userDefault.set(Singleton.sharedInstance.myCurrentLocDict, forKey: myCampsStr)
+            userDefault.set(Singleton.sharedInstance.myCurrentLocDict, forKey: myCurrentLocStr)
             
         }
     }
