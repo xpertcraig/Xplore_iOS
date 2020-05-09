@@ -139,8 +139,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         
         print(Locale.currency["IN"])
         
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
         self.countryStateCityTblView.layer.borderColor = UIColor.lightGray.cgColor
         self.countryStateCityTblView.layer.borderWidth = 0.5
         self.countryStateCityTblView.layer.masksToBounds = true
@@ -191,10 +189,35 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
         self.countryStateCityTblView.isHidden = true
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

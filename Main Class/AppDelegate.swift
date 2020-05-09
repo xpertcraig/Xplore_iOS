@@ -219,7 +219,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } else if UserDefaults.standard.value(forKey: XPLoginStatus) as! String == gmailLogin {
             return GIDSignIn.sharedInstance().handle(url, sourceApplication: (options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String), annotation: options[UIApplicationOpenURLOptionsKey.annotation])
             
-        }else {
+        } else {
             return true
             
         }
@@ -300,6 +300,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 //
 //            }
             
+            let notiCountDict:[String: Int] = ["count": notificationCount]
+            // post a notification
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationRec"), object: nil, userInfo: notiCountDict)
             /* active stage is working */
         } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             //get notification count
@@ -309,6 +312,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
             
         }
+        
+        
     }
     
     //MARK: - ProgressIndicator view start
@@ -410,7 +415,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     
                    // print(dict)
                     notificationCount = Int(String(describing: (dict["result"])!))!
-                    
+                    let notiCountDict:[String: Int] = ["count": notificationCount]
+                    // post a notification
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationRec"), object: nil, userInfo: notiCountDict)
                 } else {
                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     

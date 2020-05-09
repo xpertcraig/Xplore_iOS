@@ -78,8 +78,11 @@ class MyCampsiteVc: UIViewController {
         if Singleton.sharedInstance.myCampsArr.count > 0 && fromSaveDraft == false {
             self.reloadTbl()
         }
-        
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
         
         if DataManager.isUserLoggedIn! {
             if backBtnPressedForPublished == false {
@@ -91,6 +94,28 @@ class MyCampsiteVc: UIViewController {
         } else {
             Singleton.sharedInstance.loginComeFrom = myCampsStr
             self.containerView.isHidden = false
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
         }
     }
 

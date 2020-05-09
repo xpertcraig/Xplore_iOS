@@ -95,13 +95,38 @@ class FilterVc: UIViewController, selectTypeDelegate {
             self.topNavigationHeight.constant = 44
             
         }
-        
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
         
         self.countryStateCityTblView.isHidden = true
         self.noDataFoundLbl.isHidden = true
         
         //self.distanceParam = 1
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -34,14 +34,14 @@ class ResetPasswordVc: UIViewController {
              UIApplication.shared.statusBarView?.backgroundColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
             
         }
-        
-         self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,7 +49,28 @@ class ResetPasswordVc: UIViewController {
         
     }
 
-    //MARK:- Function Definition
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
+    }
+    
     //MARK: - Status Color
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent

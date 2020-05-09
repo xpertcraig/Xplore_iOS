@@ -6,6 +6,7 @@
 //  Copyright © 2018 iMark_IOS. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import UserNotifications
 import CoreLocation
@@ -262,5 +263,28 @@ extension String {
         } else {
             return false
         }
+    }
+}
+
+extension UIImage {
+
+    func isEqualToImage(image: UIImage) -> Bool {
+        let data1: NSData = UIImagePNGRepresentation(self)! as NSData
+        let data2: NSData = UIImagePNGRepresentation(image)! as NSData
+        return data1.isEqual(data2)
+    }
+
+}
+
+extension UIView {
+    
+    func animShow(){
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.4
+        animation.repeatCount = 3
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
+        self.layer.add(animation, forKey: "position")
     }
 }

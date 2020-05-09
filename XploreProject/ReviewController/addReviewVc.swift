@@ -58,7 +58,6 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
         //
         self.startFunction()
         
@@ -71,12 +70,6 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
         
         self.dateOfStayView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapdaysOfStayView)))
         
-//        self.scenicBeautiStarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeKeyboard)))
-//        self.locationStarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeKeyboard)))
-//        self.familyFriendStarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeKeyboard)))
-//        self.privacyStarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeKeyboard)))
-//        self.cleaninessStarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeKeyboard)))
-//        self.bugFactoeStarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeKeyboard)))
     }
     
     @objc func closeKeyboard() {
@@ -85,8 +78,11 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,21 +90,31 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
+    }
+    
     //MARK:- Function definitions
     @objc func tapdaysOfStayView() {
-//        self.pickDatePicker.isHidden = false
-//        self.pickDatePicker.backgroundColor = UIColor.white
-//        let datePickerView = UIDatePicker()
-//
-//        datePickerView.datePickerMode = .date
-//        self.dateOfStayTxtFld.inputView = datePickerView
-        
-        //sender.inputView = datePickerView
-//        pickDatePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
-//
-//        self.pickDatePicker.maximumDate = Date()
-        
-        
+
         //Create the view
         
         self.view.endEditing(true)

@@ -100,6 +100,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         //Paypal
         self.setUpPaypal()
         
+        self.notificationCountLbl.animShow()
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -141,8 +147,6 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.reloadTbl()
         }
         
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
         //api
         self.callAPI()
         
@@ -155,7 +159,28 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
     //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
+    }
+    
     func moveToControllerAfterLogin() {
         let sing = Singleton.sharedInstance
         if sing.loginComeFrom == fromAddCamps {

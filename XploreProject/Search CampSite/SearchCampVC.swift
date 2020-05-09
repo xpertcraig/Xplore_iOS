@@ -100,8 +100,34 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.stopAnimateAcitivity()
         
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -114,6 +140,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
         return UIStatusBarStyle.lightContent
         
     }
+    
     
     //MARK:- Function Definitions
     func startAnimateAcitivity() {

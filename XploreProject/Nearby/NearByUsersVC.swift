@@ -38,10 +38,7 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
         self.distanceValueSlider.addTarget(self, action: #selector(NearByUsersVC.updateKmsLabel(sender:)), for: .touchUpInside)
-        
         
         self.infoWindow = loadNiB()
         self.showMapVIew.delegate = self
@@ -50,8 +47,33 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
     }
     
     //MARK: - Status Color

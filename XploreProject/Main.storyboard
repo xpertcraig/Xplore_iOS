@@ -4860,7 +4860,7 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="cell" id="HNA-ib-cCh" customClass="CustomCell" customModule="XploreProject" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="5" width="375" height="316"/>
+                                                        <rect key="frame" x="0.0" y="4.5" width="375" height="316"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="316"/>
@@ -5160,7 +5160,7 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="ReviewCell" id="LYI-qE-P0T" customClass="CustomCell" customModule="XploreProject" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="5" width="375" height="316"/>
+                                                        <rect key="frame" x="0.0" y="4.5" width="375" height="316"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="316"/>
@@ -10645,11 +10645,11 @@
             </objects>
             <point key="canvasLocation" x="2133.5999999999999" y="-797.45127436281871"/>
         </scene>
-        <!--Search Camp-->
+        <!--Navigation Controller-->
         <scene sceneID="ucM-Fm-dMS">
             <objects>
                 <navigationController navigationBarHidden="YES" id="Fx1-ZV-sO9" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Search Camp" image="SearchSelect" selectedImage="SearchSelect" id="Err-hK-5vF"/>
+                    <tabBarItem key="tabBarItem" title="" image="SearchSelect" selectedImage="SearchSelect" id="Err-hK-5vF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="JtA-C9-YtG">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -14333,11 +14333,11 @@
             </objects>
             <point key="canvasLocation" x="588" y="1057.4212893553224"/>
         </scene>
-        <!--Home-->
+        <!--Navigation Controller-->
         <scene sceneID="yGI-L5-ukQ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="SsN-2t-l4v" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="Homeunselect" selectedImage="Home" id="jTV-El-Ogs"/>
+                    <tabBarItem key="tabBarItem" title="" image="Homeunselect" selectedImage="Home" id="jTV-El-Ogs"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aGI-Rr-yRv">
                         <autoresizingMask key="autoresizingMask"/>
@@ -14351,11 +14351,11 @@
             </objects>
             <point key="canvasLocation" x="588" y="-2642"/>
         </scene>
-        <!--Settings-->
+        <!--Navigation Controller-->
         <scene sceneID="mw3-m4-P84">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="SWq-Wz-lyt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="setting" selectedImage="settingSelect" id="AOc-27-jUB"/>
+                    <tabBarItem key="tabBarItem" title="" image="setting" selectedImage="settingSelect" id="AOc-27-jUB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ATb-Zo-KIq">
                         <autoresizingMask key="autoresizingMask"/>
@@ -14369,11 +14369,11 @@
             </objects>
             <point key="canvasLocation" x="3606" y="-2642"/>
         </scene>
-        <!--My Campsites-->
+        <!--Navigation Controller-->
         <scene sceneID="XS8-mo-eIx">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="w3K-4i-xU7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Campsites" image="MyCampsite" selectedImage="mycampsite-1" id="tnH-oM-Eb2"/>
+                    <tabBarItem key="tabBarItem" title="" image="MyCampsite" selectedImage="mycampsite-1" id="tnH-oM-Eb2"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tA4-uw-plq">
                         <autoresizingMask key="autoresizingMask"/>
@@ -18460,11 +18460,11 @@
             </objects>
             <point key="canvasLocation" x="1324" y="1057"/>
         </scene>
-        <!--Saved Camps-->
+        <!--Navigation Controller-->
         <scene sceneID="0yl-Dm-Pe8">
             <objects>
                 <navigationController navigationBarHidden="YES" id="XL9-Rj-7Pa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Saved Camps" image="SavedCampsite" selectedImage="SavedCampsite" springLoaded="YES" id="a4f-dS-M5C"/>
+                    <tabBarItem key="tabBarItem" title="" image="SavedCampsite" selectedImage="SavedCampsite" springLoaded="YES" id="a4f-dS-M5C"/>
                     <navigationItem key="navigationItem" id="Es9-Cu-GF0"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="cg0-Su-qmv">
                         <autoresizingMask key="autoresizingMask"/>

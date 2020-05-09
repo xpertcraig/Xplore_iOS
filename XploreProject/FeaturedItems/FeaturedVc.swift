@@ -72,7 +72,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             self.topNavigationHeight.constant = 0
             
         }
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
         
         if comeFrom == featuredBased {
             self.campsiteTypeLbl.text! = "Featured Campsites"
@@ -119,11 +118,37 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         
         self.stopAnimateAcitivity()
         
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
-        
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+
         if self.filterDataDict.value(forKey: "lattitude") == nil && self.searchType == filter {
             self.searchType = ""
             
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
         }
     }
     

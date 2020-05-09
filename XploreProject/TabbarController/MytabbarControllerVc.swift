@@ -11,6 +11,7 @@ import UIKit
 class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
 
     var selectedItem: String = ""
+    var selectedItemImg: UIImage? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,23 +33,24 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print(tabBar.selectedItem)
+        //print(tabBar.selectedItem)
         
         self.selectedItem = tabBar.selectedItem!.title!
+        self.selectedItemImg = tabBar.selectedItem!.selectedImage!
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if DataManager.isUserLoggedIn! == false {
-            if self.selectedItem == "Saved Camps" || self.selectedItem == "My Campsites"  || self.selectedItem == "Settings"{
+            if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "mycampsite-1")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "settingSelect")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedSelect")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "MyCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "setting")!) {
                 
                 let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
                 let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
                     alert.dismiss(animated: true, completion: nil)
                     
-                    if self.selectedItem == "Saved Camps" {
+                    if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedSelect")!) {
                         tabBarController.selectedIndex = 2
                         
-                    } else if self.selectedItem == "Saved Camps" {
+                    } else if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "MyCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "mycampsite-1")!) {
                         tabBarController.selectedIndex = 3
                         
                     } else {
@@ -65,8 +67,6 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
                 present(alert, animated: true, completion: nil)
                 
                 return false
-            } else {
-               
             }
         }
         return true

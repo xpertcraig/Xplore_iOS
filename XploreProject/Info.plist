@@ -48,7 +48,7 @@
 	<key>FacebookAppID</key>
 	<string>306270829957760</string>
 	<key>FacebookDisplayName</key>
-	<string>Xplore</string>
+	<string>Xplorecampsite</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>org-appextension-feature-password-management</string>

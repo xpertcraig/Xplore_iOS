@@ -94,8 +94,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
         }
         
-       
-        
         if self.comeFrom == "UserProfile" {
             if let name = (userInfoDict.value(forKey: "name") as? String) {
                 self.userNameLbl.text! = name
@@ -161,15 +159,38 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         observeChannels()
         observeChannelsToRemove()
         
-//        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.handleLongPress))
-//        chatTableView.addGestureRecognizer(longPress)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
         
-        self.notificationCountLbl.text! = String(describing: (notificationCount))
+        if notificationCount > 9 {
+            self.notificationCountLbl.text! = "\(9)+"
+        } else {
+            self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Register to receive notification in your class
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil);
+    }
+    
+    //MARK:- Function Definitions
+    @objc func updateNotiCount(_ notification: NSNotification) {
+        if let notiCount = notification.userInfo?["count"] as? Int {
+            // An example of animating your label
+            self.notificationCountLbl.animShow()
+            if notiCount > 9 {
+                self.notificationCountLbl.text! = "\(9)+"
+            } else {
+                self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -184,11 +205,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        self.tabBarController?.tabBar.isHidden = false
-//        
-//    }
-    
     //MARK: - Status Color
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
@@ -198,8 +214,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var longPressIndex:Int!
     
     //MARK:- Delete cell on long press
-    @objc func handleLongPress(sender: UILongPressGestureRecognizer)
-    {
+    @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began
         {
             let touchPoint = sender.location(in: chatTableView)
@@ -250,7 +265,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-    
     
     //MARK:- Save data to the firebase
     func getUserInfo(userId: String) {
