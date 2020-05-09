@@ -56,19 +56,22 @@ extension UIViewController {
                 vc.selectedIndex = 1
                 sing.loginComeFrom = ""
             } else if sing.loginComeFrom == savedCamp {
+                self.navigationController?.tabBarController?.tabBar.isHidden = false
                 vc.selectedIndex = 2
                 sing.loginComeFrom = ""
             } else if sing.loginComeFrom == myCampsStr {
+                self.navigationController?.tabBarController?.tabBar.isHidden = false
                 vc.selectedIndex = 3
                 sing.loginComeFrom = ""
             } else if sing.loginComeFrom == settingStr {
+                self.navigationController?.tabBarController?.tabBar.isHidden = false
                 vc.selectedIndex = 4
                 sing.loginComeFrom = ""
             } else {
                 vc.selectedIndex = 0
               //  vc.tabBar.isHidden = true
             }
-            (applicationDelegate.window?.rootViewController as! UINavigationController).tabBarController?.tabBar.isHidden = true
+            //(applicationDelegate.window?.rootViewController as! UINavigationController).tabBarController?.tabBar.isHidden = true
             (applicationDelegate.window?.rootViewController as! UINavigationController).pushViewController(vc, animated: false)
             
         }

@@ -22,6 +22,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     @IBOutlet weak var recallAPIView: UIView!
     @IBOutlet weak var markAsFavBtn: UIButton!
     
+    @IBOutlet weak var sortFilterContainStackView: UIStackView!
     @IBOutlet weak var campsiteTypeLbl: UILabel!
     @IBOutlet weak var sortBtn: UIButton!
     
@@ -35,6 +36,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var topNavigationView: UIView!
     @IBOutlet weak var topNavigationHeight: NSLayoutConstraint!
+    @IBOutlet weak var noDataFound: UILabel!
     
     //MARK:- Variable Declaration
     var campId: Int = -1
@@ -64,6 +66,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.noDataFound.isHidden = true
         if !DataManager.isUserLoggedIn! {
             self.topNavigationView.isHidden = true
             self.topNavigationHeight.constant = 0
@@ -284,6 +287,10 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     
                     
                 } else {
+                    self.noDataFound.isHidden = false
+                    self.dataContainingView.isHidden = false
+                    self.sortFilterContainStackView.isHidden = true
+                    self.categoryCollectionView.isHidden = true
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
@@ -343,8 +350,23 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     print(retValues)
                     self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
-                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-                    
+                    self.noDataFound.isHidden = false
+                    self.dataContainingView.isHidden = false
+                    self.sortFilterContainStackView.isHidden = true
+                    self.categoryCollectionView.isHidden = true
+                    if (String(describing: (dict["error"])!)) == apiNoRecordMsg {
+                        let alert = UIAlertController(title: appName, message: msgToShowIfNoRecord, preferredStyle: .alert)
+                        let yesBtn = UIAlertAction(title: okBtnTitle, style: .default, handler: { (UIAlertAction) in
+                            alert.dismiss(animated: true, completion: nil)
+                            self.tabBarController?.selectedIndex = 1
+                            
+                        })
+                        alert.addAction(yesBtn)
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    } else {
+                        CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    }
                 }
             }
         }) { (error) in
@@ -375,6 +397,10 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     
                     self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
+                    self.noDataFound.isHidden = false
+                    self.dataContainingView.isHidden = false
+                    self.sortFilterContainStackView.isHidden = true
+                    self.categoryCollectionView.isHidden = true
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }

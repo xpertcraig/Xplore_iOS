@@ -871,45 +871,52 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     }
     
     @objc func tapFeaturedProfilePicBtn(sender: UIButton) {
-        if DataManager.isUserLoggedIn! == false {
-            self.loginAlertFunc(vc: "viewProfile")
-            
+        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
         } else {
-            let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
-            
-            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-                self.navigationController?.pushViewController(vc, animated: true)
-            } else {
+            if DataManager.isUserLoggedIn! == false {
                 self.loginAlertFunc(vc: "viewProfile")
-              
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-                vc.userInfoDict = indexVal
-                self.navigationController?.pushViewController(vc, animated: true)
-              
+                
+            } else {
+                let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
+                
+                if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    self.loginAlertFunc(vc: "viewProfile")
+                  
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                    vc.userInfoDict = indexVal
+                    self.navigationController?.pushViewController(vc, animated: true)
+                  
+                }
             }
         }
     }
     
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
-        if DataManager.isUserLoggedIn! == false {
-            self.loginAlertFunc(vc: "viewProfile")
-            
+        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
         } else {
-            let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
-            
-            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-                self.navigationController?.pushViewController(vc, animated: true)
-            } else {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-                vc.userInfoDict = indexVal
-                self.navigationController?.pushViewController(vc, animated: true)
+            if DataManager.isUserLoggedIn! == false {
+                self.loginAlertFunc(vc: "viewProfile")
                 
+            } else {
+                let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
+                
+                if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                    vc.userInfoDict = indexVal
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }
             }
         }
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
@@ -918,8 +925,11 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
         } else {
             vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
         }
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if vc.campId == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
+        } else {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -945,14 +955,18 @@ extension HomeVc : UITextFieldDelegate {
     }
     
     @objc func favoutiteAction(sender: UIButton) {
-        if DataManager.isUserLoggedIn! {
-            self.campIndex = sender.tag
-            openfavView(index: sender.tag)
-            
+        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
         } else {
-            self.loginAlertFunc(vc: "markFav")
-            Singleton.sharedInstance.favIndex = sender.tag
-            
+            if DataManager.isUserLoggedIn! {
+                self.campIndex = sender.tag
+                openfavView(index: sender.tag)
+                
+            } else {
+                self.loginAlertFunc(vc: "markFav")
+                Singleton.sharedInstance.favIndex = sender.tag
+                
+            }
         }
     }
     
@@ -1000,16 +1014,17 @@ extension HomeVc : UITextFieldDelegate {
     }
     
     @objc func revfavAction(sender: UIButton) {
-        if DataManager.isUserLoggedIn! {
-            self.campIndex = sender.tag
-            openRevFavView(index: sender.tag)
-            
+        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            Singleton.sharedInstance.loginComeFrom = fromRevFavCamp
-            Singleton.sharedInstance.favIndex = sender.tag
-            self.navigationController?.pushViewController(vc, animated: false)
-            
+            if DataManager.isUserLoggedIn! {
+                self.campIndex = sender.tag
+                openRevFavView(index: sender.tag)
+                
+            } else {
+                self.loginAlertFunc(vc: "markFav")
+                Singleton.sharedInstance.favIndex = sender.tag
+            }
         }
     }
     

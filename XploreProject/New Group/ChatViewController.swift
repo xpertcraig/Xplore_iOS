@@ -276,23 +276,26 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let dictMessage = ["sender_id": String(describing: (DataManager.userId)),"receiver_id":receiverId,"message": self.chatTextView.text!, "postDate":  ServerValue.timestamp(), "messageType":"","nodeId":"\(String(describing: (childRef.key)!))","myMsg":"0","otherMsg":"0"] as [String : Any]
         
+        let msg = self.chatTextView.text!
+        self.chatTextView.text = ""
+        self.chatTextViewHeight.constant = 33.0
+        
         childRef.updateChildValues(dictMessage)
         
         //update message and time in user database
-        Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(self.chatTextView.text!)
+        Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(msg)
         Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue(ServerValue.timestamp())
         
         let sender = PushNotificationSender()
         let refU = Database.database().reference().child("UsersProfile")
         refU.child(receiverId).observe(.value, with: { (shot) in
             
+            
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
                 print(postDict)
                 if let deviceToken = postDict["deviceToken"] as? String {
-                    sender.sendPushNotification(to: "\(String(describing: postDict["deviceToken"]!))", title: "\(String(describing: (DataManager.name))) sent you a message", body: self.chatTextView.text!, userId: DataManager.userId as! String)
+                    sender.sendPushNotification(to: "\(String(describing: postDict["deviceToken"]!))", title: "\(String(describing: (DataManager.name))) sent you a message", body: msg, userId: DataManager.userId as! String)
                 }
-                self.chatTextView.text = ""
-                self.chatTextViewHeight.constant = 33.0
             }
         })
     }

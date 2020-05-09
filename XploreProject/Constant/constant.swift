@@ -27,7 +27,7 @@ let googleApiKey = "AIzaSyBwACZfpIgU47tZP_IeJQSj2ubYERgYciQ"
 
 var notificationCount: Int = 0
 
-let appName = "Xplore"
+let appName = "Xplorecampsite"
 let okBtnTitle = "ok"
 let yesBtntitle = "yes"
 let noBtnTitle = "no"
@@ -65,7 +65,7 @@ let yourSubscription = "Your subscription is expire, please pay to countinue usi
 
 //MARK:- Filter
 let selectOneAlert = "Please select atleast one."
-let countryEmptyAlertF = "Please select country."
+let countryEmptyAlertF = "Please select the country."
 let stateEmptyAlertF = "Please select state."
 let cityEmptyAlert = "Please select city."
 let filter = "filter"
@@ -130,9 +130,9 @@ let ContactUs = "Contact Us"
 let validWebUrl = "Please enter valid weburl"
 let mismatchPass = "Password does not match."
 
-let verifyEmail = "A verification email sent to your email, please verify email and login into the app."
+let verifyEmail = "Please verify your email to continue."
 let LogoutMessage = "Are you sure want to logout?"
-let loginRequired = "We are sorry please login"
+let loginRequired = "We are sorry please login to continue"
 let videoNotSaved = "Video can not be saved in drafts. would you still wanted to save site without video?"
 
 let emailFieldEmptyAlertMessage = "Please enter your email address."
@@ -150,6 +150,12 @@ let newPasswordLengthAlert = "New password length must be greater than 8."
 
 let notificationDeleteMessage = " Are you want to delete message."
 
+let apiNoRecordMsg = "No Record Found"
+let msgToShowIfNoRecord = "We are unable to find records, please try search campsites"
+let noCampAtLoc = "We are unable to find any camps on your location, please try search campsites"
+let passMismatch = "Password Mismatch"
+let showOnPassMismatch = "Please check the password and try again"
+
 //MARK:- Add review alert messages
 let dateOfStayAlert = "Please select date of stay."
 let lenghtOfStay = "Please enter length of days of stay."
@@ -162,6 +168,8 @@ let bugFactorAlert = "please rate bug factor."
 let descriptionAlert1 = "please enter description."
 let addtipAlert = "please enter tip."
 let reviewAdded = "Your review added successfully."
+
+
 
 //MARK:- Publish
 let emptyPublishFieldAlert = "We are sorry, seems some field are empty."
@@ -292,7 +300,7 @@ let changeSuccessfully = "Your password has been changed successfully."
 let enteredPreviousPasswordNotMatched = "Your entered previous password not matched."
 
 //MARK:- Forgot pass
-let passwordSendToEmail = "Please check your email for new password."
+let passwordSendToEmail = "Your request processed successfully, please check your email."
 
 //MARK:- Userdefault
 let XPIsUserLoggedIn = "IsUserLoggedIn"

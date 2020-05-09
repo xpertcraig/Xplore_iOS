@@ -78,15 +78,15 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
 
     override func viewWillAppear(_ animated: Bool) {
         let sing = Singleton.sharedInstance
-        if sing.loginComeFrom == fromTopBar || sing.loginComeFrom == fromProfile || sing.loginComeFrom == fromNearByuser || sing.loginComeFrom == fromAddCamps || sing.loginComeFrom == fromNoti || sing.loginComeFrom == fromSearch || sing.loginComeFrom == fromFavCamps || sing.loginComeFrom == fromRevFavCamp {
+//        if sing.loginComeFrom == fromTopBar || sing.loginComeFrom == fromProfile || sing.loginComeFrom == fromNearByuser || sing.loginComeFrom == fromAddCamps || sing.loginComeFrom == fromNoti || sing.loginComeFrom == fromSearch || sing.loginComeFrom == fromFavCamps || sing.loginComeFrom == fromRevFavCamp {
             self.backBtn.isHidden = false
             self.backBtnImg.isHidden = false
-            self.navigationController?.tabBarController?.tabBar.isHidden = true
-        } else {
-            self.backBtn.isHidden = true
-            self.backBtnImg.isHidden = true
-            self.navigationController?.tabBarController?.tabBar.isHidden = false
-        }
+           // self.navigationController?.tabBarController?.tabBar.isHidden = true
+//        } else {
+//            self.backBtn.isHidden = true
+//            self.backBtnImg.isHidden = true
+//            self.navigationController?.tabBarController?.tabBar.isHidden = false
+//        }
         //PayPal
         PayPalMobile.preconnect(withEnvironment: environment)
     }
@@ -262,10 +262,15 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
     @IBAction func tapBackBtn(_ sender: UIButton) {
         self.view.endEditing(true)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.popViewController(animated: false)
-        
+       // self.navigationController?.popViewController(animated: false)
+        self.tabBarController?.selectedIndex = 0
     }
     
+    @IBAction func tapClosePaymentView(_ sender: Any) {
+        self.view.endEditing(true)
+        self.overlayView.isHidden = true
+        
+    }
 }
 extension LoginVc {
     //MARK: validations on textField
@@ -343,8 +348,11 @@ extension LoginVc {
                     self.commonViewModel.updateFirebaseProfile()
                     
                 } else {
-                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-                    
+                    if (String(describing: (dict["error"])!)) == passMismatch {
+                        CommonFunctions.showAlert(self, message: showOnPassMismatch, title: appName)
+                    } else {
+                        CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    }
                 }
             }
         }) { (error) in
@@ -601,14 +609,6 @@ extension LoginVc :UITextFieldDelegate {
     }
 }
 
-extension UINavigationController {
-
-    func removeViewController(_ controller: UIViewController.Type) {
-        if let viewController = viewControllers.first(where: { $0.isKind(of: controller.self) }) {
-            viewController.removeFromParentViewController()
-        }
-    }
-}
 
 @available(iOS 13.0, *)
 extension LoginVc: ASAuthorizationControllerDelegate {

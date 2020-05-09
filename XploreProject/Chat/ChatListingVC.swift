@@ -42,7 +42,7 @@ class ChatListingVC: UIViewController {
             self.reloadTbl()
             
         }
-        self.animateTbl()
+        
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
         self.observeChannels()
@@ -124,8 +124,11 @@ class ChatListingVC: UIViewController {
                         self.chatListingTblView.delegate = self
                         self.chatListingTblView.dataSource = self
                         self.chatListingTblView.reloadData()
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+                            self.animateTbl()
+                        }
                     }
-                    
                 } else {
                     self.noChatFound.isHidden = false
                 }

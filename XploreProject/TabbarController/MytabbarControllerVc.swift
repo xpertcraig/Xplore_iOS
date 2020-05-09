@@ -65,6 +65,8 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
                 present(alert, animated: true, completion: nil)
                 
                 return false
+            } else {
+               
             }
         }
         return true

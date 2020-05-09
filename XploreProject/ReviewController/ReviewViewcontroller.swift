@@ -170,8 +170,9 @@ class ReviewViewcontroller: UIViewController {
                     }
                     
                     self.reviewTableView.reloadData()
-                    self.animateTbl()
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+                        self.animateTbl()
+                    }
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     

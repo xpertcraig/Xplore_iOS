@@ -674,7 +674,7 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
 
 extension savedCompositeVc {
     func favouritesApiHit(pageNum: Int) {
-        if (Singleton.sharedInstance.favouritesCampArr.count == 0 && userDefault.value(forKey: favouritesCampsStr) == nil){
+        if (Singleton.sharedInstance.favouritesCampArr.count == 0 && userDefault.value(forKey: favouritesCampsStr) == nil) && self.favouriteCampArr.count == 0 {
             applicationDelegate.startProgressView(view: self.view)
             
         }
@@ -713,10 +713,10 @@ extension savedCompositeVc {
                         self.favouriteCampArr.add(retValues.object(at: i) as! NSDictionary)
                         
                     }
-                    self.collArr = self.favouriteCampArr
-                    
-                    Singleton.sharedInstance.favouritesCampArr = self.collArr
-                    
+                    if self.campType == favouritesCamp {
+                        self.collArr = self.favouriteCampArr
+                        Singleton.sharedInstance.favouritesCampArr = self.collArr
+                    }
                     if self.firstTime == false {
                         self.setDelegateAndDataSource()
                         

@@ -227,34 +227,30 @@ extension SettingVc: UITableViewDataSource , UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        let indexPath = indexPath.row
+        let indexPath = tableViewArray[indexPath.row] as? String
         switch (indexPath){
-        case 0:
+        case ChangePassword:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ResetPasswordVc") as! ResetPasswordVc
             navigationController? .pushViewController(vc, animated: true)
             
-        case 2:
+        case payHistory:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "PaymentHistoryVC") as! PaymentHistoryVC
             navigationController? .pushViewController(vc, animated: true)
             
             
-        case 3:
+        case About:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
             navigationController? .pushViewController(vc, animated: true)
             
-//        case 4:
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "GuidelinesVC") as! GuidelinesVC
-//            navigationController? .pushViewController(vc, animated: true)
-//
-        case 4:
+        case TermsConditions:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "TermsVc") as! TermsVc
             navigationController? .pushViewController(vc, animated: true)
             
-        case 5:
+        case PrivacyPolicy:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "PrivacyVc") as! PrivacyVc
             navigationController? .pushViewController(vc, animated: true)
             
-        case 6:
+        case ContactUs:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ContactUsVC") as! ContactUsVC
             navigationController? .pushViewController(vc, animated: true)
         

@@ -577,7 +577,7 @@ extension CampDescriptionVc {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retDict = (dict["result"] as! NSDictionary)
                    
-               //     print(retDict)
+                 //   print(retDict)
                     
                     self.campDetailDict = retDict
                     

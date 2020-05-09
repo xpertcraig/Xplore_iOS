@@ -14,6 +14,15 @@ class AllExtensions: UIViewController {
     
 }
 
+extension UINavigationController {
+
+    func removeViewController(_ controller: UIViewController.Type) {
+        if let viewController = viewControllers.first(where: { $0.isKind(of: controller.self) }) {
+            viewController.removeFromParentViewController()
+        }
+    }
+}
+
 //MARK:- UiViewController
 extension UIViewController {
     func convertDateFormater(_ date: String) -> String {
