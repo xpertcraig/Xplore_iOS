@@ -47,6 +47,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     let disptchG = DispatchGroup()
     var fromCross: Bool = false
     private let commonDataViewModel = CommonUseViewModel()
+    let locationManager = CLLocationManager()
     
     //Pappal Config Object
     var payPalConfig = PayPalConfiguration() // default
@@ -109,6 +110,9 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //self.userLocationisOn()
+        self.checkUsersLocationServicesAuthorization()
+        
         if Singleton.sharedInstance.notiType == "chatMessage" {
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
@@ -152,6 +156,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
         //PayPal
         PayPalMobile.preconnect(withEnvironment: environment)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -177,6 +182,22 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 self.notificationCountLbl.text! = "\(9)+"
             } else {
                 self.notificationCountLbl.text! = "\(notiCount)"
+            }
+        }
+    }
+    
+    func userLocationisOn() {
+        if Reachability.isLocationServiceEnabled() == true {
+        // Do what you want to do.
+        } else {
+        //You could show an alert like this.
+            let alertController = UIAlertController(title: "Location Services Disabled", message: "Please enable location services for this app.", preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "OK", style: .default,
+            handler: nil)
+            alertController.addAction(OKAction)
+            OperationQueue.main.addOperation {
+                self.present(alertController, animated: true,
+                completion:nil)
             }
         }
     }
@@ -1449,5 +1470,48 @@ extension HomeVc {
         alert.addAction(noBtn)
         present(alert, animated: true, completion: nil)
         
+    }
+}
+
+extension HomeVc  :CLLocationManagerDelegate{
+
+    func checkUsersLocationServicesAuthorization(){
+        /// Check if user has authorized Total Plus to use Location Services
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined:
+                // Request when-in-use authorization initially
+                // This is the first and the ONLY time you will be able to ask the user for permission
+                self.locationManager.delegate = self
+                locationManager.requestWhenInUseAuthorization()
+                break
+
+            case .restricted, .denied:
+                // Disable location features
+                //switchAutoTaxDetection.isOn = false
+                let alert = UIAlertController(title: "Allow Location Access", message: "XploreCampsite needs access to your location. Turn on Location Services in your device settings.", preferredStyle: UIAlertController.Style.alert)
+
+                // Button to Open Settings
+                alert.addAction(UIAlertAction(title: "Settings", style: UIAlertAction.Style.default, handler: { action in
+                    guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                        return
+                    }
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                            print("Settings opened: \(success)")
+                        })
+                    }
+                }))
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+
+                break
+
+            case .authorizedWhenInUse, .authorizedAlways:
+                // Enable features that require location services here.
+                print("Full Access")
+                break
+            }
+        }
     }
 }

@@ -312,8 +312,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
             
         }
-        
-        
     }
     
     //MARK: - ProgressIndicator view start
@@ -333,23 +331,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func checkLogin() {
-  //      let loginCheck = DataManager.isUserLoggedIn
-        
-      //  let loginCheck = userDefault.bool(forKey: login.USER_DEFAULT_LOGIN_CHECK_Key)
-  //      if(loginCheck)! {
-            
-            //get notification count
-         //   self.notificationCountApi()
-            
         if DataManager.isUserLoggedIn! == false {
             DataManager.userId = "0" as AnyObject
-            
         }
-        
-            let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-            (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
-            
-    //    }
+        let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+        (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
+   
     }    
     
     func determineMyCurrentLocation() {
@@ -367,14 +354,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0] as CLLocation
-        
-        // Call stopUpdatingLocation() to stop listening for location updates,
-        // other wise this function will be called every time when user location changes.
-        
-        // manager.stopUpdatingLocation()
-        
-        //print("user latitude = \((userLocation.coordinate.latitude))")
-        //print("user longitude = \(userLocation.coordinate.longitude)")
         
         myCurrentLongitude = (userLocation.coordinate.longitude).roundToDecimal(4)
         myCurrentLatitude = (userLocation.coordinate.latitude).roundToDecimal(4)
@@ -433,7 +412,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-    
     
     // MARK: - Core Data stack
 
@@ -553,30 +531,29 @@ extension AppDelegate : MessagingDelegate {
     }
 }
 
-
-// MARK: - CLLocationManagerDelegate
-//extension AppDelegate: CLLocationManagerDelegate {
-//
-//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//        if status == .authorizedWhenInUse {
-//            locationManager.startUpdatingLocation()
-////            mapView.myLocationEnabled = true
-////            mapView.settings.myLocationButton = true
-//        } else {
-//            print("Off")
-//
-//        }
-//    }
-////    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-////        if let location = locations.first {
-////           // mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 20, bearing: 0, viewingAngle: 0)
-////            locationManager.stopUpdatingLocation()
-////        }
-////    }
-//}
-
 extension UINavigationController {
     public func hasViewController(ofKind kind: AnyClass) -> UIViewController? {
         return self.viewControllers.first(where: {$0.isKind(of: kind)})
     }
 }
+
+open class Reachability {
+class func isLocationServiceEnabled() -> Bool {
+    if CLLocationManager.locationServicesEnabled() {
+        switch(CLLocationManager.authorizationStatus()) {
+            case .notDetermined, .restricted, .denied:
+            return false
+            case .authorizedAlways, .authorizedWhenInUse:
+            return true
+            default:
+            print("Something wrong with Location services")
+            return false
+        }
+    } else {
+            print("Location services are not enabled")
+            return false
+      }
+    }
+ }
+
+
