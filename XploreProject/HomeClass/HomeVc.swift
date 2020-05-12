@@ -410,17 +410,13 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     @objc func tapSearchView() {
-       // if DataManager.isUserLoggedIn! {
+        if connectivity.isConnectedToInternet() {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchCampVC") as! SearchCampVC
             vc.searchType = "Home"
             self.navigationController?.pushViewController(vc, animated: false )
-            
-//        } else {
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-//            Singleton.sharedInstance.loginComeFrom = fromSearch
-//            self.navigationController?.pushViewController(vc, animated: false)
-//
-//        }
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+        }
     }
     
     func getLocationNameAndImage() {
@@ -524,8 +520,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     @IBAction func profileAction(_ sender: Any) {
         if DataManager.isUserLoggedIn! {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
+            if connectivity.isConnectedToInternet() {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
         } else {
             self.loginAlertFunc(vc: "profile")
         }
@@ -533,9 +533,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
         if DataManager.isUserLoggedIn! {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-            self.navigationController?.pushViewController(vc, animated: true)
-            
+            if connectivity.isConnectedToInternet() {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
         } else {
             self.loginAlertFunc(vc: "nearByUser")
             
@@ -555,9 +558,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     @IBAction func notificationAction(_ sender: Any) {
         if DataManager.isUserLoggedIn! {
-            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-            self.navigationController?.pushViewController(swRevealObj, animated: true)
-            
+            if connectivity.isConnectedToInternet() {
+                let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+                self.navigationController?.pushViewController(swRevealObj, animated: true)
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
         } else {
             self.loginAlertFunc(vc: "fromNoti")
             
@@ -682,35 +688,52 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     @IBAction func featuredViewAllBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
-        vc.comeFrom = featuredBased
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        self.view.endEditing(true)
+        if connectivity.isConnectedToInternet() {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
+            vc.comeFrom = featuredBased
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+        }
     }
     
     @IBAction func tapFeaturedReviewBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
-        vc.comeFrom = reviewBased
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        self.view.endEditing(true)
+        if connectivity.isConnectedToInternet() {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
+            vc.comeFrom = reviewBased
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+        }
     }
     
     @IBAction func tapViewAllCampsBtn(_ sender: Any) {
         self.view.endEditing(true)
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
-        vc.comeFrom = allCamps
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if connectivity.isConnectedToInternet() {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
+            vc.comeFrom = allCamps
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+        }
     }
     
     @IBAction func tapPayNowBtn(_ sender: UIButton) {
-        self.payPalButtonPressed()
-        
+        if connectivity.isConnectedToInternet() {
+            self.payPalButtonPressed()
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+        }
     }
     
     @IBAction func tapLogoutBtn(_ sender: UIButton) {
-        hitLogoutApi()
-        
+        if connectivity.isConnectedToInternet() {
+            hitLogoutApi()
+        } else {
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+        }
     }
 }
 
@@ -924,57 +947,73 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 self.loginAlertFunc(vc: "viewProfile")
                 
             } else {
-                let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
-                
-                if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-                    self.navigationController?.pushViewController(vc, animated: true)
+                if connectivity.isConnectedToInternet() {
+                    let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
+                    
+                    if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    } else {
+                        self.loginAlertFunc(vc: "viewProfile")
+                      
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                        vc.userInfoDict = indexVal
+                        self.navigationController?.pushViewController(vc, animated: true)
+                      
+                    }
                 } else {
-                    self.loginAlertFunc(vc: "viewProfile")
-                  
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-                    vc.userInfoDict = indexVal
-                    self.navigationController?.pushViewController(vc, animated: true)
-                  
+                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 }
             }
         }
     }
     
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
-        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
-            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
+        if String(describing: ((self.reviewBasedArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: postReviewFirst, title: appName)
         } else {
             if DataManager.isUserLoggedIn! == false {
                 self.loginAlertFunc(vc: "viewProfile")
                 
             } else {
-                let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
-                
-                if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-                    self.navigationController?.pushViewController(vc, animated: true)
-                } else {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-                    vc.userInfoDict = indexVal
-                    self.navigationController?.pushViewController(vc, animated: true)
+                if connectivity.isConnectedToInternet() {
+                    let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
                     
+                    if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    } else {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                        vc.userInfoDict = indexVal
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }
+                } else {
+                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 }
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
-        if collectionView.tag == 1 {
-            vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+        if connectivity.isConnectedToInternet() {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
+            
+            var msg: String = ""
+            if collectionView.tag == 1 {
+                msg = noCampAtLoc
+                vc.campId = String(describing: ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            } else {
+                msg = postReviewFirst
+                vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
+            }
+            if vc.campId == "0" {
+                CommonFunctions.showAlert(self, message: msg, title: appName)
+            } else {
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         } else {
-            vc.campId = String(describing: ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-        }
-        if vc.campId == "0" {
-            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
-        } else {
-            self.navigationController?.pushViewController(vc, animated: true)
+            CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -1005,9 +1044,12 @@ extension HomeVc : UITextFieldDelegate {
             CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
         } else {
             if DataManager.isUserLoggedIn! {
-                self.campIndex = sender.tag
-                openfavView(index: sender.tag)
-                
+                if connectivity.isConnectedToInternet() {
+                    self.campIndex = sender.tag
+                    openfavView(index: sender.tag)
+                } else {
+                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                }
             } else {
                 self.loginAlertFunc(vc: "markFav")
                 Singleton.sharedInstance.favIndex = sender.tag
@@ -1060,13 +1102,16 @@ extension HomeVc : UITextFieldDelegate {
     }
     
     @objc func revfavAction(sender: UIButton) {
-        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
-            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
+        if String(describing: ((self.reviewBasedArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: postReviewFirst, title: appName)
         } else {
             if DataManager.isUserLoggedIn! {
-                self.campIndex = sender.tag
-                openRevFavView(index: sender.tag)
-                
+                if connectivity.isConnectedToInternet() {
+                    self.campIndex = sender.tag
+                    openRevFavView(index: sender.tag)
+                } else {
+                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                }
             } else {
                 self.loginAlertFunc(vc: "markFav")
                 Singleton.sharedInstance.favIndex = sender.tag

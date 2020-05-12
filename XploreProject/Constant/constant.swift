@@ -82,6 +82,7 @@ let receivedAbouseAlert = "Thank you, we have received your feedback."
 let alreadyMarkAbuseAlert = "You have already marked this campsite as abused."
 let selfPost = "Sorry, you can not add review to your own post."
 
+let postReviewFirst = "Be the first to post review"
 
 //Add Campsite
 let campsiteAddr1Empty = "Please enter campsite address1."

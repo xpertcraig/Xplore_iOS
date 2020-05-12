@@ -262,7 +262,7 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
     @IBAction func tapBackBtn(_ sender: UIButton) {
         self.view.endEditing(true)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-       // self.navigationController?.popViewController(animated: false)
+        self.navigationController?.popViewController(animated: false)
         self.tabBarController?.selectedIndex = 0
     }
     

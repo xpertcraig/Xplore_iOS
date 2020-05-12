@@ -293,6 +293,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let msg = self.chatTextView.text!
         self.chatTextView.text = ""
         self.chatTextViewHeight.constant = 33.0
+        self.view.endEditing(true)
         
         childRef.updateChildValues(dictMessage)
         

@@ -303,14 +303,18 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     }
    
     @objc func tapProfilePicBtn(sender: UIButton) {
-        if String(describing: (DataManager.userId)) == String(describing: ((self.reviewsArr.object(at: sender.tag) as! NSDictionary).value(forKey: "userId"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            if String(describing: (DataManager.userId)) == String(describing: ((self.reviewsArr.object(at: sender.tag) as! NSDictionary).value(forKey: "userId"))!) {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                vc.userInfoDict = (self.reviewsArr.object(at: sender.tag) as! NSDictionary)
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            vc.userInfoDict = (self.reviewsArr.object(at: sender.tag) as! NSDictionary)
-            self.navigationController?.pushViewController(vc, animated: true)
-            
+            self.loginAlertFunc(vc: "profile")
         }
     }
     
