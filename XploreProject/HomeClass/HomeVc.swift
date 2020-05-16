@@ -16,6 +16,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     //MARK:- Outlets
     @IBOutlet weak var homeScrollView: UIScrollView!
+    @IBOutlet weak var CorrentLocContainingView: UIViewCustomClass!
+    @IBOutlet weak var locviewHeight: NSLayoutConstraint!
     @IBOutlet weak var myCurrentLocation: UILabel!
     @IBOutlet weak var myCurrentLocationState: UILabel!
     @IBOutlet weak var mycurrentLocationImage: UIImageView!
@@ -73,6 +75,11 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if Singleton.sharedInstance.myCurrentLocDict.count == 0 {
+            self.CorrentLocContainingView.isHidden = true
+            self.locviewHeight.constant = 0
+        }
+        
         self.moveToControllerAfterLogin()
         var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
         print(vcArray)
@@ -85,16 +92,10 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         self.overlayView.isHidden = true
         self.favoriteMarkView.isHidden = true
         favMarkbottomConstraint.constant = 150
-//        let tapper = UITapGestureRecognizer(target: self, action:#selector(endEditing))
-//        self.overlayView.addGestureRecognizer(tapper)
-        
-        self.searchView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapSearchView)))
+            self.searchView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapSearchView)))
         
         self.currentLocView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCurrentImg)))
-//        //api
-//        self.callAPI()
-//        self.checkSubscription()
-        
+     
         //refresh controll
         self.refreshData()
         
@@ -249,6 +250,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.myCurrentLocationState.text = locState
             
         }
+        self.animateLocView()
         
     }
     
@@ -314,9 +316,20 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 self.mycurrentLocationImage.image = photo;
                 
                 Singleton.sharedInstance.myCurrentLocDict.updateValue(self.mycurrentLocationImage.image!, forKey: "mycurLocImg")
+                
+                self.animateLocView()
+                
                 //self.attributionTextView.attributedText = photoMetadata.attributions;
             }
         })
+    }
+    
+    func animateLocView() {
+        self.CorrentLocContainingView.isHidden = false
+        self.locviewHeight.constant = 55
+        UIView.animate(withDuration: 1.0) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     func hitLogoutApi() {
@@ -1175,11 +1188,14 @@ extension HomeVc {
                         self.recallAPIView.isHidden = true
                         self.getLocationNameAndImage()
                         
-                        self.featuredArr = retValues.value(forKey: "featuredCampsite") as! NSArray
-                        self.reviewBasedArr = retValues.value(forKey: "reviewBased") as! NSArray
-                        
-                        Singleton.sharedInstance.homeFeaturesCampsArr = self.featuredArr
-                        Singleton.sharedInstance.homeReviewBasedCampsArr = self.reviewBasedArr
+                        if let featuerd = retValues.value(forKey: "featuredCampsite") as? NSArray {
+                            self.featuredArr = featuerd
+                            Singleton.sharedInstance.homeFeaturesCampsArr = self.featuredArr
+                        }
+                        if let review = retValues.value(forKey: "reviewBased") as? NSArray {
+                            self.reviewBasedArr = review
+                            Singleton.sharedInstance.homeReviewBasedCampsArr = self.reviewBasedArr
+                        }
                         
                         //
                         self.setDelegateAndDataSource()
