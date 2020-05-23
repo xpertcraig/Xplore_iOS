@@ -504,7 +504,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.loginAlertFunc(vc: "profile")
+            self.loginAlertFunc(vc: "profile", viewController: self)
         }
     }
     
@@ -513,7 +513,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.loginAlertFunc(vc: "nearByUser")
+            self.loginAlertFunc(vc: "nearByUser", viewController: self)
         }
     }
     
@@ -522,7 +522,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.loginAlertFunc(vc: "addCamps")
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
         }
     }
     
@@ -531,7 +531,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.loginAlertFunc(vc: "fromNoti")
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
         }
     }
     
@@ -652,7 +652,7 @@ extension SearchCampVC {
             self.overlayview.isHidden = false
             self.view.layoutIfNeeded()
         } else {
-            self.loginAlertFunc(vc: "markFav")
+            self.loginAlertFunc(vc: "markFav", viewController: self)
             Singleton.sharedInstance.favIndex = sender.tag
         }
     }
@@ -757,7 +757,7 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
     
     @objc func tapSearchProfilePicBtn(sender: UIButton) {
         if DataManager.isUserLoggedIn! == false {
-            self.loginAlertFunc(vc: "viewProfile")
+            self.loginAlertFunc(vc: "viewProfile", viewController: self)
             
         } else {
             let indexVal: NSDictionary = (self.searchDataArr.object(at: sender.tag) as! NSDictionary)
@@ -827,44 +827,5 @@ extension SearchCampVC: GMSAutocompleteViewControllerDelegate {
         self.dataContainingView.isHidden = true
         dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: false)
-    }
-}
-
-//MARK:- login alert
-extension SearchCampVC {
-    func loginAlertFunc(vc: String) {
-        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
-        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            if vc == "profile" {
-                Singleton.sharedInstance.loginComeFrom = fromProfile
-                
-            } else if vc == "nearByUser" {
-                Singleton.sharedInstance.loginComeFrom = fromNearByuser
-               
-            } else if vc == "addCamps" {
-                Singleton.sharedInstance.loginComeFrom = fromAddCamps
-                
-            } else if vc == "fromNoti" {
-                Singleton.sharedInstance.loginComeFrom = fromNoti
-                
-            } else if vc == "fromNoti" {
-                Singleton.sharedInstance.loginComeFrom = fromFavCamps
-                
-            } else if vc == "viewProfile" {
-                Singleton.sharedInstance.loginComeFrom = fromViewProfile
-                
-            }
-            self.navigationController?.pushViewController(controller, animated: false)
-        })
-        
-        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-        })
-        alert.addAction(yesBtn)
-        alert.addAction(noBtn)
-        present(alert, animated: true, completion: nil)
-        
     }
 }

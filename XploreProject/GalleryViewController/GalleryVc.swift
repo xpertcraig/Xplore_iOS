@@ -264,25 +264,45 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
     }
     
     @IBAction func tapProfileBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            self.loginAlertFunc(vc: "profile", viewController: self)
+        }
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "nearByUser", viewController: self)
+            
+       }
     }
     
     @IBAction func tapAddCampsiteBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
+            
+        }
     }
     
     @IBAction func tapNotificationBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
+            
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -381,19 +401,14 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
         }
     }
     
-    @objc func didfinishplaying(note : NSNotification)
-    {
+    @objc func didfinishplaying(note : NSNotification) {
         playerController.dismiss(animated: true,completion: nil)
-        //        let alertview = UIAlertController(title:"Finished",message:"Video Finished",preferredStyle: .alert)
-        //        alertview.addAction(UIAlertAction(title:"Ok",style: .default, handler: nil))
-        //        self.present(alertview,animated:true,completion: nil)
     }
     
     func playerViewController(_ playerViewController: AVPlayerViewController, restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void) {
         let currentviewController =  navigationController?.visibleViewController
         
-        if currentviewController != playerViewController
-        {
+        if currentviewController != playerViewController {
             currentviewController?.present(playerViewController,animated: true,completion:nil)
         }
     }
@@ -401,11 +416,6 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.tag == 1 {
             self.previewGalleryCollView.reloadData()
-            
-//            let cell1 = self.previewGalleryCollView.cellForItem(at: self.viewedIndex)
-//            cell1?.layer.borderWidth = 0.0
-//            cell1?.layer.borderColor = UIColor.clear.cgColor
-            
             self.viewedIndex = indexPath
             
         }

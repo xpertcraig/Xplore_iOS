@@ -236,13 +236,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if let messageID = userInfo[gcmMessageIDKey] {
             // print("Message ID: \(messageID)")
         }
-       
-       // print(userInfo)
         notificationRecdict = userInfo as NSDictionary
-        
-        notificationCount += 1
-        
-    //    self.notiType = String(describing: (notificationRecdict.value(forKey: "gcm.notification.type"))!)
+       // notificationCount += 1
         self.notificationRec()
     }
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
@@ -251,14 +246,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if let messageID = userInfo[gcmMessageIDKey] {
             // print("Message ID: \(messageID)")
         }
-        
-        // Print full message.
-        //print(userInfo)
-        notificationCount += 1
-        
+       // notificationCount += 1
         notificationRecdict = userInfo as NSDictionary
-        
-    //    self.notiType = String(describing: (notificationRecdict.value(forKey: "gcm.notification.type"))!)
         self.notificationRec()
         
         completionHandler(UIBackgroundFetchResult.newData)
@@ -271,8 +260,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
        // print("APNs token retrieved: \(deviceToken)")
         if let token = Messaging.messaging().fcmToken{
-            
-            //print("Device Token: \(token)")
             userDefault.set(token, forKey: "DeviceToken")
             
         } else {
@@ -291,22 +278,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func notificationRec() {
+        self.notificationCountApi()
         if UIApplication.shared.applicationState == UIApplicationState.active {
-          //  if (self.notiType == "") {
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                self.window?.makeKeyAndVisible()
-                
-//            } else  if (self.notiType == "chatMessage") {
-//
-//            }
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            self.window?.makeKeyAndVisible()
             
-            let notiCountDict:[String: Int] = ["count": notificationCount]
-            // post a notification
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationRec"), object: nil, userInfo: notiCountDict)
             /* active stage is working */
         } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             //get notification count
-            self.notificationCountApi()
             
             let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
             (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
@@ -362,22 +341,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func getLocationNameAndImage() {
-            let geocoder = CLGeocoder()
-            if userLocation != nil {
-                geocoder.reverseGeocodeLocation(userLocation!) { (placemarksArray, error) in
-                    if placemarksArray != nil {
-                        if (placemarksArray?.count)! > 0 {
-                            let placemark = placemarksArray?.first
-                      
-                            if placemark?.addressDictionary != nil {
-                                if (placemark?.addressDictionary!["Country"]) != nil {
-                                    countryOnMyCurrentLatLong = (placemark?.addressDictionary!["Country"]) as? String ?? ""
-                                   
-                                }
+        let geocoder = CLGeocoder()
+        if userLocation != nil {
+            geocoder.reverseGeocodeLocation(userLocation!) { (placemarksArray, error) in
+                if placemarksArray != nil {
+                    if (placemarksArray?.count)! > 0 {
+                        let placemark = placemarksArray?.first
+                  
+                        if placemark?.addressDictionary != nil {
+                            if (placemark?.addressDictionary!["Country"]) != nil {
+                                countryOnMyCurrentLatLong = (placemark?.addressDictionary!["Country"]) as? String ?? ""
+                               
                             }
                         }
                     }
                 }
+            }
         }
     }
     
@@ -473,15 +452,19 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         //print(userInfo)
         notificationRecdict = userInfo as NSDictionary
-        
       //  notificationCount += 1
         
-     //   self.notiType = String(describing: (notificationRecdict.value(forKey: "gcm.notification.type"))!)
-        if let notyType = notificationRecdict.value(forKey: "gcm.notification.type") as? String {
-            Singleton.sharedInstance.notiType = notyType
-        }
-        if let senderId = notificationRecdict.value(forKey: "user") as? String {
-            Singleton.sharedInstance.messageSentUserId = senderId
+        if UIApplication.shared.applicationState == UIApplicationState.active {
+            
+            
+        } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
+            
+            if let notyType = notificationRecdict.value(forKey: "gcm.notification.type") as? String {
+                Singleton.sharedInstance.notiType = notyType
+            }
+            if let senderId = notificationRecdict.value(forKey: "user") as? String {
+                Singleton.sharedInstance.messageSentUserId = senderId
+            }
         }
         self.notificationRec()
         completionHandler([.alert])
@@ -496,17 +479,18 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             //  print("Message ID: \(messageID)")
             
         }
-        // Print full message.
-      //  print(userInfo)
-        notificationRecdict = userInfo as NSDictionary
-        
-        notificationCount += 1
-        
-        if let notyType = notificationRecdict.value(forKey: "gcm.notification.type") as? String {
-           Singleton.sharedInstance.notiType = notyType
-        }
-        if let senderId = notificationRecdict.value(forKey: "user") as? String {
-           Singleton.sharedInstance.messageSentUserId = senderId
+      //  notificationCount += 1
+        if UIApplication.shared.applicationState == UIApplicationState.active {
+            
+        } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
+            
+            notificationRecdict = userInfo as NSDictionary
+            if let notyType = notificationRecdict.value(forKey: "gcm.notification.type") as? String {
+               Singleton.sharedInstance.notiType = notyType
+            }
+            if let senderId = notificationRecdict.value(forKey: "user") as? String {
+               Singleton.sharedInstance.messageSentUserId = senderId
+            }
         }
         self.notificationRec()
         completionHandler()

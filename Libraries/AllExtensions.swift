@@ -26,6 +26,45 @@ extension UINavigationController {
 
 //MARK:- UiViewController
 extension UIViewController {
+    func loginAlertFunc(vc: String, viewController: UIViewController) {
+        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
+        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
+            if vc == "profile" {
+                Singleton.sharedInstance.loginComeFrom = fromProfile
+                
+            } else if vc == "nearByUser" {
+                Singleton.sharedInstance.loginComeFrom = fromNearByuser
+               
+            } else if vc == "addCamps" {
+                Singleton.sharedInstance.loginComeFrom = fromAddCamps
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromNoti
+                
+            } else if vc == "fromNoti" {
+                Singleton.sharedInstance.loginComeFrom = fromFavCamps
+                
+            } else if vc == "viewProfile" {
+                Singleton.sharedInstance.loginComeFrom = fromViewProfile
+                
+            }  else if vc == "campDescription" {
+                Singleton.sharedInstance.loginComeFrom = campDescription
+               
+           }
+            self.navigationController?.pushViewController(controller, animated: false)
+        })
+        
+        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(yesBtn)
+        alert.addAction(noBtn)
+        viewController.present(alert, animated: true, completion: nil)
+        
+    }
+    
     func convertDateFormater(_ date: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -280,11 +319,20 @@ extension UIView {
     
     func animShow(){
         let animation = CABasicAnimation(keyPath: "position")
-        animation.duration = 0.4
-        animation.repeatCount = 3
+        animation.duration = 0.3
+        animation.repeatCount = 2
         animation.autoreverses = true
         animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
         animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
         self.layer.add(animation, forKey: "position")
+    }
+}
+
+extension UIColor{
+    class func appThemeKesariColor() -> UIColor {
+        return UIColor(red:234/255 , green:102/255 ,blue:7/255 , alpha:1.00)
+    }
+    class func appThemeGreenColor() -> UIColor {
+        return UIColor(red:0/255 , green:109/255 ,blue:105/255 , alpha:1.00)
     }
 }

@@ -553,7 +553,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.loginAlertFunc(vc: "profile")
+            self.loginAlertFunc(vc: "profile", viewController: self)
         }
     }
     
@@ -563,7 +563,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "nearByUser")
+            self.loginAlertFunc(vc: "nearByUser", viewController: self)
             
        }
     }
@@ -574,7 +574,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             self.navigationController?.pushViewController(swRevealObj, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "addCamps")
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
             
         }
     }
@@ -585,7 +585,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             self.navigationController?.pushViewController(swRevealObj, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "fromNoti")
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
             
         }
     }
@@ -721,7 +721,7 @@ extension FeaturedVc {
     
     @objc func favoutiteAction(sender: UIButton) {
         if DataManager.isUserLoggedIn! == false {
-            self.loginAlertFunc(vc: "featured")
+            self.loginAlertFunc(vc: "featured", viewController: self)
             
         } else {
             self.campIndex = sender.tag
@@ -849,7 +849,7 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
     
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
         if DataManager.isUserLoggedIn! == false {
-            self.loginAlertFunc(vc: "campUserProfile")
+            self.loginAlertFunc(vc: "campUserProfile", viewController: self)
             
         } else {
             let indexVal: NSDictionary = (self.featuredReviewArr.object(at: sender.tag) as! NSDictionary)
@@ -908,46 +908,4 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         return UIEdgeInsets.zero
         
     }    
-}
-
-//MARK:- login alert
-extension FeaturedVc {
-    func loginAlertFunc(vc: String) {
-        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
-        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            if vc == "profile" {
-                Singleton.sharedInstance.loginComeFrom = fromProfile
-                
-            } else if vc == "nearByUser" {
-                Singleton.sharedInstance.loginComeFrom = fromNearByuser
-               
-            } else if vc == "addCamps" {
-                Singleton.sharedInstance.loginComeFrom = fromAddCamps
-                
-            } else if vc == "fromNoti" {
-                Singleton.sharedInstance.loginComeFrom = fromNoti
-                
-            } else if vc == "fromNoti" {
-                Singleton.sharedInstance.loginComeFrom = fromFavCamps
-                
-            } else if vc == "viewProfile" {
-                Singleton.sharedInstance.loginComeFrom = fromViewProfile
-                
-            } else if vc == "featured" || vc == "campUserProfile" {
-                Singleton.sharedInstance.loginComeFrom = featuredCamp
-               
-            }
-            self.navigationController?.pushViewController(controller, animated: false)
-        })
-        
-        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-        })
-        alert.addAction(yesBtn)
-        alert.addAction(noBtn)
-        present(alert, animated: true, completion: nil)
-        
-    }
 }

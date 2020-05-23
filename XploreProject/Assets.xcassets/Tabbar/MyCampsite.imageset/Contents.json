@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "mycampsite-1.png",
+      "filename" : "Asset 50 copy 2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "mycampsite-2.png",
+      "filename" : "Asset 50 copy.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "mycampsite.png",
+      "filename" : "Asset 50.png",
       "scale" : "3x"
     }
   ],

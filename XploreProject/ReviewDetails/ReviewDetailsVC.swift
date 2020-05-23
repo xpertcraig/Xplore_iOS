@@ -135,37 +135,6 @@ class ReviewDetailsVC: UIViewController {
         self.addTipLbl.text = self.reviewDeatils.value(forKey: "tip") as? String
     }
   
-    //MARK:- Call APi's
-//    func reviewDetailApi() {
-//        applicationDelegate.startProgressView(view: self.view)
-//
-//        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "reviewDetails.php/?campId="+self.campId+"&userId="+String(describing: (DataManager.userId))+"&reviewId="+self.reviewId, onSuccess: { (responseData) in
-//
-//            applicationDelegate.dismissProgressView(view: self.view)
-//
-//            if let dict:NSDictionary = responseData.result.value as? NSDictionary {
-//                if (String(describing: (dict["success"])!)) == "1" {
-//                    let retValues = (dict["result"]! as! NSArray)
-//
-//                    print(retValues)
-//
-//                } else {
-//                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-//
-//                }
-//            }
-//        }) { (error) in
-//            applicationDelegate.dismissProgressView(view: self.view)
-//            if connectivity.isConnectedToInternet() {
-//                //  CommonFunctions.showAlert(self, message: serverError, title: appName)
-//
-//            } else {
-//                CommonFunctions.showAlert(self, message: noInternet, title: appName)
-//
-//            }
-//        }
-//    }
-    
     //MARK:-  Button Actions
     @IBAction func tapViewAllBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "GalleryVc") as! GalleryVc
@@ -175,26 +144,45 @@ class ReviewDetailsVC: UIViewController {
     }
     
     @IBAction func profileAction(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            self.loginAlertFunc(vc: "profile", viewController: self)
+        }
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "nearByUser", viewController: self)
+            
+       }
     }
     
     @IBAction func addCampAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
+            
+        }
     }
     
     @IBAction func notificationAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
+            
+        }
     }
     
     @IBAction func tapBackBtn(_ sender: UIButton) {
@@ -204,21 +192,21 @@ class ReviewDetailsVC: UIViewController {
     }
     
     @IBAction func tapUserImgView(_ sender: UIButton) {
-        if String(describing: (DataManager.userId)) == String(describing: (self.reviewDeatils.value(forKey: "userId"))!) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            vc.userInfoDict = self.reviewDeatils
-            self.navigationController?.pushViewController(vc, animated: true)
+        self.view.endEditing(true)
+        
+        if DataManager.isUserLoggedIn! {
+            if String(describing: (DataManager.userId)) == String(describing: (self.reviewDeatils.value(forKey: "userId"))!) {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+                vc.userInfoDict = self.reviewDeatils
+                self.navigationController?.pushViewController(vc, animated: true)
 
+            }
+        } else {
+            self.loginAlertFunc(vc: "campDescription", viewController: self)
         }
-//
-//        print(self.reviewDeatils)
-//
-//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-//        vc.userInfoDict = self.reviewDeatils
-//        self.navigationController?.pushViewController(vc, animated: true)        
     }
 }
 

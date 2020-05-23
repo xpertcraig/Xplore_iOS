@@ -147,7 +147,7 @@ class NotificationVc: UIViewController {
                     self.myNotificationsArr = dict["result"] as! NSArray
                     Singleton.sharedInstance.notificationListingArr = self.myNotificationsArr
                     
-                    self.notificationTableview.reloadData()
+                    self.reloadTbl()
                     
                 } else {
                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)

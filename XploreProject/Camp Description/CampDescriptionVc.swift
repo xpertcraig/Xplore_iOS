@@ -35,6 +35,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     @IBOutlet weak var maincontentView: UIView!
     @IBOutlet weak var scroolView: UIScrollView!
     
+    @IBOutlet weak var abuseImg: UIImageView!
     @IBOutlet weak var abouseBtn: UIButton!
     @IBOutlet weak var favouriteButton: UIButton!
     
@@ -238,6 +239,14 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             
         }
         
+        if String(describing: (recDict.value(forKey: "isAbuse"))!) == "0" {
+            self.abuseImg.image = UIImage(named: "non-abuse")
+        } else {
+            self.abuseImg.image = UIImage(named: "Abuse")
+//            self.abuseImg.image = self.abuseImg.image?.withRenderingMode(.alwaysTemplate)
+//            self.abuseImg.tintColor = UIColor.appThemeGreenColor()
+        }
+        
         if (recDict.value(forKey: "ratingsArray") as! NSArray).count != 0 {
             self.fiveStarRatingLbl.text = String(describing: ((recDict.value(forKey: "ratingsArray") as! NSArray).object(at: 0)))
             self.fourStarRatingLbl.text = String(describing: ((recDict.value(forKey: "ratingsArray") as! NSArray).object(at: 1)))
@@ -314,7 +323,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 
             }
         } else {
-            self.loginAlertFunc(vc: "profile")
+            self.loginAlertFunc(vc: "profile", viewController: self)
         }
     }
     
@@ -324,7 +333,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.loginAlertFunc(vc: "profile")
+            self.loginAlertFunc(vc: "profile", viewController: self)
         }
     }
     
@@ -334,7 +343,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.navigationController?.pushViewController(vc, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "nearByUser")
+            self.loginAlertFunc(vc: "nearByUser", viewController: self)
             
        }
     }
@@ -349,7 +358,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.navigationController?.pushViewController(swRevealObj, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "fromNoti")
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
             
         }
     }
@@ -360,7 +369,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.navigationController?.pushViewController(swRevealObj, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "addCamps")
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
             
         }
     }
@@ -377,7 +386,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 
             }
         } else {
-            self.loginAlertFunc(vc: "campDescription")
+            self.loginAlertFunc(vc: "campDescription", viewController: self)
             
         }
     }
@@ -394,7 +403,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.navigationController?.pushViewController(vc, animated: true)
             
         } else {
-            self.loginAlertFunc(vc: "campDescription")
+            self.loginAlertFunc(vc: "campDescription", viewController: self)
             
         }
     }
@@ -411,7 +420,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 
             }
         } else {
-            self.loginAlertFunc(vc: "campDescription")
+            self.loginAlertFunc(vc: "campDescription", viewController: self)
             
         }
     }
@@ -447,7 +456,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 self.view.layoutIfNeeded()
             }
         } else {
-            self.loginAlertFunc(vc: "campDescription")
+            self.loginAlertFunc(vc: "campDescription", viewController: self)
             
         }
     }
@@ -566,11 +575,9 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
 
             }
         } else {
-            self.loginAlertFunc(vc: "campDescription")
-            
+            self.loginAlertFunc(vc: "campDescription", viewController: self)
         }
     }
-    
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         self.selectedAnnotation = view.annotation as? MKPointAnnotation
@@ -748,8 +755,8 @@ extension CampDescriptionVc {
                             UIAlertAction in
                             
                             self.abouseTxtVIew.text! = ""
-                            
-                           self.campDetailsApiHit()
+                            self.abuseImg.image = UIImage(named: "Abuse")
+                            self.campDetailsApiHit()
                             
                         }
                         alertController.addAction(YesAction)
@@ -1086,46 +1093,4 @@ extension CampDescriptionVc: WKUIDelegate, UIWebViewDelegate {
         
     }
     
-}
-
-//MARK:- login alert
-extension CampDescriptionVc {
-    func loginAlertFunc(vc: String) {
-        let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
-        let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-            let controller = self.storyboard?.instantiateViewController(withIdentifier: "LoginVc") as! LoginVc
-            if vc == "profile" {
-                Singleton.sharedInstance.loginComeFrom = fromProfile
-                
-            } else if vc == "nearByUser" {
-                Singleton.sharedInstance.loginComeFrom = fromNearByuser
-               
-            } else if vc == "addCamps" {
-                Singleton.sharedInstance.loginComeFrom = fromAddCamps
-                
-            } else if vc == "fromNoti" {
-                Singleton.sharedInstance.loginComeFrom = fromNoti
-                
-            } else if vc == "fromNoti" {
-                Singleton.sharedInstance.loginComeFrom = fromFavCamps
-                
-            } else if vc == "viewProfile" {
-                Singleton.sharedInstance.loginComeFrom = fromViewProfile
-                
-            }  else if vc == "campDescription" {
-                Singleton.sharedInstance.loginComeFrom = campDescription
-               
-           }
-            self.navigationController?.pushViewController(controller, animated: false)
-        })
-        
-        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-        })
-        alert.addAction(yesBtn)
-        alert.addAction(noBtn)
-        present(alert, animated: true, completion: nil)
-        
-    }
 }

@@ -284,27 +284,45 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
     
     //MARK:- Button Action
     @IBAction func profileAction(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            self.loginAlertFunc(vc: "profile", viewController: self)
+        }
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "nearByUser", viewController: self)
+            
+       }
     }
     
     @IBAction func addCampAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
+            
+        }
     }
     
     @IBAction func notificationAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
-        
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
+            
+        }
     }
     
     @IBAction func tapBackBtn(_ sender: UIButton) {

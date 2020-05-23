@@ -82,7 +82,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
         //print(userInfoDict)
-        
+        Singleton.sharedInstance.notiType = ""
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         if #available(iOS 13, *)
         {
