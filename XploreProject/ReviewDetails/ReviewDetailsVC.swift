@@ -8,6 +8,7 @@
 
 import UIKit
 import Cosmos
+import SimpleImageViewer
 
 class ReviewDetailsVC: UIViewController {
 
@@ -233,5 +234,16 @@ extension ReviewDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource 
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let indexPath = NSIndexPath(row: indexPath.row, section: 0)
+        
+        let cell = collectionView.cellForItem(at: indexPath as IndexPath) as! CampImagesCollectionViewCell
+        let configuration = ImageViewerConfiguration { config in
+            config.imageView = cell.campImgVIew
+            
+        }
+        present(ImageViewerController(configuration: configuration), animated: true)
     }
 }

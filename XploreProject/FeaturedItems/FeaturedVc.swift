@@ -243,6 +243,20 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 if self.limit >= upToLimit {
                     //
                     
+                    if self.searchType == filter {
+                       // self.filterApiHit(pageNum: self.pageNo)
+
+                    } else {
+                        self.limit = self.limit + 5
+                        self.startAnimateAcitivity()
+                        if self.comeFrom == reviewBased {
+                            self.revieweBasedAPIHit(pageNum: self.pageNo)
+
+                        } else {
+                            self.featuredAPIHit(pageNum: self.pageNo)
+                            
+                        }
+                    }
                 } else {
                     self.limit = self.limit + 5
                     
@@ -354,11 +368,11 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         } else if comeFrom == featuredBased {
             api1 = "featuredCampsites.php?userId=" + userId
             
-            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)&country\(countryOnMyCurrentLatLong)"
+            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)&country=\(countryOnMyCurrentLatLong)"
         } else {
             api1 = "nearbynew.php?userId=" + userId
             
-            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)&country\(countryOnMyCurrentLatLong)"
+            api2 = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&offset=\(pageNum)&country=\(countryOnMyCurrentLatLong)"
             
         }
         
@@ -373,6 +387,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     let retValues = (dict["result"]! as! NSArray)
                     
                     print(retValues)
+                    
                     self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
                     self.noDataFound.isHidden = false
@@ -406,7 +421,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
          
         }
         let apo1: String = "reviewCampsites.php?userId=" + userId
-        let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)&country\(countryOnMyCurrentLatLong)"
+        let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)&country=\(countryOnMyCurrentLatLong)"
         
         let api:String = apo1 + api2
         

@@ -31,8 +31,11 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
     
     var recLat: String = ""
     var recLong: String = ""
-    
+    var zoom: Int = 16
     var selectedIndex: Int = 0
+    var delegateCaleed: Int = 0
+    var apiCalled: Bool = false
+    var lastZoom: Float = 16.0
     
     private var infoWindow = CustomInfoWindow()
     fileprivate var locationMarker : GMSMarker? = GMSMarker()
@@ -101,7 +104,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
     
     func callAPI() {
         if connectivity.isConnectedToInternet() {
-            self.nearByUsersApiHit()
+            self.nearByUsersApiHit(zoomVal: self.zoom)
             
         } else {
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
@@ -110,10 +113,20 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
     }
     
     func setMap1() {
+        var sendLat: Double = 0.0
+        var sendLong: Double = 0.0
+        
+        if self.recLat != "" {
+            sendLat = Double(self.recLat)!
+            sendLong = Double(self.recLong)!
+        } else {
+            sendLat = myCurrentLatitude
+            sendLong = myCurrentLongitude
+        }
         self.showMapVIew.isMyLocationEnabled = true
         self.showMapVIew.padding = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.showMapVIew.settings.myLocationButton = true
-        let camera = GMSCameraPosition.camera(withLatitude: myCurrentLatitude, longitude: myCurrentLongitude, zoom: 16)
+        let camera = GMSCameraPosition.camera(withLatitude: sendLat, longitude: sendLong, zoom: Float(self.lastZoom))
         self.showMapVIew.animate(to: camera)
         
     }
@@ -122,7 +135,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         self.showMapVIew.isMyLocationEnabled = true
         self.showMapVIew.padding = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.showMapVIew.settings.myLocationButton = true
-        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: 16)
+        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: Float(self.lastZoom))
 
         showMapVIew.camera = camera
         self.showMapVIew.animate(to: camera)
@@ -159,6 +172,36 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
             
             self.infoWindow.removeFromSuperview()
         }
+    }
+    
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+        self.delegateCaleed += 1
+        let zoom = mapView.camera.zoom
+        print("map zoom is ",String(zoom))
+        
+        let latitude = mapView.camera.target.latitude
+        let longitude = mapView.camera.target.longitude
+        
+        if self.apiCalled == true {
+            self.lastZoom = zoom
+        }
+        print(self.zoom)
+        print(String(describing: (Int(Double(self.recLat)!))))
+        print(String(Int(latitude)) )
+        
+     //   if self.apiCalled == false {
+            if self.delegateCaleed > 2 && (Int(zoom) != self.zoom || Int(zoom) != self.zoom) /*&& Int(zoom) > 2 */{
+                self.zoom = Int(zoom)
+                self.apiCalled = true
+                self.nearByUsersApiHit(zoomVal: self.zoom)
+            } else if (String(Int(latitude)) != String(describing: (Int(Double(self.recLat)!))) || String(Int(latitude)) != String(describing: (Int(Double(self.recLat)!)))) && self.delegateCaleed > 2 {
+                
+              //  self.zoom = Int(zoom)
+                self.recLat = String(describing: (latitude.roundToDecimal(3)))
+                self.recLong = String(describing: (longitude.roundToDecimal(3)))
+                self.nearByUsersApiHit(zoomVal: self.zoom)
+            }
+       // }
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
@@ -205,7 +248,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         //
         let currentZoom: Float = (self.showMapVIew.camera.zoom)
         
-        let camera = GMSCameraPosition.camera(withLatitude: Double(String(describing: (((self.nearByUserArr.object(at: Int(index)) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "lat"))!))!, longitude: Double(String(describing: (((self.nearByUserArr.object(at: Int(index)) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "lng"))!))!, zoom: currentZoom)
+        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: currentZoom)
         self.showMapVIew.camera = camera
         
         let update = GMSCameraUpdate.zoom(by: 4)
@@ -236,12 +279,13 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
     }
     
     //MARK:- API hit
-    func nearByUsersApiHit() {
-        applicationDelegate.startProgressView(view: self.view)
+    func nearByUsersApiHit(zoomVal: Int) {
+        if self.delegateCaleed == 0 {
+            applicationDelegate.startProgressView(view: self.view)
+        }
         
-        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "nearBy.php?userId=\(DataManager.userId as! String)"+"&latitude=\(self.recLat)"+"&longitude=\(self.recLong)", onSuccess: { (responseData) in
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "nearBy.php?userId=\(DataManager.userId as! String)"+"&latitude=\(self.recLat)"+"&longitude=\(self.recLong)&zoom=\(zoomVal)", onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
-            
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValue = dict["result"] as! NSArray
@@ -257,15 +301,16 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
                     } else {
                         self.showMapVIew.isHidden = false
                         self.setMap()
-                        self.showMapVIew.delegate = self
+                        //self.showMapVIew.delegate = self
                         
                     }
                     
                 } else {
                     self.setMap1()
-                    self.showMapVIew.delegate = self
-                    CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-                    
+                    //self.showMapVIew.delegate = self
+                    if (String(describing: (dict["error"])!)) != "No Record Found" {
+                        CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
+                    }
                 }
             }
         }) { (error) in

@@ -11,6 +11,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import FirebaseStorage
+import SimpleImageViewer
 
 class MyProfileVC: UIViewController, updateProfileDelegate {
     //MARK:- IbOutlets
@@ -197,7 +198,16 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         
     }
     
-    //MARK:- Button Action   
+    //MARK:- Button Action
+    @IBAction func tapProfileImgView(_ sender: Any) {
+        self.view.endEditing(true)
+        let configuration = ImageViewerConfiguration { config in
+            config.imageView = self.myProfileImgView
+            
+        }
+        present(ImageViewerController(configuration: configuration), animated: true)
+    }
+    
     @IBAction func tapProfileBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
         self.navigationController?.pushViewController(vc, animated: true)
