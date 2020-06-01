@@ -17,6 +17,7 @@ import SimpleImageViewer
 class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
 
     //MARK:- Iboutlets
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var campsiteNameLbl: UILabel!
     @IBOutlet weak var descriptionText: UILabel!
     @IBOutlet weak var moreButton: UIButton!
@@ -79,6 +80,10 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

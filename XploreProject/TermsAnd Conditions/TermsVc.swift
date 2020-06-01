@@ -13,6 +13,7 @@ class TermsVc: UIViewController {
     //MARK:- Iboutlets
     @IBOutlet weak var termsTxtView: UITextView!
     @IBOutlet weak var notificationCountLbl: UILabel!
+    @IBOutlet weak var userNameBtn: UIButton!
     
     //MARK:- Inbuild FUnctions
     override func viewDidLoad() {
@@ -27,6 +28,10 @@ class TermsVc: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     
@@ -81,14 +86,8 @@ class TermsVc: UIViewController {
                    // self.termsTxtView.text! = (dict["result"]! as! String)
                     
                     let str = (dict["result"]! as! String)
-                    let htmlData = NSString(string: str).data(using: String.Encoding.unicode.rawValue)
+                    self.termsTxtView.text! = str.html2String
 
-                    let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
-
-                    let attributedString = try! NSAttributedString(data: htmlData!, options: options, documentAttributes: nil)
-
-                    self.termsTxtView.attributedText = attributedString
-                    
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     

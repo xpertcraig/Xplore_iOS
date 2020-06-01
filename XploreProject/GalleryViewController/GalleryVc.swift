@@ -16,7 +16,7 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
     //MARK:- Iboutlets
     @IBOutlet weak var gallaryCollView: UICollectionView!
     @IBOutlet weak var previewGalleryCollView: UICollectionView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
     
     @IBOutlet weak var leftBtn: UIButton!
@@ -46,6 +46,10 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
         if notificationCount > 9 {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
@@ -417,7 +421,7 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
         if collectionView.tag == 1 {
             self.previewGalleryCollView.reloadData()
             self.viewedIndex = indexPath
-            
+            self.pageControl.currentPage = indexPath.row
         }
     }
     

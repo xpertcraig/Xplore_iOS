@@ -18,6 +18,7 @@ protocol updateProfileDelegate: class {
 class EditProfileVC: UIViewController {
 
     //MARK:- IbOutlets
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var editProfileScrollView: UIScrollView!
     @IBOutlet weak var userProfileImgView: UIImageViewCustomClass!
     @IBOutlet weak var nameTxtFld: UITextFieldCustomClass!
@@ -59,6 +60,10 @@ class EditProfileVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

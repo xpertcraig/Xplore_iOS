@@ -337,7 +337,7 @@ extension LoginVc {
                     
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.name = retValues["name"] as! String
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     
@@ -389,7 +389,7 @@ extension LoginVc {
                     
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.name = retValues["name"] as! String
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     
@@ -437,7 +437,7 @@ extension LoginVc {
                     
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.name = retValues["name"] as! String
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     
@@ -613,7 +613,7 @@ extension LoginVc :UITextFieldDelegate {
 @available(iOS 13.0, *)
 extension LoginVc: ASAuthorizationControllerDelegate {
     func setUpSignInAppleButton() {
-        UserDefaults.standard.set(appleLogin, forKey: XPLoginStatus)
+        
         let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .whiteOutline)
         authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
         
@@ -666,6 +666,7 @@ extension LoginVc: ASAuthorizationControllerDelegate {
                                 applicationDelegate.dismissProgressView(view: self.view)
                             }
                             if message == success {
+                                UserDefaults.standard.set(appleLogin, forKey: XPLoginStatus)
                                 applicationDelegate.notificationCountApi()
                                 self.commonViewModel.updateFirebaseProfile()
                                 self.checkSubscription(recValue: retValues)

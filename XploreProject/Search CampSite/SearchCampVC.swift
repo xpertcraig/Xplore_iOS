@@ -36,7 +36,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     @IBOutlet weak var filterBtnStackView: UIStackView!
     
     @IBOutlet weak var notificationCountLbl: UILabel!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var activityView: UIView!
     @IBOutlet weak var activityViewHeight: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -127,6 +127,10 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             } else {
                 self.notificationCountLbl.text! = "\(notiCount)"
             }
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     
@@ -712,7 +716,16 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
         cell.ttlReviewLbl.text! = (String(describing: (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
         
         if ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
-            cell.locationAddressLbl.text! = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+            
+            let addr = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+            var trimmedAddr: String = ""
+            trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+            if trimmedAddr == "" {
+                trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+            }
+            cell.locationAddressLbl.text! = trimmedAddr
+            
+          //  cell.locationAddressLbl.text! = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
             
         }
         if let img = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {

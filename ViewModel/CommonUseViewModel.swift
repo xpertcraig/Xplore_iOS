@@ -43,6 +43,7 @@ class CommonUseViewModel {
     func removeDataonLogout() {
         let deviceToken = userDefault.value(forKey: "DeviceToken")!
         
+        userDefault.removeObject(forKey: XPLoginStatus)
         self.removeUserTokenFromFirebase(userId: DataManager.userId as! String)
         UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
         userDefault.set(deviceToken, forKey: "DeviceToken")
@@ -107,7 +108,7 @@ class CommonUseViewModel {
                           let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
                             DataManager.userId = retValues["userId"] as AnyObject
                             DataManager.emailAddress = retValues["email"] as AnyObject
-                            DataManager.name = retValues["name"] as AnyObject
+                            DataManager.name = retValues["name"] as! String
                             DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                             DataManager.isPaid = retValues["isPaid"] as AnyObject
                         

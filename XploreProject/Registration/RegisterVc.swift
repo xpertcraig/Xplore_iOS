@@ -315,7 +315,7 @@ extension RegisterVc {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.name = retValues["name"] as! String
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     self.checkSubscription(recValue: retValues)
@@ -357,7 +357,7 @@ extension RegisterVc {
                     let retValues = ((dict["result"]! as AnyObject) as! [String : Any])
                     DataManager.userId = retValues["userId"] as AnyObject
                     DataManager.emailAddress = retValues["email"] as AnyObject
-                    DataManager.name = retValues["name"] as AnyObject
+                    DataManager.name = retValues["name"] as! String
                     DataManager.pushNotification = retValues["isPushNotificationsEnabled"] as AnyObject
                     DataManager.isPaid = retValues["isPaid"] as AnyObject
                     self.checkSubscription(recValue: retValues)

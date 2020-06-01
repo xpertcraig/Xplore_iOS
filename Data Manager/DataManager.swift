@@ -57,14 +57,14 @@ class DataManager {
             
         }
     }
-    static var name: AnyObject {
+    static var name: String {
         set {
             UserDefaults.standard.setValue(newValue, forKey: XPname)
             UserDefaults.standard.synchronize()
             
         }
         get {
-            return UserDefaults.standard.string(forKey: XPname) as AnyObject
+            return UserDefaults.standard.string(forKey: XPname) ?? ""
             
         }
     }

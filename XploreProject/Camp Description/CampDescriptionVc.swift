@@ -18,10 +18,10 @@ import AVFoundation
 import SimpleImageViewer
 import WebKit
 
-
 class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewControllerDelegate {
 
     //MARK:- IbOutlets
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var overlayview: UIView!
     @IBOutlet weak var favMarkbottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var noImage: UILabel!
@@ -137,6 +137,11 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.topNavigationHeight.constant = 44
             
         }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
+        
         if notificationCount > 9 {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
@@ -207,7 +212,17 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         self.descriptionText.text = recDict.value(forKey: "campDescription") as? String
         self.detailLongLat = CLLocation(latitude: Double(String(describing: ((recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "lat"))!))! , longitude: Double(String(describing: ((recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "lng"))!))!)
         
-        self.addressLbl.text = (recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String
+        if let addr = (recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String {
+            var trimmedAddr: String = ""
+             trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+             if trimmedAddr == "" {
+                 trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+             }
+            self.addressLbl.text = trimmedAddr
+        }
+        self.addressLbl.text = ""
+        
+      //  self.addressLbl.text = (recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String
         self.mapBelowAddrLbl.text = (recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String
         
      //   let reducedNumberSum = (recDict.value(forKey: "ratingsArray") as! NSArray).reduce(0) { (Int(String(describing: ($0))))! + (Int(String(describing: ($1))))! }
@@ -588,6 +603,11 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
 }
 
 extension CampDescriptionVc {
+    func getSymbolForCurrencyCode(code: String) -> String? {
+        let result = Locale.availableIdentifiers.map { Locale(identifier: $0) }.first { $0.currencyCode == code }
+        return result?.currencySymbol
+    }
+    
     func campDetailsApiHit() {
         if self.campDetailDict == [:] {
             applicationDelegate.startProgressView(view: self.view)
@@ -603,15 +623,13 @@ extension CampDescriptionVc {
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: api, onSuccess: { (responseData) in
             
             applicationDelegate.dismissProgressView(view: self.view)
-            self.scroolView.isHidden = false
-            self.recallAPIView.isHidden = true
-            
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retDict = (dict["result"] as! NSDictionary)
                    
                  //   print(retDict)
-                    
+                    self.scroolView.isHidden = false
+                    self.recallAPIView.isHidden = true
                     self.campDetailDict = retDict
                     
                     let typeStr = (retDict.value(forKey: "campgroundType") as! NSArray).componentsJoined(by: ", ") // "1,2,3"
@@ -627,7 +645,29 @@ extension CampDescriptionVc {
                         webUrl = retDict.value(forKey: "webUrl") as! String
                         
                     }
-                    self.campDetailArr = [["key": "Campground Type","value": typeStr], ["key": "Climate", "value": (retDict.value(forKey: "climate") as! String)], ["key": "Elevation","value": String(describing: ((retDict.value(forKey: "elevation")))!)], ["key": "Best Month to Visit","value": bstMnth], ["key": "Number Of Sites","value": String(describing: ((retDict.value(forKey: "numberofSites")))!)], ["key": "Price","value": String(describing: ((retDict.value(forKey: "price")))!)], /*["key": "Hookups Available","value": hookups],*/ ["key": "Amenities","value": amenties], ["key": "Website","value": webUrl]]
+                    
+                    var price: String = ""
+                    if let addr = (retDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String {
+                        
+                        let splistAddr = addr.components(separatedBy: ", ")
+                        if let cName = self.currency(recStr: splistAddr.last ?? "India") {
+                            
+                            let strArr = Array(cName)
+                            if cName.count >= 3 {
+                                let sym = "\(self.getSymbolForCurrencyCode(code: "\(strArr[0])\(strArr[1])\(strArr[2])")!)"
+                                
+                                price = "\(sym)\(String(describing: ((retDict.value(forKey: "price")))!))"
+                            } else if cName.count == 2 {
+                                price = "\(self.getSymbolForCurrencyCode(code: "\(strArr[0])\(strArr[1])")!)\(String(describing: ((retDict.value(forKey: "price")))!))"
+                            } else {
+                                price = (String(describing: ((retDict.value(forKey: "price")))!))
+                            }
+                        } else {
+                            price = (String(describing: ((retDict.value(forKey: "price")))!))
+                        }
+                    }
+                    
+                    self.campDetailArr = [["key": "Campground Type","value": typeStr], ["key": "Climate", "value": (retDict.value(forKey: "climate") as! String)], ["key": "Elevation","value": String(describing: ((retDict.value(forKey: "elevation")))!)], ["key": "Best Month to Visit","value": bstMnth], ["key": "Number Of Sites","value": String(describing: ((retDict.value(forKey: "numberofSites")))!)], ["key": "Price","value": price], /*["key": "Hookups Available","value": hookups],*/ ["key": "Amenities","value": amenties], ["key": "Website","value": webUrl]]
                     
                     self.descriptionTableView.dataSource = self
                     self.descriptionTableView.delegate = self
@@ -675,6 +715,13 @@ extension CampDescriptionVc {
                     
                     ///
                     self.myCampImgArr = retDict.value(forKey: "campImages") as! NSArray
+                    if let campVid = retDict["campsiteVideo"] as? String {
+                        if campVid != "" {
+                          //  self.myCampImgArr = self.myCampImgArr.reversed() as NSArray
+                            
+                        }
+                    }
+                    
                     
               //      print(self.reviewsArr)
               
@@ -683,6 +730,8 @@ extension CampDescriptionVc {
                     self.myCampImgesCollView.reloadData()
                     
                 } else {
+                    self.scroolView.isHidden = true
+                    self.recallAPIView.isHidden = false
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }

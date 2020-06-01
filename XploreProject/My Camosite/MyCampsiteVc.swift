@@ -12,9 +12,9 @@ import SimpleImageViewer
 
 class MyCampsiteVc: UIViewController {
     
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var draftButton: UIButton!
     @IBOutlet weak var publishedButton: UIButton!
-    
     @IBOutlet weak var mainAllContentView: UIView!
     @IBOutlet weak var publishSavedCollView: UICollectionView!
     @IBOutlet weak var overlayView: UIView!
@@ -22,6 +22,7 @@ class MyCampsiteVc: UIViewController {
     @IBOutlet weak var markAsFavBtn: UIButton!
     @IBOutlet weak var favMarkbottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var backBtnImgView: UIImageView!
+    @IBOutlet weak var backBtnWidth: NSLayoutConstraint!
     @IBOutlet weak var backBtn: UIButton!
     @IBOutlet weak var recallAPIView: UIView!
     @IBOutlet weak var noDataLbl: UILabel!
@@ -82,6 +83,10 @@ class MyCampsiteVc: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
         
         if DataManager.isUserLoggedIn! {
@@ -190,10 +195,12 @@ class MyCampsiteVc: UIViewController {
      
         if self.comeFrom == myProfile {
             //self.comeFrom = ""
+            self.backBtnWidth.constant = 50
             self.backBtn.isHidden = false
             self.backBtnImgView.isHidden = false
             
         } else {
+            self.backBtnWidth.constant = 20
             self.backBtn.isHidden = true
             self.backBtnImgView.isHidden = true
         }
@@ -576,7 +583,16 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             
             cell.addressTopConstraint.constant = 8
             if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
-                cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+                
+                let addr = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+                var trimmedAddr: String = ""
+                trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+                if trimmedAddr == "" {
+                    trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+                }
+                cell.locationAddressLbl.text! = trimmedAddr
+                
+              //  cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
             }
             cell.autherNameLbl.text = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
             

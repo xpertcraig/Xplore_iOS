@@ -109,7 +109,7 @@ let campsavedasDraft = "Campsite is saved to drafts."
 
 //conatct us alert
 let titleEmptyAlert = "Please enter title."
-let messageEmptyAlert = "PLease enter message."
+let messageEmptyAlert = "Please enter message."
 let submitContactMessageAlert = "Thank you for your message, it is well received."
 
 //MARK:- Select Option

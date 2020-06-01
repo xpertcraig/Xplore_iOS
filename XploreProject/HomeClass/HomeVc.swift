@@ -15,6 +15,8 @@ import SimpleImageViewer
 class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     //MARK:- Outlets
+    @IBOutlet weak var userNameBtn: UIButton!
+    @IBOutlet weak var userNameBtnWidth: NSLayoutConstraint!
     @IBOutlet weak var homeScrollView: UIScrollView!
     @IBOutlet weak var CorrentLocContainingView: UIViewCustomClass!
     @IBOutlet weak var locviewHeight: NSLayoutConstraint!
@@ -75,6 +77,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.progressBarButtonFadeIn()
+        
         if Singleton.sharedInstance.myCurrentLocDict.count == 0 {
             self.CorrentLocContainingView.isHidden = true
             self.locviewHeight.constant = 0
@@ -112,6 +116,12 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         //self.userLocationisOn()
+        
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
+        
         self.checkUsersLocationServicesAuthorization()
         
         if Singleton.sharedInstance.notiType == "chatMessage" {
@@ -175,6 +185,18 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     //MARK:- Function Definitions
+    func progressBarButtonFadeIn(){
+        self.userNameBtn.alpha = 0
+        self.userNameBtn.transform = CGAffineTransform(scaleX: 0.1, y: 1)
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.userNameBtn.alpha = 1
+                self.userNameBtn.transform = CGAffineTransform.identity
+
+            })
+        }
+    }
+    
     @objc func updateNotiCount(_ notification: NSNotification) {
         if let notiCount = notification.userInfo?["count"] as? Int {
             // An example of animating your label
@@ -848,7 +870,13 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             cell.ttlReviewLbl.text! = (String(describing: (((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
             
             if ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
-                cell.locationAddressLbl.text! = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+                let addr = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+                var trimmedAddr: String = ""
+                trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+                if trimmedAddr == "" {
+                    trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+                }
+                cell.locationAddressLbl.text! = trimmedAddr
                 
             }
             
@@ -909,8 +937,14 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             cell.ttlReviewLbl.text! = (String(describing: (((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
             
             if ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
-                cell.locationAddressLbl.text! = ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
-                
+                let addr = ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+                var trimmedAddr: String = ""
+                trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+                if trimmedAddr == "" {
+                    trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+                }
+                cell.locationAddressLbl.text! = trimmedAddr
+               
             }
             
             if let img = ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {

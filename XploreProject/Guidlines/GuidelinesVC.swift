@@ -12,7 +12,7 @@ class GuidelinesVC: UIViewController {
     
     //MARK:- Iboutlets
     @IBOutlet weak var guidelinesTxtView: UITextView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
     
     //MARK:- Inbuild FUnctions
@@ -28,6 +28,10 @@ class GuidelinesVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

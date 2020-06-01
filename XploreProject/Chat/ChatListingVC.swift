@@ -16,7 +16,7 @@ class ChatListingVC: UIViewController {
 
     //MARK:- IbOutlets
     @IBOutlet weak var chatListingTblView: UITableView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var noChatFound: UILabel!
     
@@ -31,6 +31,7 @@ class ChatListingVC: UIViewController {
         super.viewDidLoad()
         
         self.noChatFound.isHidden = true
+        self.chatListingTblView.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -45,6 +46,11 @@ class ChatListingVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
         self.observeChannels()
         
@@ -115,6 +121,7 @@ class ChatListingVC: UIViewController {
         let ref = Database.database().reference()
         ref.child("Users").observe(.value) { (snapShot) in
             if snapShot.value as? Dictionary<String, AnyObject> == nil {
+                self.chatListingTblView.isHidden = true
                 self.noChatFound.isHidden = false
                 applicationDelegate.dismissProgressView(view: self.view)
             }

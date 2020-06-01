@@ -42,11 +42,26 @@ class NotificationTableViewCell: UITableViewCell {
                 self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 self.userImgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
                 
-               self.notificationTxtLbl.text! = String(describing: (indexV.value(forKey: "last_msg"))!)
-               if (String(describing: (indexV.value(forKey: "last_msgTime"))!)) != "" {
-                   self.notificationTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: (indexV.value(forKey: "last_msgTime"))!))!))
-                   
-               }
+            } else {
+                print(indexV)
+                if userId == String(describing: (indexV.value(forKey: "userId"))!) {
+                    self.userNameLbl.text! = String(describing: (indexV.value(forKey: "username"))!)
+                    
+                    self.userImgView.sd_setShowActivityIndicatorView(true)
+                    self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                    self.userImgView.sd_setImage(with: URL(string: String(describing: (indexV.value(forKey: "userProfileImage"))!)), placeholderImage: UIImage(named: ""))
+                } else {
+                    self.userNameLbl.text! = String(describing: (indexV.value(forKey: "otherUsername"))!)
+                    
+                    self.userImgView.sd_setShowActivityIndicatorView(true)
+                    self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                    self.userImgView.sd_setImage(with: URL(string: String(describing: (indexV.value(forKey: "otherUserProfileImage"))!)), placeholderImage: UIImage(named: ""))
+                }
+            }
+            self.notificationTxtLbl.text! = String(describing: (indexV.value(forKey: "last_msg"))!)
+            if (String(describing: (indexV.value(forKey: "last_msgTime"))!)) != "" {
+                self.notificationTimeLbl.text! = CommonFunctions.changeUNXTimeStampToTIme(recUnxTimeStamp: (Double(String(describing: (indexV.value(forKey: "last_msgTime"))!))!))
+                
             }
         })
     }

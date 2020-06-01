@@ -12,7 +12,7 @@ class AboutUsVC: UIViewController {
     
     //MARK:- Iboutlets
     @IBOutlet weak var aboutUsTxtView: UITextView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
     
     //MARK:- Inbuild FUnctions
@@ -28,6 +28,10 @@ class AboutUsVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     
@@ -81,15 +85,7 @@ class AboutUsVC: UIViewController {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
                     let str = (dict["result"]! as! NSDictionary).value(forKey: "content") as! String
-                    let htmlData = NSString(string: str).data(using: String.Encoding.unicode.rawValue)
-
-                    let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
-
-                    let attributedString = try! NSAttributedString(data: htmlData!, options: options, documentAttributes: nil)
-
-                    self.aboutUsTxtView.attributedText = attributedString
-                    
-                 //   self.aboutUsTxtView.text! = (dict["result"]! as! NSDictionary).value(forKey: "content") as! String
+                    self.aboutUsTxtView.text! = str.html2String
                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -135,5 +131,26 @@ class AboutUsVC: UIViewController {
     @IBAction func backAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
         
+    }
+}
+
+extension Data {
+    var html2AttributedString: NSAttributedString? {
+        do {
+            return try NSAttributedString(data: self, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            print("error:", error)
+            return  nil
+        }
+    }
+    var html2String: String { html2AttributedString?.string ?? "" }
+}
+
+extension StringProtocol {
+    var html2AttributedString: NSAttributedString? {
+        Data(utf8).html2AttributedString
+    }
+    var html2String: String {
+        html2AttributedString?.string ?? ""
     }
 }

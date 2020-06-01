@@ -16,6 +16,7 @@ class ContactUsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     @IBOutlet weak var messageTxtView: UITextView!
     @IBOutlet weak var titleTxtVliew: UITextField!
     @IBOutlet weak var notificationCountLbl: UILabel!
+    @IBOutlet weak var userNameBtn: UIButton!
     
     //MARK:- Variable Declarations
     
@@ -32,6 +33,10 @@ class ContactUsVC: UIViewController, UITextFieldDelegate, UITextViewDelegate {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

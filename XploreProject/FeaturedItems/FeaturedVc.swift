@@ -17,7 +17,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     @IBOutlet weak var overlayview: UIView!
     @IBOutlet weak var favMarkbottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var favoriteMarkView: UIViewCustomClass!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     @IBOutlet weak var recallAPIView: UIView!
     @IBOutlet weak var markAsFavBtn: UIButton!
@@ -114,6 +114,10 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             self.topNavigationView.isHidden = false
             self.topNavigationHeight.constant = 44
             
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
         
         self.stopAnimateAcitivity()
@@ -531,14 +535,17 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     
                    // print(dict)
                    // self.resetPaginationVar()
-                    let pagN = self.campIndex/5
+                    let pagN = self.campIndex+1/5
                     self.pageNo = pagN
                     self.limit = (pagN+1)*5
                     if self.comeFrom == reviewBased {
-                        self.revieweBasedAPIHit(pageNum: self.pageNo)
+                        //self.revieweBasedAPIHit(pageNum: self.pageNo)
+                        
+                        
                         
                     } else {
-                        self.featuredAPIHit(pageNum: self.pageNo)
+                        //self.featuredAPIHit(pageNum: self.pageNo)
+                        
                         
                     }
                 } else {
@@ -637,6 +644,15 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             let cell = self.categoryCollectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell
             
             if cell.favouriteButton.currentImage == #imageLiteral(resourceName: "Favoutites") {
+                
+                if self.comeFrom == reviewBased {
+                    
+                    
+                } else {
+                    
+                    
+                }
+                
                 cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
                 
             } else {
@@ -802,7 +818,16 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         cell.ttlReviewLbl.text! = (String(describing: (((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
         
         if ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
-            cell.locationAddressLbl.text! = ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+            
+            let addr = ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+            var trimmedAddr: String = ""
+            trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+            if trimmedAddr == "" {
+                trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+            }
+            cell.locationAddressLbl.text! = trimmedAddr
+            
+        //    cell.locationAddressLbl.text! = ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
             
         }
         

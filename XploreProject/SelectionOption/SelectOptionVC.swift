@@ -17,6 +17,7 @@ import UIKit
 class SelectOptionVC: UIViewController {
     
     //MARK:- Inbuild Functions
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var optionTableView: UITableView!
     @IBOutlet weak var selectionHeader: UILabel!
     @IBOutlet weak var selectOptionTblHeight: NSLayoutConstraint!
@@ -68,6 +69,11 @@ class SelectOptionVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

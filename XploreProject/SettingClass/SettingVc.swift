@@ -8,6 +8,7 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var tblViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var userNameBtn: UIButton!
     
     //MARK:- Variable Declarations
     var tableViewArray = NSArray()
@@ -39,10 +40,14 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
     //MARK:- Function definitions
     func startFunc() {
         settingTableView.tableFooterView = UIView()
-        if UserDefaults.standard.value(forKey: XPLoginStatus) as! String == facbookLogin || UserDefaults.standard.value(forKey: XPLoginStatus) as! String == gmailLogin || UserDefaults.standard.value(forKey: XPLoginStatus) as! String == appleLogin {
-            self.socialLogin = true
-            
+        if let uValue = UserDefaults.standard.value(forKey: XPLoginStatus) as? String {
+            if uValue == facbookLogin || uValue == gmailLogin || uValue == appleLogin {
+                self.socialLogin = true
+                
+            }
         }
+        
+        
         if self.socialLogin == true {
             tableViewArray = [PushNotification, payHistory, About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
             
@@ -75,6 +80,10 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

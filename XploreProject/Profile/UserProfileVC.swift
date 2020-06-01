@@ -11,6 +11,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import FirebaseStorage
+import SimpleImageViewer
 
 class UserProfileVC: UIViewController {
 
@@ -18,7 +19,7 @@ class UserProfileVC: UIViewController {
     @IBOutlet weak var myProfileScrollVIew: UIScrollView!    
     @IBOutlet weak var myProfileImgView: UIImageViewCustomClass!
     @IBOutlet weak var userNameLbl: UILabel!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var CampsitView: UIViewCustomClass!
     @IBOutlet weak var notificationCountLbl: UILabel!
     
@@ -44,6 +45,10 @@ class UserProfileVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     
@@ -114,6 +119,15 @@ class UserProfileVC: UIViewController {
     }
     
     //MARK:- Button Action
+    @IBAction func tapProfileImgView(_ sender: Any) {
+        self.view.endEditing(true)
+        let configuration = ImageViewerConfiguration { config in
+           config.imageView = self.myProfileImgView
+           
+        }
+        present(ImageViewerController(configuration: configuration), animated: true)
+    }
+    
     @IBAction func tapProfileBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
         self.navigationController?.pushViewController(vc, animated: true)

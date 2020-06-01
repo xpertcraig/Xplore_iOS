@@ -19,7 +19,7 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var distanceValueSlider: UISlider!
     @IBOutlet weak var sliderValueLbl: UILabel!
     @IBOutlet weak var showMapVIew: GMSMapView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var sliderContaingView: UIView!
     
     @IBOutlet weak var notificationCountLbl: UILabel!
@@ -51,6 +51,10 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

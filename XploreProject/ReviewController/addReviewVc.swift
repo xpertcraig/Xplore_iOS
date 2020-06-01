@@ -17,7 +17,7 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var scroolview: UIScrollView!
     @IBOutlet weak var reviewCollection: UICollectionView!
     @IBOutlet weak var descriptionTextView: UITextView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var dateOfStayView: UIView!
     @IBOutlet weak var dateOfStayTxtFld: UITextFieldCustomClass!
     @IBOutlet weak var lengthOfDaysLbl: UITextFieldCustomClass!
@@ -82,6 +82,10 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

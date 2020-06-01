@@ -20,7 +20,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
 
     //MARK:- IbOUtlets
     @IBOutlet weak var addCampsiteTitleLbl: UILabel!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var scroolView: UIScrollView!
     @IBOutlet weak var campsiteName: UITextFieldCustomClass!
     @IBOutlet weak var campsiteAddress1: UITextFieldCustomClass!
@@ -196,6 +196,10 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         }
         self.countryStateCityTblView.isHidden = true
         
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -2042,48 +2046,6 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func currency(recStr: String) -> String? {
-        let firstTwoLtr = String(recStr.prefix(2))
-        let code = Locale.currency[firstTwoLtr.uppercased()]
-        
-        if code == nil {
-            let sepStr = recStr.components(separatedBy: " ")
-           // print(sepStr)
-            if sepStr.count == 2 {
-                if sepStr[0] != "" {
-                    if sepStr[1] != "" {
-                        let code = Locale.currency["\(String(describing: sepStr[0].first!))\(String(describing: sepStr[1].first!))"]
-                        
-                        return code?.code
-                    }
-                }
-            } else if sepStr.count == 1 {
-                if sepStr[0] != "" {
-                    let code = Locale.currency["\(String(describing: sepStr[0].first!))"]                    
-                    return code?.code
-                   
-                }
-            } else if sepStr.count == 0 {
-                return ""
-                
-            } else if sepStr.count > 2 {
-                if sepStr[0] != "" {
-                    if sepStr[1] != "" {
-                        if sepStr[2] != "" {
-                            let code = Locale.currency["\(String(describing: sepStr[0].first!))\(String(describing: sepStr[1].first!))\(String(describing: sepStr[2].first!))"]
-                            
-                            return code?.code
-                            
-                        }
-                    }
-                }
-            }
-        }
-        
-        return code?.code
-    }
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.searchActive == true {
             self.searchActive = false
@@ -2179,7 +2141,7 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
         let addr3 = self.campsiteAddress2.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
         let addr4 = self.Country.text! + "," + self.state.text! + "," + self.city.text!
         
-        if let cName = self.currency(recStr: self.Country.text!) {
+        if let cName = currency(recStr: self.Country.text!) {
             self.countryCode.text! = cName
             
         } else {
@@ -2275,48 +2237,4 @@ extension AddNewCampsiteVc: OpalImagePickerControllerDelegate {
         return URL(string: "https://placeimg.com/500/500/nature")
     }
     
-}
-
-extension UIImage {
-    // MARK: - UIImage+Resize
-    func compressTo(_ expectedSizeInKb:Int) -> UIImage? {
-        let sizeInBytes = expectedSizeInKb * 1024 //* 1024 * 1024
-        var needCompress:Bool = true
-        var imgData:Data?
-        var compressingValue:CGFloat = 1.0
-        while (needCompress && compressingValue > 0.0) {
-            if let data:Data = UIImageJPEGRepresentation(self, compressingValue) {
-                if data.count < sizeInBytes {
-                    needCompress = false
-                    imgData = data
-                } else {
-                    compressingValue -= 0.1
-                }
-            }
-        }
-        
-     //   print(sizeInBytes)
-        
-        if let data = imgData {
-            if (data.count < sizeInBytes) {
-                return UIImage(data: data)
-            }
-        }
-        return nil
-    }
-}
-
-extension Locale {
-    static let currency: [String: (code: String?, symbol: String?)] = Locale.isoRegionCodes.reduce(into: [:]) {
-        let locale = Locale(identifier: Locale.identifier(fromComponents: [NSLocale.Key.countryCode.rawValue: $1]))
-        $0[$1] = (locale.currencyCode, locale.currencySymbol)
-    }
-}
-
-extension Locale {
-    func isoCode(for countryName: String) -> String? {
-        return Locale.isoRegionCodes.first(where: { (code) -> Bool in
-            localizedString(forRegionCode: code)?.compare(countryName, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
-        })
-    }
 }

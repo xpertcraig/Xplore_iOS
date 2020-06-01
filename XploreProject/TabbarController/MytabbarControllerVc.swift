@@ -41,13 +41,13 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if DataManager.isUserLoggedIn! == false {
-            if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "mycampsite-1")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "settingSelect")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedSelect")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "MyCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "setting")!) {
+            if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedNew")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "mycampsite-1")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "settingGrayNew")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedCampGrayNew")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "MyCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SettingsNew")!) {
                 
                 let alert = UIAlertController(title: appName, message: loginRequired, preferredStyle: .alert)
                 let yesBtn = UIAlertAction(title: Ok, style: .default, handler: { (UIAlertAction) in
                     alert.dismiss(animated: true, completion: nil)
                     
-                    if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedSelect")!) {
+                    if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedNew")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "SavedCampGrayNew")!) {
                         tabBarController.selectedIndex = 2
                         
                     } else if self.selectedItemImg!.isEqualToImage(image: UIImage(named: "MyCampsite")!) || self.selectedItemImg!.isEqualToImage(image: UIImage(named: "mycampsite-1")!) {

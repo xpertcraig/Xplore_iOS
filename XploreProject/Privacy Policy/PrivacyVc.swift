@@ -12,7 +12,7 @@ class PrivacyVc: UIViewController {
 
     //MARK:- Iboutlets
     @IBOutlet weak var privacyTxtVIew: UITextView!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
     
     //MARK:- Inbuild Functions
@@ -29,6 +29,11 @@ class PrivacyVc: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     
@@ -83,14 +88,8 @@ class PrivacyVc: UIViewController {
                     //self.privacyTxtVIew.text! = (dict["result"]! as! String)
                     
                     let str = (dict["result"]! as! String)
-                    let htmlData = NSString(string: str).data(using: String.Encoding.unicode.rawValue)
-
-                    let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
-
-                    let attributedString = try! NSAttributedString(data: htmlData!, options: options, documentAttributes: nil)
-
-                    self.privacyTxtVIew.attributedText = attributedString
-                    
+                    self.privacyTxtVIew.text! = str.html2String
+                   
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     

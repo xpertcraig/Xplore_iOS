@@ -13,6 +13,7 @@ import SimpleImageViewer
 class ReviewDetailsVC: UIViewController {
 
     //MARK:- Iboutlets
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var reviewDetailScrollView: UIScrollView!
     @IBOutlet weak var userImgView: UIImageViewCustomClass!
     @IBOutlet weak var userNameLbl: UILabel!
@@ -56,6 +57,10 @@ class ReviewDetailsVC: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     

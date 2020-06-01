@@ -18,7 +18,7 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     @IBOutlet weak var myProfileImgView: UIImageViewCustomClass!
     @IBOutlet weak var userNameLbl: UILabel!
     @IBOutlet weak var userEmailLbl: UILabel!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var savedCapsiteView: UIViewCustomClass!
     @IBOutlet weak var myCampsitView: UIViewCustomClass!
     @IBOutlet weak var messageView: UIViewCustomClass!
@@ -53,6 +53,11 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
         }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
+        
         //api
         self.callAPI()
         
@@ -95,7 +100,7 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     
     //MARK:- Function Definition
     func setInfo(retValue: NSDictionary) {
-        DataManager.name = String(describing: (retValue.value(forKey: "name"))!) as AnyObject
+        DataManager.name = String(describing: (retValue.value(forKey: "name"))!)
         DataManager.contactNum = String(describing: (retValue.value(forKey: "phoneNumber"))!) as AnyObject
         DataManager.profileImage = String(describing: (retValue.value(forKey: "profileImage"))!) as AnyObject
         

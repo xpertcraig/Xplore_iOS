@@ -153,6 +153,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        if #available(iOS 13.0, *) {
+            UIScene.willDeactivateNotification
+        } else {
+            NSNotification.Name.UIApplicationWillResignActive
+            // Fallback on earlier versions
+        }
+
+        
         self.saveContext()
         if Singleton.sharedInstance.homeFeaturesCampsArr.count > 0 {
             userDefault.set(Singleton.sharedInstance.homeFeaturesCampsArr, forKey: homeFeaturesStr)

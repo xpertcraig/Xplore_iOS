@@ -13,7 +13,7 @@ import SimpleImageViewer
 class savedCompositeVc: UIViewController {
 
     //MARK:- Iboutlets
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var mainAllContentView: UIView!
     @IBOutlet weak var favouritesBtn: UIButtonCustomClass!
     @IBOutlet weak var savedBtn: UIButtonCustomClass!
@@ -67,6 +67,7 @@ class savedCompositeVc: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.stopAnimateAcitivity()
         
+        self.tabBarController?.selectedIndex = 2
         if Singleton.sharedInstance.favouritesCampArr.count > 0 {
             self.reloadTbl()
             
@@ -75,6 +76,10 @@ class savedCompositeVc: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
         
         if DataManager.isUserLoggedIn! {
@@ -604,7 +609,17 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
         cell.ttlReviewLbl.text! = (String(describing: (((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
         
         if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
-            cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+            
+            let addr = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
+            var trimmedAddr: String = ""
+            trimmedAddr = addr.replacingOccurrences(of: ", , , ", with: ", ")
+            if trimmedAddr == "" {
+                trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
+            }
+            cell.locationAddressLbl.text! = trimmedAddr
+            
+            
+       //     cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
             
             
         }
@@ -741,6 +756,10 @@ extension savedCompositeVc {
                     if self.campType == favouritesCamp {
                         self.collArr = self.favouriteCampArr
                         Singleton.sharedInstance.favouritesCampArr = self.collArr
+                        
+                        if self.collArr.count == 0 {
+                            self.setDelegateAndDataSource()
+                        }
                     }
                     if self.firstTime == false {
                         self.setDelegateAndDataSource()
@@ -794,6 +813,7 @@ extension savedCompositeVc {
                     self.pageNo = pagN
                     self.limit = (pagN+1)*5
                     
+                    Singleton.sharedInstance.favouritesCampArr = []
                     self.favouritesApiHit(pageNum: self.pageNo)
 
                 } else {

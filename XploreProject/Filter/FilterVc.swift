@@ -17,6 +17,7 @@ import CoreLocation
 class FilterVc: UIViewController, selectTypeDelegate {
         
     //MARK:- IbOutlets
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var filterScrollView: UIScrollView!
     @IBOutlet weak var countryView: UIView!
     @IBOutlet weak var countryTxtfld: UITextFieldCustomClass!
@@ -41,6 +42,7 @@ class FilterVc: UIViewController, selectTypeDelegate {
     @IBOutlet weak var sliderValueLbl: UILabel!
     @IBOutlet weak var backBtnImgView: UIImageView!
     @IBOutlet weak var backBtn: UIButton!
+    @IBOutlet weak var backBtnWidth: NSLayoutConstraint!
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var containerView: UIView!
     
@@ -80,11 +82,6 @@ class FilterVc: UIViewController, selectTypeDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if !DataManager.isUserLoggedIn! {
-            self.topNavigationView.isHidden = true
-            self.topNavigationHeight.constant = 0
-            
-        }
         self.setUpOnLoad()
         
     }
@@ -95,6 +92,11 @@ class FilterVc: UIViewController, selectTypeDelegate {
             self.topNavigationHeight.constant = 44
             
         }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
+        
         if notificationCount > 9 {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
@@ -180,10 +182,12 @@ class FilterVc: UIViewController, selectTypeDelegate {
         
         if self.comeFrom == notFromTabbar {
             self.backBtn.isHidden = false
+            self.backBtnWidth.constant = 50
             self.backBtnImgView.isHidden = false
             
         } else {
             self.backBtn.isHidden = true
+            self.backBtnWidth.constant = 25
             self.backBtnImgView.isHidden = true
             
         }
@@ -578,29 +582,63 @@ class FilterVc: UIViewController, selectTypeDelegate {
     @IBAction func tapProfileAction(_ sender: Any) {
         self.searchActive = false
         self.view.endEditing(true)
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+            if connectivity.isConnectedToInternet() {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
+        } else {
+            self.loginAlertFunc(vc: "profile", viewController: self)
+        }
         
     }
     
     @IBAction func tapNearByUserBtn(_ sender: UIButton) {
         self.searchActive = false
         self.view.endEditing(true)
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        if DataManager.isUserLoggedIn! {
+             if connectivity.isConnectedToInternet() {
+                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
+                 self.navigationController?.pushViewController(vc, animated: true)
+             } else {
+                 CommonFunctions.showAlert(self, message: noInternet, title: appName)
+             }
+         } else {
+             self.loginAlertFunc(vc: "nearByUser", viewController: self)
+             
+        }
     }
     
     @IBAction func addCampAction(_ sender: Any) {
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
+        self.searchActive = false
+        self.view.endEditing(true)
+        if DataManager.isUserLoggedIn! {
+            let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "AddNewCampsiteVc") as! AddNewCampsiteVc
+            self.navigationController?.pushViewController(swRevealObj, animated: true)
+            
+        } else {
+            self.loginAlertFunc(vc: "addCamps", viewController: self)
+            
+        }
         
     }
     
     @IBAction func notificationAction(_ sender: Any) {
         self.searchActive = false
         self.view.endEditing(true)
-        let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
-        self.navigationController?.pushViewController(swRevealObj, animated: true)
+        if DataManager.isUserLoggedIn! {
+            if connectivity.isConnectedToInternet() {
+                let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
+                self.navigationController?.pushViewController(swRevealObj, animated: true)
+            } else {
+                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
+        } else {
+            self.loginAlertFunc(vc: "fromNoti", viewController: self)
+            
+        }
         
     }
     

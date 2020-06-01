@@ -13,7 +13,7 @@ class NotificationVc: UIViewController {
     //MARK:- Iboutlets
     @IBOutlet weak var notificationTableview: UITableView!
     @IBOutlet weak var noNotificationLbl: UILabel!
-    
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var clearNotiBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
     
@@ -44,6 +44,10 @@ class NotificationVc: UIViewController {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
+        }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
         }
     }
     
@@ -80,6 +84,16 @@ class NotificationVc: UIViewController {
         self.myNotificationsArr = Singleton.sharedInstance.notificationListingArr
         self.notificationCountLbl.text! = "0"
         notificationCount = 0
+        
+        if self.myNotificationsArr.count == 0 {
+            self.disableClearNotiBtn()
+        } else {
+            self.notificationTableview.isHidden = false
+            self.noNotificationLbl.isHidden = true
+            
+            self.clearNotiBtn.layer.opacity = 1.0
+            self.clearNotiBtn.isUserInteractionEnabled = true
+        }
         
         self.notificationTableview.delegate = self
         self.notificationTableview.dataSource = self
@@ -150,11 +164,13 @@ class NotificationVc: UIViewController {
                     self.reloadTbl()
                     
                 } else {
+                    self.disableClearNotiBtn()
                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
             }
         }) { (error) in
+            self.disableClearNotiBtn()
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
@@ -164,6 +180,13 @@ class NotificationVc: UIViewController {
                 
             }
         }
+    }
+    
+    func disableClearNotiBtn() {
+        self.notificationTableview.isHidden = true
+        self.noNotificationLbl.isHidden = false
+        self.clearNotiBtn.layer.opacity = 0.2
+        self.clearNotiBtn.isUserInteractionEnabled = false
     }
     
     func removePerticularNotificationsAPIHit(notiId: String){
@@ -176,7 +199,7 @@ class NotificationVc: UIViewController {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
                  //   print(dict)
-                    
+                    Singleton.sharedInstance.notificationListingArr = []
                     self.notificationsAPIHit()
                     
                 } else {
@@ -206,6 +229,7 @@ class NotificationVc: UIViewController {
                 if (String(describing: (dict["success"])!)) == "1" {
                    
                     self.myNotificationsArr = []
+                    Singleton.sharedInstance.notificationListingArr = []
                     self.notificationTableview.reloadData()
                    
                 } else {
@@ -227,25 +251,28 @@ class NotificationVc: UIViewController {
     
     //MARK:- Button Action
     @IBAction func tapClearAllNotifications(_ sender: Any) {
-        let alert = UIAlertController(title: appName, message: sureClearNoti, preferredStyle: .alert)
-        let yesBtn = UIAlertAction(title: yesBtntitle, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-            if connectivity.isConnectedToInternet() {
-                self.clearAllNotificationsAPIHit()
-                
-            } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
-            }
-        })
-        
-        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
-            alert.dismiss(animated: true, completion: nil)
-        })
-        alert.addAction(yesBtn)
-        alert.addAction(noBtn)
-        present(alert, animated: true, completion: nil)
-        
+        if self.myNotificationsArr.count > 0 {
+            let alert = UIAlertController(title: appName, message: sureClearNoti, preferredStyle: .alert)
+            let yesBtn = UIAlertAction(title: yesBtntitle, style: .default, handler: { (UIAlertAction) in
+                alert.dismiss(animated: true, completion: nil)
+                if connectivity.isConnectedToInternet() {
+                    self.clearAllNotificationsAPIHit()
+                    
+                } else {
+                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    
+                }
+            })
+            
+            let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
+                alert.dismiss(animated: true, completion: nil)
+            })
+            alert.addAction(yesBtn)
+            alert.addAction(noBtn)
+            present(alert, animated: true, completion: nil)
+        } else {
+            
+        }
     }
     
     @IBAction func tapProfileBtn(_ sender: UIButton) {
@@ -300,20 +327,6 @@ class NotificationVc: UIViewController {
 
 extension NotificationVc :UITableViewDataSource ,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.myNotificationsArr.count == 0 {
-            self.notificationTableview.isHidden = true
-            self.noNotificationLbl.isHidden = false
-            
-            self.clearNotiBtn.layer.opacity = 0.2
-            
-            self.clearNotiBtn.isUserInteractionEnabled = false
-        } else {
-            self.notificationTableview.isHidden = false
-            self.noNotificationLbl.isHidden = true
-            
-            self.clearNotiBtn.layer.opacity = 1.0
-            self.clearNotiBtn.isUserInteractionEnabled = true
-        }
        return  self.myNotificationsArr.count
         
     }

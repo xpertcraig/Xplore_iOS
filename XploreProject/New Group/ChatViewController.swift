@@ -14,6 +14,7 @@ import FirebaseStorage
 import FTIndicator
 import Photos
 import SDWebImage
+import SimpleImageViewer
 
 class SendCell :UITableViewCell {
     @IBOutlet weak var view: UIView!
@@ -58,10 +59,14 @@ class ReceiveImageCell: UITableViewCell {
 }
 
 class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
     //MARK:- IBOutlets
+    @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var chatTableView: UITableView!
+    @IBOutlet weak var chatTextViewContainingView: UIViewCustomClass!
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var chatTextViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var chatBoxBottom: NSLayoutConstraint!
     @IBOutlet weak var userIMgView: UIImageViewCustomClass!
     @IBOutlet weak var userNameLbl: UILabel!
@@ -83,6 +88,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         //print(userInfoDict)
         Singleton.sharedInstance.notiType = ""
+        self.sendBtn.isHidden = true
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         if #available(iOS 13, *)
         {
@@ -169,11 +175,26 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
         }
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+        
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(willResignActive), name: UIScene.willDeactivateNotification, object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(willResignActive), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        }
+    }
+    
+    @objc func willResignActive(_ notification: Notification) {
+        // code to execute
+        self.chatThreadRemoved()
     }
     
     deinit {
@@ -193,7 +214,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    func chatThreadRemoved() {
         if self.chatArray.count == 0 {
             let ref = Database.database().reference()
             ref.child("Users").child(chatUnitId).removeValue()
@@ -203,6 +224,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue((Double(String(describing: ((chatArray.lastObject as! NSDictionary)["postDate"])!))!))
             
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.chatThreadRemoved()
     }
     
     //MARK: - Status Color
@@ -279,6 +304,26 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 self.userIMgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
                 
+            }  else {
+                if DataManager.userId as! String == String(describing: (self.userInfoDict.value(forKey: "userId") as! String)) {
+                    
+                    if let name = (self.userInfoDict.value(forKey: "otherUsername") as? String) {
+                        self.userNameLbl.text! = name
+                        
+                    }
+                    self.userIMgView.sd_setShowActivityIndicatorView(true)
+                    self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                    self.userIMgView.sd_setImage(with: URL(string: String(describing: (self.userInfoDict.value(forKey: "otherUserProfileImage") as! String))), placeholderImage: UIImage(named: ""))
+                } else {
+                    if let name = (self.userInfoDict.value(forKey: "username") as? String) {
+                        self.userNameLbl.text! = name
+                        
+                    }
+                    self.userIMgView.sd_setShowActivityIndicatorView(true)
+                    self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                    self.userIMgView.sd_setImage(with: URL(string: String(describing: (self.userInfoDict.value(forKey: "userProfileImage") as! String))), placeholderImage: UIImage(named: ""))
+
+                }
             }
         })
     }
@@ -292,7 +337,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let msg = self.chatTextView.text!
         self.chatTextView.text = ""
-        self.chatTextViewHeight.constant = 33.0
+        self.chatTextViewHeight.constant = 41
+        self.chatTextViewContainingView.layer.cornerRadius = 21.5
+        self.chatTextViewContainingView.layer.masksToBounds = true
+        
         self.view.endEditing(true)
         
         childRef.updateChildValues(dictMessage)
@@ -435,12 +483,30 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let fixedWidth = textView.frame.size.width
         textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        if newSize.height <= 120 {
+        if newSize.height <= 80 && newSize.height > 41 {
             chatTextViewHeight.constant = newSize.height
+           // self.chatTextViewContainingView.layer.cornerRadius = newSize.height/2
+            self.chatTextViewContainingView.layer.masksToBounds = true
+        } else {
+            if newSize.height > 41 {
+                
+            } else {
+                chatTextViewHeight.constant = 41
+                // self.chatTextViewContainingView.layer.cornerRadius = newSize.height/2
+                 self.chatTextViewContainingView.layer.masksToBounds = true
+            }
         }
-        else {
-            
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if textView.text != "Your Message" || textView.text.count != 0 {
+            self.sendBtn.isHidden = false
+        } else {
+            self.sendBtn.isHidden = true
         }
+        
+        return true
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -472,6 +538,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBAction func backBtnTap(_ sender: Any) {
         self.tabBarController?.tabBar.isHidden = false
+        self.chatThreadRemoved()
         self.navigationController?.popViewController(animated: true)
         
     }
@@ -527,8 +594,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    //MARK:- IBActions
     //MARK:- Button Action
+    @IBAction func tapProfileImgView(_ sender: Any) {
+        self.view.endEditing(true)
+        let configuration = ImageViewerConfiguration { config in
+            config.imageView = self.userIMgView
+            
+        }
+        present(ImageViewerController(configuration: configuration), animated: true)
+    }
+    
     @IBAction func tapProfileBtn(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
         self.navigationController?.pushViewController(vc, animated: true)
@@ -577,13 +652,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     @IBAction func sendBtnActn(_ sender: Any) {
-        let myString:String = chatTextView.text!
-        chatTextView.text = myString.trimmingCharacters(in: .whitespacesAndNewlines)
-       // print(chatTextView.text)
-        
-        if chatTextView.text! != "" {
-            sendMessageData()
-            
+        if self.chatTextView.text! != "Your Message" && chatTextView.text! != "" {
+            let myString:String = chatTextView.text!
+             chatTextView.text = myString.trimmingCharacters(in: .whitespacesAndNewlines)
+            // print(chatTextView.text)
+             
+             if chatTextView.text! != "" {
+                 sendMessageData()
+                 
+             }
+        } else {
+            CommonFunctions.showAlert(self, message: messageEmptyAlert, title: appName)
         }
     }
     
