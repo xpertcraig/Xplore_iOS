@@ -52,6 +52,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     var fromCross: Bool = false
     private let commonDataViewModel = CommonUseViewModel()
     let locationManager = CLLocationManager()
+    let sing = Singleton.sharedInstance
     
     //Pappal Config Object
     var payPalConfig = PayPalConfiguration() // default
@@ -79,19 +80,27 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
         self.progressBarButtonFadeIn()
         
-        if Singleton.sharedInstance.myCurrentLocDict.count == 0 {
-            self.CorrentLocContainingView.isHidden = true
-            self.locviewHeight.constant = 0
-        }
-        
+        self.CorrentLocContainingView.isHidden = true
+        self.locviewHeight.constant = 0
+ 
         self.moveToControllerAfterLogin()
         var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
         print(vcArray)
         
-        self.getLocationNameAndImage()
+        if self.sing.mycurrentLocationImage != nil {
+            self.setMyCurrentLoc()
+        } else {
+            self.commonDataViewModel.getLocationNameAndImage()
+        }
         
-        self.homeScrollView.isHidden = true
-        self.recallAPIView.isHidden = true
+        if Singleton.sharedInstance.homeFeaturesCampsArr.count > 0 {
+            self.reloadTbl()
+
+        } else {
+            self.homeScrollView.isHidden = true
+            self.recallAPIView.isHidden = false
+            
+        }
         
         self.overlayView.isHidden = true
         self.favoriteMarkView.isHidden = true
@@ -135,34 +144,24 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
-        if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
-            self.setMyCurrentLoc()
-            
-        } else if userDefault.value(forKey: myCurrentLocStr) != nil {
-            Singleton.sharedInstance.myCurrentLocDict = userDefault.value(forKey: myCurrentLocStr) as! [String: Any]
-            userDefault.removeObject(forKey: myCurrentLocStr)
-            self.setMyCurrentLoc()
-        }
+//        if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
+//            self.setMyCurrentLoc()
+//
+//        } else if userDefault.value(forKey: myCurrentLocStr) != nil {
+//            Singleton.sharedInstance.myCurrentLocDict = userDefault.value(forKey: myCurrentLocStr) as! [String: Any]
+//            userDefault.removeObject(forKey: myCurrentLocStr)
+//            self.setMyCurrentLoc()
+//        }
         
-        if Singleton.sharedInstance.homeReviewBasedCampsArr.count > 0 {
-            self.reloadTbl()
-            
-        } else if userDefault.value(forKey: homeReviewBasedStr) != nil {
-            Singleton.sharedInstance.homeReviewBasedCampsArr = userDefault.value(forKey: homeReviewBasedStr) as! NSArray
-            userDefault.removeObject(forKey: homeReviewBasedStr)
-            self.reloadTbl()
-        }
+//        if Singleton.sharedInstance.homeFeaturesCampsArr.count > 0 {
+//            self.reloadTbl()
+//
+//        } else if userDefault.value(forKey: homeFeaturesStr) != nil {
+//            Singleton.sharedInstance.homeFeaturesCampsArr = userDefault.value(forKey: homeFeaturesStr) as! NSArray
+//            userDefault.removeObject(forKey: homeFeaturesStr)
+//            self.reloadTbl()
+//        }
         
-        if Singleton.sharedInstance.homeFeaturesCampsArr.count > 0 {
-            self.reloadTbl()
-            
-        } else if userDefault.value(forKey: homeFeaturesStr) != nil {
-            Singleton.sharedInstance.homeFeaturesCampsArr = userDefault.value(forKey: homeFeaturesStr) as! NSArray
-            userDefault.removeObject(forKey: homeFeaturesStr)
-            self.reloadTbl()
-        }
-        
-        //api
         self.callAPI()
         
         //PayPal
@@ -178,6 +177,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     override func viewDidAppear(_ animated: Bool) {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(locationImgGet), name: Notification.Name("locationRec"), object: nil)
+
     }
     
     deinit {
@@ -185,6 +186,11 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     }
     
     //MARK:- Function Definitions
+    @objc func locationImgGet() {
+        self.setMyCurrentLoc()
+    }
+    
+    
     func progressBarButtonFadeIn(){
         self.userNameBtn.alpha = 0
         self.userNameBtn.transform = CGAffineTransform(scaleX: 0.1, y: 1)
@@ -281,6 +287,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         self.reviewBasedArr = Singleton.sharedInstance.homeReviewBasedCampsArr
         
         self.homeScrollView.isHidden = false
+        self.recallAPIView.isHidden = true
         
         self.setDelegateAndDataSource()
     }
@@ -311,42 +318,11 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         
     }
     
-    func loadFirstPhotoForPlace(placeID: String) {
-        
-       // print(placeID)
-        
-        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                if let firstPhoto = photos?.results.first {
-                    self.loadImageForMetadata(photoMetadata: firstPhoto)
-                    
-                }
-            }
-        }
-    }
-    
-    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
-        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
-            (photo, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                self.mycurrentLocationImage.image = photo;
-                
-                Singleton.sharedInstance.myCurrentLocDict.updateValue(self.mycurrentLocationImage.image!, forKey: "mycurLocImg")
-                
-                self.animateLocView()
-                
-                //self.attributionTextView.attributedText = photoMetadata.attributions;
-            }
-        })
-    }
-    
     func animateLocView() {
+        self.mycurrentLocationImage.image = self.sing.mycurrentLocationImage
+        self.myCurrentLocation.text = self.sing.myCurrentLocation
+        self.myCurrentLocationState.text = self.sing.myCurrentLocationState
+        
         self.CorrentLocContainingView.isHidden = false
         self.locviewHeight.constant = 55
         UIView.animate(withDuration: 0.25) {
@@ -451,60 +427,6 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.navigationController?.pushViewController(vc, animated: false )
         } else {
             CommonFunctions.showAlert(self, message: noInternet, title: appName)
-        }
-    }
-    
-    func getLocationNameAndImage() {
-        let geocoder = CLGeocoder()
-        if userLocation != nil {
-            geocoder.reverseGeocodeLocation(userLocation!) { (placemarksArray, error) in
-                if placemarksArray != nil {
-                    if (placemarksArray?.count)! > 0 {
-                        let placemark = placemarksArray?.first
-                  //      "AIzaSyDuMxcTE9veBDMS_jjIjHJ0ltUVCyGMn2I"
-                        
-//                        myCurrentLatitude = 32.265942
-//                        myCurrentLongitude = 75.646873
-                        if placemark?.addressDictionary != nil {
-                            if (placemark?.addressDictionary!["Country"]) != nil {
-                                countryOnMyCurrentLatLong = (placemark?.addressDictionary!["Country"]) as? String ?? ""
-                               
-                            }
-                        }
-                        
-                        AlamoFireWrapper.sharedInstance.getOnlyApiForGooglePlace(action: ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(myCurrentLatitude),\(myCurrentLongitude)&radius=500&types=&name=&key=" + googleApiKey), onSuccess: { (responseData) in
-
-                            // applicationDelegate.dismissProgressView(view: self.view)
-                            if let dict:NSDictionary = responseData.result.value as? NSDictionary {
-
-                            //    print(dict)
-
-                                if (dict["results"] as! NSArray).count != 0 {
-                                    let placeId: String = String(describing: (((dict["results"] as! NSArray).object(at: 0) as! NSDictionary).value(forKey: "place_id"))!)
-                                    
-                                    self.loadFirstPhotoForPlace(placeID: placeId)
-                                    
-                                }
-                            }
-                        }) { (error) in
-                            //applicationDelegate.dismissProgressView(view: self.view)
-                            if connectivity.isConnectedToInternet() {
-                                //CommonFunctions.showAlert(self, message: serverError, title: appName)
-
-                            } else {
-                                CommonFunctions.showAlert(self, message: noInternet, title: appName)
-
-                            }
-                        }
-                        
-                        self.myCurrentLocation.text = placemark?.subLocality
-                        self.myCurrentLocationState.text = placemark!.locality
-                        
-                        Singleton.sharedInstance.myCurrentLocDict.updateValue(self.myCurrentLocation.text!, forKey: "locName")
-                        Singleton.sharedInstance.myCurrentLocDict.updateValue(self.myCurrentLocationState.text!, forKey: "locState")
-                    }
-                }
-            }
         }
     }
     
@@ -1001,8 +923,6 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
                         self.navigationController?.pushViewController(vc, animated: true)
                     } else {
-                        self.loginAlertFunc(vc: "viewProfile", viewController: self)
-                      
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
                         vc.userInfoDict = indexVal
                         self.navigationController?.pushViewController(vc, animated: true)
@@ -1187,7 +1107,7 @@ extension HomeVc : UITextFieldDelegate {
 
 extension HomeVc {
     func HomeAPIHit() {
-        if (Singleton.sharedInstance.homeFeaturesCampsArr.count == 0 && userDefault.value(forKey: homeFeaturesStr) == nil){
+        if Singleton.sharedInstance.homeFeaturesCampsArr.count == 0 {
             applicationDelegate.startProgressView(view: self.view)
             
         }
@@ -1220,7 +1140,6 @@ extension HomeVc {
                         
                         self.homeScrollView.isHidden = false
                         self.recallAPIView.isHidden = true
-                        self.getLocationNameAndImage()
                         
                         if let featuerd = retValues.value(forKey: "featuredCampsite") as? NSArray {
                             self.featuredArr = featuerd

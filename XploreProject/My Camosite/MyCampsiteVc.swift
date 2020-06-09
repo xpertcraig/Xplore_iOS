@@ -672,12 +672,25 @@ extension MyCampsiteVc {
                         }
                     }
                     
+                    let count: Int = self.publishCampArr.count
                     for i in 0..<retValues.count {
                         self.publishCampArr.add(retValues.object(at: i) as! NSDictionary)
                     }
                     self.collArr = self.publishCampArr
                     Singleton.sharedInstance.myCampsArr = self.collArr
-                    self.setDelegateAndDataSource()
+                    
+                    if pageNum == 0 {
+                        self.setDelegateAndDataSource()
+                    } else {
+                        if count < self.publishCampArr.count {
+                            self.publishSavedCollView.reloadData()
+                            
+                            let indexpathG = IndexPath(item: count, section: 0)
+                            self.publishSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
+                            self.publishSavedCollView.setNeedsLayout()
+                            
+                        }
+                    }
                 } else {
                     self.setInitialDesign()
                     

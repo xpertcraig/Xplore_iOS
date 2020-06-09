@@ -218,7 +218,7 @@ class addReviewVc: UIViewController, UIGestureRecognizerDelegate{
             return true
         }
         return false
-    }
+     }
     
     //MARK:- Api Call
     func addReviewApiCall() {

@@ -7,6 +7,7 @@
 //
 import UIKit
 import Foundation
+import GoogleMobileAds
 
 final class Singleton {
     private init() {}
@@ -15,6 +16,9 @@ final class Singleton {
     var homeFeaturesCampsArr: NSArray = []
     var homeReviewBasedCampsArr: NSArray = []
     var myCurrentLocDict: [String: Any] = [:]
+    var mycurrentLocationImage: UIImage?
+    var myCurrentLocation: String = ""
+    var myCurrentLocationState: String = ""
     
     var favouritesCampArr: NSArray = []
     var myCampsArr: NSArray = []
@@ -28,9 +32,28 @@ final class Singleton {
     var campId: String = ""
     var notiType: String = ""
     var messageSentUserId: String = ""
+    
+    var interstitial: GADInterstitial!
+    var timerAdd = Timer()
+    var addReady: Bool = false
 }
 
 extension UIViewController {
+    func CheckAndShowAdds(vc: UIViewController) {
+        if (Singleton.sharedInstance.interstitial.isReady) {
+            Singleton.sharedInstance.addReady = true
+            Singleton.sharedInstance.timerAdd.invalidate()
+            Singleton.sharedInstance.interstitial.present(fromRootViewController: vc)
+        
+        }
+    }
+    func MoveToHomeScreen(vc: UIViewController) {
+        if Singleton.sharedInstance.addReady == true {
+            Singleton.sharedInstance.addReady = false
+        
+        }
+    }
+    
     func moveBackToApp() {
         (applicationDelegate.window?.rootViewController as! UINavigationController).hasViewController(ofKind: MytabbarControllerVc.self)
         

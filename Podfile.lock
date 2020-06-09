@@ -100,6 +100,7 @@ PODS:
   - FTIndicator/FTNotificationIndicator (1.2.9)
   - FTIndicator/FTProgressIndicator (1.2.9)
   - FTIndicator/FTToastIndicator (1.2.9)
+  - Google-Mobile-Ads-SDK (7.41.0)
   - GoogleAppMeasurement (5.2.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -218,6 +219,7 @@ DEPENDENCIES:
   - FirebaseDatabase
   - FirebaseStorage
   - FTIndicator
+  - Google-Mobile-Ads-SDK
   - GoogleMaps
   - GooglePlaces
   - GoogleSignIn
@@ -277,6 +279,7 @@ SPEC REPOS:
     - SwiftyJSON
   trunk:
     - CardIO
+    - Google-Mobile-Ads-SDK
     - GoogleMaps
     - GooglePlaces
     - PayPal-iOS-SDK
@@ -303,6 +306,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: d6feeb06218d2675b4149b0ada925a6b707a74cf
   FirebaseStorage: fd82e5e5c474897e19972b34b22ac0f589dce04e
   FTIndicator: f7f071fd159e5befa1d040a9ef2e3ab53fa9322c
+  Google-Mobile-Ads-SDK: 101ce89b94fdf60ec64ba7b6e9b9d812dc765936
   GoogleAppMeasurement: 2b3a023a61239c8d002e6e4fcf4abce8eddce0e0
   GoogleMaps: 82f8fe307193bb4de6ef6bf9e88f1d624b718f9d
   GooglePlaces: 1b9d29cf3e164903d873600f511f42acdfe85294
@@ -330,6 +334,6 @@ SPEC CHECKSUMS:
   SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: 4a4d24b69113af61ef7028afffef2db240e1b894
+PODFILE CHECKSUM: ce7fe9a5902bd29c48b0f9507f59a43598a4c0a4
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

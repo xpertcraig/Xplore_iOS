@@ -15,14 +15,12 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        if DataManager.isUserLoggedIn! == false {
-//            if let arrayOfTabBarItems = self.tabBar.items as AnyObject as? NSArray,let
-//               tabBarItem = arrayOfTabBarItems[2] as? UITabBarItem {
-//               tabBarItem.isEnabled = false
-//            }
-//        }
+
+        
         self.delegate = self
     }
+    
+    
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         self.navigationController?.tabBarController?.selectedIndex = tabBarController.selectedIndex

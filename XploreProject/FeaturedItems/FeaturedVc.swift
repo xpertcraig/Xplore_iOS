@@ -119,7 +119,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             let fName = uName.components(separatedBy: " ")
             self.userNameBtn.setTitle(fName[0], for: .normal)
         }
-        
         self.stopAnimateAcitivity()
         
         if notificationCount > 9 {
@@ -127,10 +126,8 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
         }
-
         if self.filterDataDict.value(forKey: "lattitude") == nil && self.searchType == filter {
             self.searchType = ""
-            
         }
     }
     
@@ -312,23 +309,28 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                         self.upToLimit = self.upToLimit + (retValues.count)
                         
                     }
-                    
                     if pageNum == 0 {
                         self.featuredReviewArr = []
                         
                     }
+                    let count: Int = self.featuredReviewArr.count
                     for i in 0..<retValues.count {
                         self.featuredReviewArr.add(retValues.object(at: i) as! NSDictionary)
                         
                     }
-                    
-                    // self.searchDataArr = retValues
-                    
-                    self.categoryCollectionView.delegate = self
-                    self.categoryCollectionView.dataSource = self
-                    self.categoryCollectionView.reloadData()
-                    
-                    
+                    if pageNum == 0 {
+                        self.categoryCollectionView.delegate = self
+                        self.categoryCollectionView.dataSource = self
+                        self.categoryCollectionView.reloadData()
+                    } else {
+                        if count < self.featuredReviewArr.count {
+                            self.categoryCollectionView.reloadData()
+                            let indexpathG = IndexPath(item: count, section: 0)
+                            self.categoryCollectionView.scrollToItem(at: indexpathG, at: .top, animated: true)
+                            self.categoryCollectionView.setNeedsLayout()
+                            
+                        }
+                    }
                 } else {
                     self.noDataFound.isHidden = false
                     self.dataContainingView.isHidden = false
@@ -358,9 +360,12 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
        
         var api1: String = ""
         var api2: String = ""
-        if let userId1 = DataManager.userId as? String {
-            userId = userId1
-            
+        
+        if self.comeFrom != myProfile {
+            if let userId1 = DataManager.userId as? String {
+                userId = userId1
+                
+            }
         }
         
      //   http://clientstagingdev.com/explorecampsite/api/userPublished.php?userId=43&offset=0&userCamps=33
@@ -476,16 +481,27 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 
             }
         }
-        
+        let count: Int = self.featuredReviewArr.count
         for i in 0..<arrR.count {
             self.featuredReviewArr.add(arrR.object(at: i) as! NSDictionary)
             
         }
         
         if self.campIndex == -1 {
-            self.categoryCollectionView.delegate = self
-            self.categoryCollectionView.dataSource = self
-            self.categoryCollectionView.reloadData()
+            if pageR == 0 {
+                self.categoryCollectionView.delegate = self
+                self.categoryCollectionView.dataSource = self
+                self.categoryCollectionView.reloadData()
+            } else {
+                if count < self.featuredReviewArr.count {
+                    self.categoryCollectionView.reloadData()
+                    
+                    let indexpathG = IndexPath(item: count, section: 0)
+                    self.categoryCollectionView.scrollToItem(at: indexpathG, at: .top, animated: true)
+                    self.categoryCollectionView.setNeedsLayout()
+                    
+                }
+            }
         } else {
             let indexPath = IndexPath(item: self.campIndex, section: 0)
             
@@ -520,8 +536,11 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         let indexPath = NSIndexPath(item: self.campIndex, section: 0)
         
         var api1: String = ""
-        api1 = "markFavourite.php?userId=" + (DataManager.userId as! String)
-        
+        if self.comeFrom == myProfile {
+            api1 = "markFavourite.php?userId=" + self.userId
+        } else {
+            api1 = "markFavourite.php?userId=" + (DataManager.userId as! String)
+        }
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: api1 + "&campId=" + String(describing: (self.campId)), onSuccess: { (responseData) in
            
             let cell = self.categoryCollectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell

@@ -15,7 +15,7 @@
 #import "GRXForwardingWriter.h"
 #import "GRXImmediateSingleWriter.h"
 #import "GRXImmediateWriter.h"
-//#import "GRXMappingWriter.h"
+#import "GRXMappingWriter.h"
 #import "GRXWriteable.h"
 #import "GRXWriter+Immediate.h"
 #import "GRXWriter+Transformations.h"

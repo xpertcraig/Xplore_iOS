@@ -39,7 +39,7 @@ class NotificationVc: UIViewController {
             self.reloadTbl()
             
         }
-        self.animateTbl()
+      //  self.animateTbl()
         if notificationCount > 9 {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
@@ -97,7 +97,7 @@ class NotificationVc: UIViewController {
         
         self.notificationTableview.delegate = self
         self.notificationTableview.dataSource = self
-        self.notificationTableview.reloadData()
+        self.notificationTableview.reloadWithAnimation()
     }
     
     func refreshData() {

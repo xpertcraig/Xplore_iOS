@@ -33,6 +33,8 @@ pod 'Firebase/Firestore'
 pod 'SimpleImageViewer'
 pod 'SwiftKeychainWrapper'
 
+pod 'Google-Mobile-Ads-SDK'
+
 post_install do |installer|
     installer.pods_project.targets.each do |target|
         if target.name == 'MessageKit'

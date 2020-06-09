@@ -22,14 +22,16 @@ import GoogleSignIn
 import Firebase
 import FirebaseMessaging
 import UserNotifications
+import GoogleMobileAds
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var notificationRecdict: NSDictionary = [:]
-    
+    var firstCalled: Bool = false
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    
+    private let commonDataViewModel = CommonUseViewModel()
     var window: UIWindow?    
     
     let gcmMessageIDKey = "gcm.message_id"
@@ -40,12 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.statusBarStyle = .lightContent
         
-//        UITabBarItem.appearance()
-//            .setTitleTextAttributes(
-//                [NSAttributedStringKey.font: UIFont(name: "Nunito-Regular", size: 15)!],
-//                for: .normal)
-        
         //
+        Singleton.sharedInstance.interstitial = createAndLoadInterstitial()
         self.determineMyCurrentLocation()
         
         //
@@ -321,8 +319,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if DataManager.isUserLoggedIn! == false {
             DataManager.userId = "0" as AnyObject
         }
-        let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+        let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "SplashVC") as! SplashVC
         (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
+        
+//        let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//        (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
    
     }    
     
@@ -344,8 +345,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         myCurrentLongitude = (userLocation.coordinate.longitude).roundToDecimal(4)
         myCurrentLatitude = (userLocation.coordinate.latitude).roundToDecimal(4)
+        
         self.getLocationNameAndImage()
         
+        if firstCalled == false {
+            firstCalled = true
+            self.commonDataViewModel.getCampAllApiResponse()
+        }
     }
     
     func getLocationNameAndImage() {
@@ -549,3 +555,28 @@ class func isLocationServiceEnabled() -> Bool {
  }
 
 
+extension AppDelegate: GADInterstitialDelegate {
+    func createAndLoadInterstitial() -> GADInterstitial {
+        Singleton.sharedInstance.interstitial = GADInterstitial(adUnitID: GADAdsUnitIdInterstitial)
+        Singleton.sharedInstance.interstitial.delegate = self
+        Singleton.sharedInstance.interstitial.load(GADRequest())
+        return Singleton.sharedInstance.interstitial
+        
+    }
+    
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        print("interstitialDidReceiveAd")
+        
+    }
+    
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+        print(error.localizedDescription)
+    
+    }
+   
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialDidDismissScreen")
+        Singleton.sharedInstance.interstitial = createAndLoadInterstitial()
+    
+    }
+}

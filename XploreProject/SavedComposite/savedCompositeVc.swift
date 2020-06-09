@@ -201,28 +201,21 @@ class savedCompositeVc: UIViewController {
     func setInitialDesign() {
         self.noDataLbl.isHidden = true
         
-        self.campType = savedCamp
+       // self.campType = savedCamp
+        self.campType = favouritesCamp
         self.collArr = []
        
-        if (userDefault.value(forKey: mySavesCamps)) != nil {
-           // print(userDefault.value(forKey: mySavesCamps) as! NSArray)
-            
-            self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
-            
-            self.collArr = self.collArr.reversed() as NSArray
-           
-          //  self.collArr = userDefault.value(forKey: mySavesCamps) as! NSArray
-            
-        }
-        //self.favouriteSavedCollView.reloadData()
+//        if (userDefault.value(forKey: mySavesCamps)) != nil {
+//            self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
+//            self.collArr = self.collArr.reversed() as NSArray
+//
+//        }
         
+        self.collArr = favouriteCampArr
         self.mainAllContentView.isHidden = true
         self.recallAPIView.isHidden = true
         self.overlayView.isHidden = true
-    //    favMarkbottomConstraint.constant = 150
-//        let tapper = UITapGestureRecognizer(target: self, action:#selector(endEditing))
-//        self.overlayView.addGestureRecognizer(tapper)
-        
+    
         if self.comeFrom == myProfile {            
             self.backBtn.isHidden = false
             self.backBtnImgView.isHidden = false
@@ -232,12 +225,17 @@ class savedCompositeVc: UIViewController {
             self.backBtnImgView.isHidden = true
             
         }
+//        self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+//        self.savedBtn.setTitleColor(UIColor.white , for: .normal)
+//
+//        self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+//        self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
         
-        self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        self.savedBtn.setTitleColor(UIColor.white , for: .normal)
+        self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
         
-        self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
+        self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
         
     }
     
@@ -355,14 +353,12 @@ class savedCompositeVc: UIViewController {
     //MARK:- Button Actions
     @IBAction func tapFavouriteBtn(_ sender: UIButton) {
         fromFavourites = true
-        
         self.favBtnAction()
     }
     
     func favBtnAction() {
         self.campType = favouritesCamp
         self.collArr = []
-        
         self.collArr = self.favouriteCampArr
         
         self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
@@ -749,10 +745,13 @@ extension savedCompositeVc {
                         }
                     }
                     
+                    let count: Int = self.favouriteCampArr.count
                     for i in 0..<retValues.count {
                         self.favouriteCampArr.add(retValues.object(at: i) as! NSDictionary)
                         
                     }
+                    
+                    
                     if self.campType == favouritesCamp {
                         self.collArr = self.favouriteCampArr
                         Singleton.sharedInstance.favouritesCampArr = self.collArr
@@ -764,6 +763,15 @@ extension savedCompositeVc {
                     if self.firstTime == false {
                         self.setDelegateAndDataSource()
                         
+                    } else {
+                        if count < self.favouriteCampArr.count {
+                            self.favouriteSavedCollView.reloadData()
+                            
+                            let indexpathG = IndexPath(item: count, section: 0)
+                            self.favouriteSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
+                            self.favouriteSavedCollView.setNeedsLayout()
+                            
+                        }
                     }
                 } else {
                     self.setInitialDesign()

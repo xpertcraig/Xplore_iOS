@@ -1458,7 +1458,7 @@ extension AddNewCampsiteVc {
         
     }
     
-    func getLongiLatti(address1: String, address2: String, address3: String, address4: String) {
+    func getLongiLatti(address1: String, address2: String, address3: String, address4: String, address5: String) {
         let geoCoder = CLGeocoder()
         
         geoCoder.geocodeAddressString(address1) { (placemarks, error) in
@@ -1469,7 +1469,7 @@ extension AddNewCampsiteVc {
                  //   applicationDelegate.dismissProgressView(view: self.view)
                     // handle no location found
                    // CommonFunctions.showAlert(self, message: locationNotFound, title: appName)
-                   self.getLongiLatti(address2: address2, address3: address3, address4: address4)
+                   self.getLongiLatti(address2: address2, address3: address3, address4: address4, address5: address5)
                     return
             }
            
@@ -1480,7 +1480,7 @@ extension AddNewCampsiteVc {
         }
     }
     
-    func getLongiLatti(address2: String, address3: String, address4: String) {
+    func getLongiLatti(address2: String, address3: String, address4: String, address5: String) {
         let geoCoder = CLGeocoder()
         
         geoCoder.geocodeAddressString(address2) { (placemarks, error) in
@@ -1491,8 +1491,12 @@ extension AddNewCampsiteVc {
                    // applicationDelegate.dismissProgressView(view: self.view)
                     // handle no location found
                     //CommonFunctions.showAlert(self, message: locationNotFound, title: appName)
-                    self.getLongiLatti(address3: address3, address4: address4)
                     
+                    if self.closetTown.text == "" {
+                        self.getLongiLatti(address3: address3, address4: address4, address5: address5)
+                    } else {
+                        
+                    }
                     return
             }
             
@@ -1503,7 +1507,7 @@ extension AddNewCampsiteVc {
         }
     }
     
-    func getLongiLatti(address3: String, address4: String) {
+    func getLongiLatti(address3: String, address4: String, address5: String) {
         let geoCoder = CLGeocoder()
         
         geoCoder.geocodeAddressString(address3) { (placemarks, error) in
@@ -1515,7 +1519,7 @@ extension AddNewCampsiteVc {
                     // handle no location found
                    // CommonFunctions.showAlert(self, message: locationNotFound, title: appName)
                     
-                    self.getLongiLatti(address4: address4)
+                    self.getLongiLatti(address4: address4, address5: address5)
                     
                     return
             }
@@ -1527,10 +1531,33 @@ extension AddNewCampsiteVc {
         }
     }
     
-    func getLongiLatti(address4: String) {
+    func getLongiLatti(address4: String, address5: String) {
         let geoCoder = CLGeocoder()
         
         geoCoder.geocodeAddressString(address4) { (placemarks, error) in
+            guard
+                let placemarks = placemarks,
+                let location = placemarks.first?.location
+                else {
+//                    applicationDelegate.dismissProgressView(view: self.view)
+//                    // handle no location found
+//                    CommonFunctions.showAlert(self, message: locationNotFound, title: appName)
+                    
+                    self.getLongiLatti(address5: address5)
+                    return
+            }
+            
+            applicationDelegate.dismissProgressView(view: self.view)
+            self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
+            self.longitude.text! = String(describing: (location.coordinate.longitude).roundToDecimal(4))
+            
+        }
+    }
+    
+    func getLongiLatti(address5: String) {
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.geocodeAddressString(address5) { (placemarks, error) in
             guard
                 let placemarks = placemarks,
                 let location = placemarks.first?.location
@@ -2137,21 +2164,17 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
     
     func getLatLong() {
         let addr1 = self.campsiteAddress1.text! + "," + self.campsiteAddress2.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
-        let addr2 = self.campsiteAddress1.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
-        let addr3 = self.campsiteAddress2.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
-        let addr4 = self.Country.text! + "," + self.state.text! + "," + self.city.text!
+        let addr2 = self.city.text! + "," + self.campsiteAddress1.text! + "," + self.campsiteAddress2.text!
+        let addr3 = self.campsiteAddress1.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
+        let addr4 = self.campsiteAddress2.text! + "," + self.Country.text! + "," + self.state.text! + "," + self.city.text!
+        let addr5 = self.Country.text! + "," + self.state.text! + "," + self.city.text!
         
         if let cName = currency(recStr: self.Country.text!) {
             self.countryCode.text! = cName
-            
         } else {
             self.countryCode.text! = ""
-            
         }
-        
-        
-        self.getLongiLatti(address1: addr1, address2: addr2, address3: addr3, address4: addr4)
-        
+        self.getLongiLatti(address5: addr1) //(address1: addr1, address2: addr2, address3: addr3, address4: addr4, address5: addr5)
     }
 }
 

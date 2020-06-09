@@ -153,11 +153,11 @@ class ChatListingVC: UIViewController {
                         Singleton.sharedInstance.chatListArr = self.usersListDict
                         self.chatListingTblView.delegate = self
                         self.chatListingTblView.dataSource = self
-                        self.chatListingTblView.reloadData()
+                        self.chatListingTblView.reloadWithAnimation()
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
-                            self.animateTbl()
-                        }
+//                        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+//                            self.animateTbl()
+//                        }
                     }
                 } else {
                     self.noChatFound.isHidden = false

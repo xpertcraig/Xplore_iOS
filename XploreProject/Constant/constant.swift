@@ -176,7 +176,7 @@ let reviewAdded = "Your review added successfully."
 let emptyPublishFieldAlert = "We are sorry, seems some field are empty."
 
 // MARK: appDelegate reference
-let applicationDelegate = UIApplication.shared.delegate as!(AppDelegate)
+let applicationDelegate = UIApplication.shared.delegate as! (AppDelegate)
 
 //App Delegate Class
 let userDefault = UserDefaults.standard
@@ -338,7 +338,6 @@ let fromViewProfile = "ForViewProfile"
 let campDescription = "ForCampDescription"
 let featuredCamp = "ForFeaturedCamp"
 
-
 let favouritesCampsStr = "featuredCampStr"
 let myCampsStr = "myCampsStr"
 let myProfileStr = "myProfileStr"
@@ -346,3 +345,5 @@ let settingStr = "settings"
 let notificationListingStr = "notificationListingStr"
 let chatListStr = "chatListStr"
 
+//google ads
+let GADAdsUnitIdInterstitial = "ca-app-pub-3940256099942544/4411468910"

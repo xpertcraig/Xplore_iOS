@@ -59,6 +59,7 @@
 		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
 		E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931F9A922882E8900DA6054 /* myCustomSlider.swift */; };
 		E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93733802438431E00D69C4B /* CommonUseViewModel.swift */; };
+		E94ED8B9248A220400B1495B /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ED8B8248A220400B1495B /* SplashVC.swift */; };
 		E95EFED3243CA44C004A6B91 /* PushNotificationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */; };
 		E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */; };
 		E9BA7E762358BAA600E84A89 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BA7E752358BAA600E84A89 /* Singleton.swift */; };
@@ -190,6 +191,7 @@
 		E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xplore.xcdatamodel; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
 		E93733802438431E00D69C4B /* CommonUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseViewModel.swift; sourceTree = "<group>"; };
+		E94ED8B8248A220400B1495B /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationSender.swift; sourceTree = "<group>"; };
 		E985F1F92388459F00A3F26C /* XploreProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XploreProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 		18BB687E205F9BA5002C2151 /* XploreProject */ = {
 			isa = PBXGroup;
 			children = (
+				E94ED8B7248A21DF00B1495B /* Launch */,
 				E95EFED1243CA3F9004A6B91 /* PushNotification */,
 				FF6606BD2181CC6300D5F570 /* Chat */,
 				FF130E93217F4B430053A567 /* Payment */,
@@ -651,6 +654,14 @@
 				E93733802438431E00D69C4B /* CommonUseViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E94ED8B7248A21DF00B1495B /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				E94ED8B8248A220400B1495B /* SplashVC.swift */,
+			);
+			path = Launch;
 			sourceTree = "<group>";
 		};
 		E95EFED1243CA3F9004A6B91 /* PushNotification */ = {
@@ -1142,6 +1153,7 @@
 				E9BCA99422E47E6E0079B8FD /* TOCropOverlayView.m in Sources */,
 				E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */,
 				1867ABA920663E49009DE2C8 /* addReviewVc.swift in Sources */,
+				E94ED8B9248A220400B1495B /* SplashVC.swift in Sources */,
 				FF8C5D932171AFA200CA7A58 /* CountryStateCityTableViewCell.swift in Sources */,
 				FF5F121A217064F9007EE157 /* addPhotosCollectionViewCell.swift in Sources */,
 				18861BEF2068C28D00EF2F02 /* UITableView+TableFlip.swift in Sources */,

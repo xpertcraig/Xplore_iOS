@@ -2342,6 +2342,10 @@ Copyright 2018 Google
    limitations under the License.
 
 
+## Google-Mobile-Ads-SDK
+
+Copyright 2019 Google
+
 ## GoogleAppMeasurement
 
 Copyright 2018 Google
