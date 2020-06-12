@@ -56,7 +56,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     var upToLimit = 0
     
     var autherInfo: [String: Any] = [:]
-    
+    let sing = Singleton.sharedInstance
     ///
     var featuredReviewRefreshControl = UIRefreshControl()
     
@@ -73,10 +73,16 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             
         }
         
+        self.dataContainingView.isHidden = true
         if comeFrom == featuredBased {
             self.campsiteTypeLbl.text! = "Featured Campsites"
             self.sortBtn.isHidden = true
             self.filterBtn.isHidden = true
+            
+            if self.sing.featuredViewAllArr.count > 0 {
+                self.dataContainingView.isHidden = false
+                self.reloadTbl(arrR: self.sing.featuredViewAllArr, pageR: 0)
+            }
             
         } else if comeFrom == myProfile {
             self.campsiteTypeLbl.text! = "Campsites"
@@ -89,13 +95,22 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             self.ascDscToggle = "1"
             self.filterBtn.isHidden = true
             
+            if self.sing.reviewViewAllArr.count > 0 {
+                self.dataContainingView.isHidden = false
+                self.reloadTbl(arrR: self.sing.featuredViewAllArr, pageR: 0)
+            }
+            
         } else {
             self.campsiteTypeLbl.text! = allCamps
             self.sortBtn.isHidden = true
             self.filterBtn.isHidden = true
+            
+            if self.sing.allCampsArr.count > 0 {
+                self.dataContainingView.isHidden = false
+                self.reloadTbl(arrR: self.sing.featuredViewAllArr, pageR: 0)
+            }
         }
         
-        self.dataContainingView.isHidden = true
         self.recallAPIView.isHidden = true
         
         self.overlayview.isHidden = true

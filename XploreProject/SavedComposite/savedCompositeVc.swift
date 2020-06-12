@@ -69,7 +69,7 @@ class savedCompositeVc: UIViewController {
         
         self.tabBarController?.selectedIndex = 2
         if Singleton.sharedInstance.favouritesCampArr.count > 0 {
-            self.reloadTbl()
+            self.reloadData(arrR: Singleton.sharedInstance.favouritesCampArr, pageR: 0)
             
         }
         if notificationCount > 9 {
@@ -433,12 +433,10 @@ class savedCompositeVc: UIViewController {
             
             var matched: Bool = false
             for i in 0..<tempArr.count {
-                
-                    if String(describing: ((tempArr.object(at: i) as! NSDictionary).value(forKey: "campId"))!) == String(describing: ((self.collArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "campId"))!) {
-                        matched = true
-                        break
-                    }
-               
+                if String(describing: ((tempArr.object(at: i) as! NSDictionary).value(forKey: "campId"))!) == String(describing: ((self.collArr.object(at: self.campIndex) as! NSDictionary).value(forKey: "campId"))!) {
+                    matched = true
+                    break
+                }
             }
             
             if matched == false {
@@ -725,54 +723,8 @@ extension savedCompositeVc {
             if let dict:[String:Any] = responseData.result.value as? [String : Any] {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSArray)
+                    self.reloadData(arrR: retValues, pageR: pageNum)
                     
-                    if (retValues.count) % 5 == 0 {
-                        self.upToLimit = (pageNum+1)*5 + 1
-                        
-                    } else {
-                        self.upToLimit = self.upToLimit + (retValues.count)
-                        
-                    }
-                    if pageNum == 0 {
-                        self.favouriteCampArr = []
-                        
-                    }
-                    
-                    if self.campIndex != -1 {
-                        for _ in 0..<(retValues.count) {
-                            self.favouriteCampArr.removeLastObject()
-                            
-                        }
-                    }
-                    
-                    let count: Int = self.favouriteCampArr.count
-                    for i in 0..<retValues.count {
-                        self.favouriteCampArr.add(retValues.object(at: i) as! NSDictionary)
-                        
-                    }
-                    
-                    
-                    if self.campType == favouritesCamp {
-                        self.collArr = self.favouriteCampArr
-                        Singleton.sharedInstance.favouritesCampArr = self.collArr
-                        
-                        if self.collArr.count == 0 {
-                            self.setDelegateAndDataSource()
-                        }
-                    }
-                    if self.firstTime == false {
-                        self.setDelegateAndDataSource()
-                        
-                    } else {
-                        if count < self.favouriteCampArr.count {
-                            self.favouriteSavedCollView.reloadData()
-                            
-                            let indexpathG = IndexPath(item: count, section: 0)
-                            self.favouriteSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
-                            self.favouriteSavedCollView.setNeedsLayout()
-                            
-                        }
-                    }
                 } else {
                     self.setInitialDesign()
                     
@@ -794,6 +746,54 @@ extension savedCompositeVc {
                 
             } else {
                 CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                
+            }
+        }
+    }
+    
+    func reloadData(arrR: NSArray, pageR: Int) {
+        if (arrR.count) % 5 == 0 {
+            self.upToLimit = (pageR+1)*5 + 1
+            
+        } else {
+            self.upToLimit = self.upToLimit + (arrR.count)
+            
+        }
+        if pageR == 0 {
+            self.favouriteCampArr = []
+            
+        }
+        
+        if self.campIndex != -1 {
+            for _ in 0..<(arrR.count) {
+                self.favouriteCampArr.removeLastObject()
+                
+            }
+        }
+        
+        let count: Int = self.favouriteCampArr.count
+        for i in 0..<arrR.count {
+            self.favouriteCampArr.add(arrR.object(at: i) as! NSDictionary)
+            
+        }
+        if self.campType == favouritesCamp {
+            self.collArr = self.favouriteCampArr
+            Singleton.sharedInstance.favouritesCampArr = self.collArr
+            
+            if self.collArr.count == 0 {
+                self.setDelegateAndDataSource()
+            }
+        }
+        if self.firstTime == false {
+            self.setDelegateAndDataSource()
+            
+        } else {
+            if count < self.favouriteCampArr.count {
+                self.favouriteSavedCollView.reloadData()
+                
+                let indexpathG = IndexPath(item: count, section: 0)
+                self.favouriteSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
+                self.favouriteSavedCollView.setNeedsLayout()
                 
             }
         }

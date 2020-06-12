@@ -34,8 +34,6 @@ class SplashVC: UIViewController {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
         self.navigationController?.pushViewController(vc, animated: false)
      }
-    
-    
 }
 
 extension SplashVC: GADInterstitialDelegate {

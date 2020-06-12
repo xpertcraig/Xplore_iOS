@@ -144,10 +144,31 @@ extension CommonUseViewModel {
                 self.homeAPICallInStart()
                 downloadGroup.leave()
             }
-            
             downloadGroup.enter()
             self.getLocationNameAndImage()
             downloadGroup.leave()
+            
+            downloadGroup.enter()
+            self.featuredViewAllApiFirst(apistartStr: "featuredCampsites.php?userId=")
+            downloadGroup.leave()
+            
+            downloadGroup.enter()
+            self.featuredViewAllApiFirst(apistartStr: "reviewCampsites.php?userId=")
+            downloadGroup.leave()
+            
+            downloadGroup.enter()
+            self.featuredViewAllApiFirst(apistartStr: "nearbynew.php?userId=")
+            downloadGroup.leave()
+            
+            if DataManager.isUserLoggedIn! {
+                downloadGroup.enter()
+                self.featuredViewAllApiFirst(apistartStr: "favouriteCampsite.php?userId=")
+                downloadGroup.leave()
+                
+                downloadGroup.enter()
+                self.featuredViewAllApiFirst(apistartStr: "publishedCampsite.php?userId=")
+                downloadGroup.leave()
+            }
         }
     }
     
@@ -260,5 +281,51 @@ extension CommonUseViewModel {
             }
         })
     }
-    
+}
+
+//featured,review and allcamps api
+extension CommonUseViewModel {
+    func featuredViewAllApiFirst(apistartStr: String) {
+        var userId: String = "0"
+        if let userId1 = DataManager.userId as? String {
+            userId = userId1
+            
+        }
+        var apiUrl: String = ""
+        if apistartStr == "reviewCampsites.php?userId=" {
+            apiUrl = "\(apistartStr)\(userId)&latitude=\(myCurrentLatitude)&longitude=\(myCurrentLongitude)&toggle=\(0)&offset=\(0)&country=\(countryOnMyCurrentLatLong)"
+        } else if apistartStr == "publishedCampsite.php?userId=" || apistartStr == "favouriteCampsite.php?userId=" {
+            apiUrl = "\(apistartStr)\(userId)&offset=\(0)"
+        } else {
+            apiUrl = "\(apistartStr)\(userId)&latitude=\(myCurrentLatitude)&longitude=\(myCurrentLongitude)&offset=\(0)&country=\(countryOnMyCurrentLatLong)"
+        }
+        
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: apiUrl, onSuccess: { (responseData) in
+            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    let retValues = (dict["result"]! as! NSArray)
+                    
+                    print(retValues)
+                    
+                    if apistartStr == "featuredCampsites.php?userId=" {
+                        self.sing.featuredViewAllArr = retValues
+                    } else if apistartStr == "nearbynew.php?userId=" {
+                        self.sing.allCampsArr = retValues
+                    } else if apistartStr == "reviewCampsites.php?userId=" {
+                        self.sing.reviewViewAllArr = retValues
+                    } else if apistartStr == "publishedCampsite.php?userId=" {
+                        self.sing.myCampsArr = retValues
+                    } else if apistartStr == "favouriteCampsite.php?userId=" {
+                        self.sing.favouritesCampArr = retValues
+                    }
+                    
+                    //self.reloadTbl(arrR: retValues, pageR: pageNum)
+                } else {
+                    
+                }
+            }
+        }) { (error) in
+            
+        }
+    }
 }

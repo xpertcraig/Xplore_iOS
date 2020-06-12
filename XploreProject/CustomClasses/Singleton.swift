@@ -20,6 +20,10 @@ final class Singleton {
     var myCurrentLocation: String = ""
     var myCurrentLocationState: String = ""
     
+    var featuredViewAllArr: NSArray = []
+    var reviewViewAllArr: NSArray = []
+    var allCampsArr: NSArray = []
+    
     var favouritesCampArr: NSArray = []
     var myCampsArr: NSArray = []
     var myProfileDict: NSDictionary = [:]

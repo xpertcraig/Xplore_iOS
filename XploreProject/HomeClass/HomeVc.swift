@@ -68,7 +68,6 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
     var acceptCreditCards: Bool = true {
         didSet {
             payPalConfig.acceptCreditCards = acceptCreditCards
-            
         }
     }
     ///
@@ -144,24 +143,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
-//        if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
-//            self.setMyCurrentLoc()
-//
-//        } else if userDefault.value(forKey: myCurrentLocStr) != nil {
-//            Singleton.sharedInstance.myCurrentLocDict = userDefault.value(forKey: myCurrentLocStr) as! [String: Any]
-//            userDefault.removeObject(forKey: myCurrentLocStr)
-//            self.setMyCurrentLoc()
-//        }
-        
-//        if Singleton.sharedInstance.homeFeaturesCampsArr.count > 0 {
-//            self.reloadTbl()
-//
-//        } else if userDefault.value(forKey: homeFeaturesStr) != nil {
-//            Singleton.sharedInstance.homeFeaturesCampsArr = userDefault.value(forKey: homeFeaturesStr) as! NSArray
-//            userDefault.removeObject(forKey: homeFeaturesStr)
-//            self.reloadTbl()
-//        }
-        
+        self.recallAPIView.isHidden = true
         self.callAPI()
         
         //PayPal

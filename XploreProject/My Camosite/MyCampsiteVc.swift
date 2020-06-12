@@ -57,6 +57,10 @@ class MyCampsiteVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if Singleton.sharedInstance.myCampsArr.count > 0 {
+            self.reloadData(arrR: Singleton.sharedInstance.myCampsArr, pageR: 0)
+        }
+        
         backBtnPressedForPublished = false
         if fromSaveDraft == true {
             self.onDraftBtn()
@@ -656,41 +660,8 @@ extension MyCampsiteVc {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
                     let retValues = (dict["result"]! as! NSArray)
+                    self.reloadData(arrR: retValues, pageR: pageNum)
                     
-                    if (retValues.count) % 5 == 0 {
-                        self.upToLimit = (pageNum+1)*5 + 1
-                    } else {
-                        self.upToLimit = self.upToLimit + (retValues.count)
-                    }
-                    
-                    if pageNum == 0 {
-                        self.publishCampArr = []
-                    }
-                    if self.campIndex != -1 {
-                        for _ in 0..<(retValues.count) {
-                            self.publishCampArr.removeLastObject()
-                        }
-                    }
-                    
-                    let count: Int = self.publishCampArr.count
-                    for i in 0..<retValues.count {
-                        self.publishCampArr.add(retValues.object(at: i) as! NSDictionary)
-                    }
-                    self.collArr = self.publishCampArr
-                    Singleton.sharedInstance.myCampsArr = self.collArr
-                    
-                    if pageNum == 0 {
-                        self.setDelegateAndDataSource()
-                    } else {
-                        if count < self.publishCampArr.count {
-                            self.publishSavedCollView.reloadData()
-                            
-                            let indexpathG = IndexPath(item: count, section: 0)
-                            self.publishSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
-                            self.publishSavedCollView.setNeedsLayout()
-                            
-                        }
-                    }
                 } else {
                     self.setInitialDesign()
                     
@@ -709,6 +680,43 @@ extension MyCampsiteVc {
                 CommonFunctions.showAlert(self, message: serverError, title: appName)
             } else {
                 CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
+        }
+    }
+    
+    func reloadData(arrR: NSArray, pageR: Int) {
+        if (arrR.count) % 5 == 0 {
+            self.upToLimit = (pageR+1)*5 + 1
+        } else {
+            self.upToLimit = self.upToLimit + (arrR.count)
+        }
+        
+        if pageR == 0 {
+            self.publishCampArr = []
+        }
+        if self.campIndex != -1 {
+            for _ in 0..<(arrR.count) {
+                self.publishCampArr.removeLastObject()
+            }
+        }
+        
+        let count: Int = self.publishCampArr.count
+        for i in 0..<arrR.count {
+            self.publishCampArr.add(arrR.object(at: i) as! NSDictionary)
+        }
+        self.collArr = self.publishCampArr
+        Singleton.sharedInstance.myCampsArr = self.collArr
+        
+        if pageR == 0 {
+            self.setDelegateAndDataSource()
+        } else {
+            if count < self.publishCampArr.count {
+                self.publishSavedCollView.reloadData()
+                
+                let indexpathG = IndexPath(item: count, section: 0)
+                self.publishSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
+                self.publishSavedCollView.setNeedsLayout()
+                
             }
         }
     }
