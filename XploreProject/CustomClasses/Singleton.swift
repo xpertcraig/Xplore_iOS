@@ -13,6 +13,10 @@ final class Singleton {
     private init() {}
     static let sharedInstance: Singleton = Singleton()
     
+    var loaderActive: Bool = false
+    var fromMyProfileTabbarIndex: Int = 0
+    var fromMyProfile: Bool = false
+    
     var homeFeaturesCampsArr: NSArray = []
     var homeReviewBasedCampsArr: NSArray = []
     var myCurrentLocDict: [String: Any] = [:]
@@ -23,6 +27,7 @@ final class Singleton {
     var featuredViewAllArr: NSArray = []
     var reviewViewAllArr: NSArray = []
     var allCampsArr: NSArray = []
+    var nearByUsersArr: NSArray = []
     
     var favouritesCampArr: NSArray = []
     var myCampsArr: NSArray = []

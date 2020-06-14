@@ -236,7 +236,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
             self.countiesApiCall()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -351,7 +352,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
                 self.countryStateCityTblView.reloadData()
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         } else {
@@ -369,7 +371,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
                 self.countryStateCityTblView.reloadData()
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         } else {
@@ -489,10 +492,12 @@ class FilterVc: UIViewController, selectTypeDelegate {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -526,10 +531,12 @@ class FilterVc: UIViewController, selectTypeDelegate {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -563,10 +570,12 @@ class FilterVc: UIViewController, selectTypeDelegate {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+              //  CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -587,7 +596,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         } else {
             self.loginAlertFunc(vc: "profile", viewController: self)
@@ -603,7 +613,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
                  let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
                  self.navigationController?.pushViewController(vc, animated: true)
              } else {
-                 CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                 //CommonFunctions.showAlert(self, message: noInternet, title: appName)
              }
          } else {
              self.loginAlertFunc(vc: "nearByUser", viewController: self)
@@ -633,7 +644,8 @@ class FilterVc: UIViewController, selectTypeDelegate {
                 let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
                 self.navigationController?.pushViewController(swRevealObj, animated: true)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         } else {
             self.loginAlertFunc(vc: "fromNoti", viewController: self)

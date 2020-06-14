@@ -168,6 +168,14 @@ extension CommonUseViewModel {
                 downloadGroup.enter()
                 self.featuredViewAllApiFirst(apistartStr: "publishedCampsite.php?userId=")
                 downloadGroup.leave()
+                
+                downloadGroup.enter()
+                self.notiListingApiOnStart()
+                downloadGroup.leave()
+                
+                downloadGroup.enter()
+                self.nearByUsersOnStart()
+                downloadGroup.leave()
             }
         }
     }
@@ -186,7 +194,7 @@ extension CommonUseViewModel {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSDictionary)
                     
-                    print(retValues)
+             //       print(retValues)
                     
                     if let featuerd = retValues.value(forKey: "featuredCampsite") as? NSArray {
                         self.sing.homeFeaturesCampsArr = featuerd
@@ -305,7 +313,7 @@ extension CommonUseViewModel {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSArray)
                     
-                    print(retValues)
+                  //  print(retValues)
                     
                     if apistartStr == "featuredCampsites.php?userId=" {
                         self.sing.featuredViewAllArr = retValues
@@ -322,6 +330,46 @@ extension CommonUseViewModel {
                     //self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {
                     
+                }
+            }
+        }) { (error) in
+            
+        }
+    }
+}
+
+//notification listing api
+extension CommonUseViewModel {
+    func notiListingApiOnStart() {
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "notifications.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
+            
+            if let dict:NSDictionary = responseData.result.value as? NSDictionary {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    
+                //    print(dict)
+                    if let notiArr = dict["result"] as? NSArray {
+                        Singleton.sharedInstance.notificationListingArr = notiArr
+                    }
+                }
+            }
+        }) { (error) in
+            
+        }
+    }
+}
+
+extension CommonUseViewModel {
+    func nearByUsersOnStart() {
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "nearbyUser.php/?userId=\(DataManager.userId as! String)"+"&latitude=\(myCurrentLatitude)"+"&longitude=\(myCurrentLongitude)"+"&distance=\(1)", onSuccess: { (responseData) in
+                   
+            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    if let retValue = dict["result"] as? NSArray {
+                        if retValue.count > 0 {
+                            self.sing.nearByUsersArr = retValue
+                            
+                        }
+                    }
                 }
             }
         }) { (error) in

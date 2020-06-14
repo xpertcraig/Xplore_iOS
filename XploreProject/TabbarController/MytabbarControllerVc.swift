@@ -20,8 +20,6 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
     }
     
-    
-    
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         self.navigationController?.tabBarController?.selectedIndex = tabBarController.selectedIndex
         
@@ -32,6 +30,10 @@ class MytabbarControllerVc: UITabBarController, UITabBarControllerDelegate {
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         //print(tabBar.selectedItem)
+        
+        if let tabIndex = tabBar.items!.index(of: item) {
+            Singleton.sharedInstance.fromMyProfileTabbarIndex = tabIndex
+        }
         
         self.selectedItem = tabBar.selectedItem!.title!
         self.selectedItemImg = tabBar.selectedItem!.selectedImage!

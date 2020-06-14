@@ -27,6 +27,14 @@ class NotificationVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if Singleton.sharedInstance.notificationListingArr.count > 0 {
+            self.notificationCountLbl.text! = "0"
+            notificationCount = 0
+            self.myNotificationsArr = Singleton.sharedInstance.notificationListingArr
+            self.reloadTbl()
+        } else {
+            self.disableClearNotiBtn()
+        }
         //api
         self.callAPI()
        
@@ -133,14 +141,15 @@ class NotificationVc: UIViewController {
             self.notificationsAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
     
     //MARK:- Api's Hit
     func notificationsAPIHit(){
-        if (Singleton.sharedInstance.notificationListingArr.count == 0 && userDefault.value(forKey: notificationListingStr) == nil){
+        if Singleton.sharedInstance.notificationListingArr.count == 0 {
             applicationDelegate.startProgressView(view: self.view)
             
         }
@@ -173,10 +182,12 @@ class NotificationVc: UIViewController {
             self.disableClearNotiBtn()
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+            //    CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -210,10 +221,12 @@ class NotificationVc: UIViewController {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -240,10 +253,12 @@ class NotificationVc: UIViewController {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -259,7 +274,8 @@ class NotificationVc: UIViewController {
                     self.clearAllNotificationsAPIHit()
                     
                 } else {
-                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                    //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                     
                 }
             })
@@ -310,7 +326,8 @@ class NotificationVc: UIViewController {
                 self.removePerticularNotificationsAPIHit(notiId: String(describing: ((self.myNotificationsArr.object(at: sender.tag) as! NSDictionary).value(forKey: "notificationId"))!))
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         })

@@ -71,7 +71,8 @@ class PrivacyVc: UIViewController {
             self.PrivacyPolicyAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+           // CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -98,10 +99,12 @@ class PrivacyVc: UIViewController {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }

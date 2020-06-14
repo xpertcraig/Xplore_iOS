@@ -234,7 +234,7 @@ class AlamoFireWrapper: NSObject {
                 upload.responseJSON { DataResponse in
                     upload.validate(contentType: ["application/json"])
                     if DataResponse.result.value != nil {
-                        print(DataResponse.result.value)
+                       // print(DataResponse.result.value)
                         onSuccess(DataResponse)
                     }
                     else

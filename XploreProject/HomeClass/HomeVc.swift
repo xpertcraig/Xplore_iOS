@@ -390,14 +390,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         paymentViewController.dismiss(animated: true, completion: { () -> Void in
             // send completed confirmaion to your server
             print("Here is your proof of payment:\n\n\(completedPayment.confirmation)\n\nSend this to your server for confirmation and fulfillment.")
-//
-//            self.paypalTransaction_id = String(describing: ((completedPayment.confirmation as NSDictionary).value(forKey: "response") as! NSDictionary).value(forKey: "id")!)
-//
-//            print(self.paypalTransaction_id)
-            
+
             self.paymentDoneSendToBackendAPI(transactionId: String(describing: ((completedPayment.confirmation as NSDictionary).value(forKey: "response") as! NSDictionary).value(forKey: "id")!))
-            
-            // self.postHelpRequestWeb()
             
         })
     }
@@ -408,7 +402,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             vc.searchType = "Home"
             self.navigationController?.pushViewController(vc, animated: false )
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -426,7 +421,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 self.recallAPIView.isHidden = false
                                 
             }
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -463,7 +459,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyProfileVC") as! MyProfileVC
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         } else {
             self.loginAlertFunc(vc: "profile", viewController: self)
@@ -476,7 +473,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "NearByUsersVC") as! NearByUsersVC
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         } else {
             self.loginAlertFunc(vc: "nearByUser", viewController: self)
@@ -501,7 +499,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 let swRevealObj = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVc") as! NotificationVc
                 self.navigationController?.pushViewController(swRevealObj, animated: true)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         } else {
             self.loginAlertFunc(vc: "fromNoti", viewController: self)
@@ -548,7 +547,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
             self.FavUnfavAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -621,49 +621,51 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
                 self.recallAPIView.isHidden = false
                 
             }
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
     
     @IBAction func featuredViewAllBtn(_ sender: UIButton) {
         self.view.endEditing(true)
-        if connectivity.isConnectedToInternet() {
+//        if connectivity.isConnectedToInternet() {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
             vc.comeFrom = featuredBased
             self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
-        }
+//        } else {
+//            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+//        }
     }
     
     @IBAction func tapFeaturedReviewBtn(_ sender: UIButton) {
         self.view.endEditing(true)
-        if connectivity.isConnectedToInternet() {
+//        if connectivity.isConnectedToInternet() {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
             vc.comeFrom = reviewBased
             self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
-        }
+//        } else {
+//            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+//        }
     }
     
     @IBAction func tapViewAllCampsBtn(_ sender: Any) {
         self.view.endEditing(true)
-        if connectivity.isConnectedToInternet() {
+ //       if connectivity.isConnectedToInternet() {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "FeaturedVc") as! FeaturedVc
             vc.comeFrom = allCamps
             self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
-        }
+//        } else {
+//            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+//        }
     }
     
     @IBAction func tapPayNowBtn(_ sender: UIButton) {
         if connectivity.isConnectedToInternet() {
             self.payPalButtonPressed()
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -671,7 +673,8 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         if connectivity.isConnectedToInternet() {
             hitLogoutApi()
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+           // CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
 }
@@ -911,7 +914,8 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                       
                     }
                 } else {
-                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                    //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 }
             }
         }
@@ -938,7 +942,8 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                         
                     }
                 } else {
-                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                   // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 }
             }
         }
@@ -962,7 +967,8 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -997,7 +1003,8 @@ extension HomeVc : UITextFieldDelegate {
                     self.campIndex = sender.tag
                     openfavView(index: sender.tag)
                 } else {
-                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                   // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 }
             } else {
                 self.loginAlertFunc(vc: "markFav", viewController: self)
@@ -1059,7 +1066,8 @@ extension HomeVc : UITextFieldDelegate {
                     self.campIndex = sender.tag
                     openRevFavView(index: sender.tag)
                 } else {
-                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                  //  CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 }
             } else {
                 self.loginAlertFunc(vc: "markFav", viewController: self)
@@ -1148,10 +1156,12 @@ extension HomeVc {
                 }
                 applicationDelegate.dismissProgressView(view: self.view)
                 if connectivity.isConnectedToInternet() {
-                    CommonFunctions.showAlert(self, message: serverError, title: appName)
+                    self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                  //  CommonFunctions.showAlert(self, message: serverError, title: appName)
                     
                 } else {
-                    CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                   // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                     
                 }
             }
@@ -1250,7 +1260,8 @@ extension HomeVc {
                 //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -1291,10 +1302,12 @@ extension HomeVc {
             
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -1335,10 +1348,12 @@ extension HomeVc {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -1391,10 +1406,12 @@ extension HomeVc {
             ////
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //    CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -1420,10 +1437,12 @@ extension HomeVc {
         }) { (error) in
          //   applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }

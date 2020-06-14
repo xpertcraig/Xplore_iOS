@@ -221,7 +221,8 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
                 
             }
             
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+           // CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -338,10 +339,12 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             
             applicationDelegate.dismissProgressView(view: self.dataContainingView)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -431,10 +434,12 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.dataContainingView)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
 
             }
         }
@@ -493,10 +498,12 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             ////
             applicationDelegate.dismissProgressView(view: self.dataContainingView)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -581,7 +588,8 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             self.FavUnfavAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }

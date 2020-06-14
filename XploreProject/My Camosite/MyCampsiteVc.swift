@@ -57,12 +57,15 @@ class MyCampsiteVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if Singleton.sharedInstance.myCampsArr.count > 0 {
-            self.reloadData(arrR: Singleton.sharedInstance.myCampsArr, pageR: 0)
-        }
-        
         backBtnPressedForPublished = false
-        if fromSaveDraft == true {
+        //refresh controll
+        self.refreshData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.stopAnimateAcitivity()
+        
+        if fromSaveDraft == true && Singleton.sharedInstance.fromMyProfile == false {
             self.onDraftBtn()
             
         } else {
@@ -73,13 +76,9 @@ class MyCampsiteVc: UIViewController {
             self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
             
         }
-        //refresh controll
-        self.refreshData()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.stopAnimateAcitivity()
-        
+        if Singleton.sharedInstance.myCampsArr.count > 0 {
+            self.reloadData(arrR: Singleton.sharedInstance.myCampsArr, pageR: 0)
+        }
         if Singleton.sharedInstance.myCampsArr.count > 0 && fromSaveDraft == false {
             self.reloadTbl()
         }
@@ -161,9 +160,11 @@ class MyCampsiteVc: UIViewController {
             self.campId = -1
         }
         
-        if fromSaveDraft == true {
+        if fromSaveDraft == true && Singleton.sharedInstance.fromMyProfile == false {
             self.onDraftBtn()
         } else if self.firstTime == false {
+            fromSaveDraft = false
+            Singleton.sharedInstance.fromMyProfile = false
             self.setInitialDesign()
             self.firstTime = true
         }
@@ -197,7 +198,7 @@ class MyCampsiteVc: UIViewController {
         self.recallAPIView.isHidden = true
         self.overlayView.isHidden = true
      
-        if self.comeFrom == myProfile {
+        if self.comeFrom == myProfile || Singleton.sharedInstance.fromMyProfileTabbarIndex != 3 {
             //self.comeFrom = ""
             self.backBtnWidth.constant = 50
             self.backBtn.isHidden = false
@@ -211,6 +212,7 @@ class MyCampsiteVc: UIViewController {
         self.campType = publishCamp
         self.collArr = []
         self.collArr = self.publishCampArr
+        
         self.publishSavedCollView.reloadData()
     }
     
@@ -222,8 +224,10 @@ class MyCampsiteVc: UIViewController {
             if self.publishCampArr.count == 0 {
                 self.recallAPIView.isHidden = false
                 self.noDataLbl.isHidden = true
-            }           
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
+            
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -317,7 +321,8 @@ class MyCampsiteVc: UIViewController {
             }
             self.FavUnfavAPIHit()
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -367,7 +372,8 @@ class MyCampsiteVc: UIViewController {
                 self.recallAPIView.isHidden = false
                 self.noDataLbl.isHidden = true
             }
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -476,8 +482,9 @@ class MyCampsiteVc: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func backAction(_ sender: Any) {       
-        self.navigationController?.popViewController(animated: true)
+    @IBAction func backAction(_ sender: Any) {
+        self.tabBarController?.selectedIndex = Singleton.sharedInstance.fromMyProfileTabbarIndex
+       // self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -677,9 +684,11 @@ extension MyCampsiteVc {
             
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         }
     }
@@ -749,9 +758,11 @@ extension MyCampsiteVc {
             ////
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             }
         }
     }

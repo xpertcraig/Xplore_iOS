@@ -84,8 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //gmail Integration
         GIDSignIn.sharedInstance().clientID = "391490568950-or37ivee2lf3hhmd5tl318pns8ms9eoq.apps.googleusercontent.com"
         
-        UIApplication.shared.statusBarStyle = .lightContent
-        
         self.callSearch()
         
         //paypal
@@ -96,41 +94,76 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     func applicationWillResignActive(_ application: UIApplication) {
         FBSDKAppEvents.activateApp()
-        
+        self.saveAppData()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        
+        self.saveAppData()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        
+        self.getAppData()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        self.getAppData()
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        if #available(iOS 13.0, *) {
+            UIScene.willDeactivateNotification
+        } else {
+            NSNotification.Name.UIApplicationWillResignActive
+            // Fallback on earlier versions
+        }
+
+        self.saveAppData()
+        
+    }
+    
+    func getAppData() {
         if userDefault.value(forKey: homeFeaturesStr) != nil {
             Singleton.sharedInstance.homeFeaturesCampsArr = userDefault.value(forKey: homeFeaturesStr) as! NSArray
-            userDefault.removeObject(forKey: homeFeaturesStr)
+           // userDefault.removeObject(forKey: homeFeaturesStr)
 
         }
         if userDefault.value(forKey: homeReviewBasedStr) != nil {
             Singleton.sharedInstance.homeReviewBasedCampsArr = userDefault.value(forKey: homeReviewBasedStr) as! NSArray
-            userDefault.removeObject(forKey: homeReviewBasedStr)
+          //  userDefault.removeObject(forKey: homeReviewBasedStr)
             
         }
+       
+        //
+        if userDefault.value(forKey: featuredViewAll) != nil {
+            Singleton.sharedInstance.featuredViewAllArr = userDefault.value(forKey: featuredViewAll) as! NSArray
+            userDefault.removeObject(forKey: featuredViewAll)
+            
+        }
+        if userDefault.value(forKey: reviewViewAllStr) != nil {
+            Singleton.sharedInstance.reviewViewAllArr = userDefault.value(forKey: reviewViewAllStr) as! NSArray
+            userDefault.removeObject(forKey: reviewViewAllStr)
+            
+        }
+        if userDefault.value(forKey: viewAllCamps) != nil {
+            Singleton.sharedInstance.allCampsArr = userDefault.value(forKey: viewAllCamps) as! NSArray
+            userDefault.removeObject(forKey: viewAllCamps)
+            
+        }
+        //
+        
         if userDefault.value(forKey: favouritesCampsStr) != nil {
             Singleton.sharedInstance.favouritesCampArr = userDefault.value(forKey: favouritesCampsStr) as! NSArray
-            userDefault.removeObject(forKey: favouritesCampsStr)
+            //userDefault.removeObject(forKey: favouritesCampsStr)
             
         }
         if userDefault.value(forKey: myCampsStr) != nil {
             Singleton.sharedInstance.myCampsArr = userDefault.value(forKey: myCampsStr) as! NSArray
-            userDefault.removeObject(forKey: myCampsStr)
+           // userDefault.removeObject(forKey: myCampsStr)
             
         }
         if userDefault.value(forKey: myProfileStr) != nil {
             Singleton.sharedInstance.myProfileDict = userDefault.value(forKey: myProfileStr) as! NSDictionary
-            userDefault.removeObject(forKey: myProfileStr)
+           // userDefault.removeObject(forKey: myProfileStr)
             
         }
         if userDefault.value(forKey: notificationListingStr) != nil {
@@ -145,20 +178,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         if userDefault.value(forKey: myCurrentLocStr) != nil {
             Singleton.sharedInstance.myCurrentLocDict = (userDefault.value(forKey: myCurrentLocStr) as! [String: Any] )
-            userDefault.removeObject(forKey: myCurrentLocStr)
+           // userDefault.removeObject(forKey: myCurrentLocStr)
             
         }
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        if #available(iOS 13.0, *) {
-            UIScene.willDeactivateNotification
-        } else {
-            NSNotification.Name.UIApplicationWillResignActive
-            // Fallback on earlier versions
-        }
-
-        
+    
+    func saveAppData() {
         self.saveContext()
         if Singleton.sharedInstance.homeFeaturesCampsArr.count > 0 {
             userDefault.set(Singleton.sharedInstance.homeFeaturesCampsArr, forKey: homeFeaturesStr)
@@ -166,6 +191,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         if Singleton.sharedInstance.homeReviewBasedCampsArr.count > 0 {
             userDefault.set(Singleton.sharedInstance.homeReviewBasedCampsArr, forKey: homeReviewBasedStr)
+            
+        }
+        if Singleton.sharedInstance.featuredViewAllArr.count > 0 {
+            userDefault.set(Singleton.sharedInstance.featuredViewAllArr, forKey: featuredViewAll)
+
+        }
+        if Singleton.sharedInstance.reviewViewAllArr.count > 0 {
+            //userDefault.set(Singleton.sharedInstance.reviewViewAllArr, forKey: reviewViewAllStr)
+            
+        }
+        if Singleton.sharedInstance.allCampsArr.count > 0 {
+            userDefault.set(Singleton.sharedInstance.allCampsArr, forKey: viewAllCamps)
             
         }
         if Singleton.sharedInstance.favouritesCampArr.count > 0 {
@@ -307,12 +344,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         spinnerActivity.mode = MBProgressHUDMode.indeterminate
         spinnerActivity.animationType = .zoomOut
         
+        
+//        if Singleton.sharedInstance.loaderActive == false {
+//            Singleton.sharedInstance.loaderActive = true
+//            view.addSubview(UIView().customActivityIndicator(view: view, widthView: nil, backgroundColor: UIColor.clear, textColor: UIColor.appThemeKesariColor(), message: "Processing..."))
+//        }
     }
     
     //MARK: - ProgressIndicator View Stop
     func dismissProgressView(view:UIView)  {
         MBProgressHUD.hide(for: view, animated: true)
         
+//        if Singleton.sharedInstance.loaderActive == true {
+//            Singleton.sharedInstance.loaderActive = false
+//            view.subviews.last?.removeFromSuperview()
+//        }
     }
     
     func checkLogin() {
@@ -350,7 +396,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         if firstCalled == false {
             firstCalled = true
-            self.commonDataViewModel.getCampAllApiResponse()
+            if connectivity.isConnectedToInternet() {
+                self.commonDataViewModel.getCampAllApiResponse()
+            }
         }
     }
     

@@ -201,29 +201,44 @@ class savedCompositeVc: UIViewController {
     func setInitialDesign() {
         self.noDataLbl.isHidden = true
         
-       // self.campType = savedCamp
-        self.campType = favouritesCamp
         self.collArr = []
-       
-//        if (userDefault.value(forKey: mySavesCamps)) != nil {
-//            self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
-//            self.collArr = self.collArr.reversed() as NSArray
-//
-//        }
-        
-        self.collArr = favouriteCampArr
         self.mainAllContentView.isHidden = true
         self.recallAPIView.isHidden = true
         self.overlayView.isHidden = true
     
-        if self.comeFrom == myProfile {            
-            self.backBtn.isHidden = false
-            self.backBtnImgView.isHidden = false
+        if Singleton.sharedInstance.fromMyProfile == true || Singleton.sharedInstance.fromMyProfileTabbarIndex != 2 {
+            Singleton.sharedInstance.fromMyProfile = false
+            
+            if Singleton.sharedInstance.fromMyProfileTabbarIndex != 2 {
+                self.backBtn.isHidden = false
+                self.backBtnImgView.isHidden = false
+            }
+            self.campType = savedCamp
+            self.collArr = []
+            
+            if (userDefault.value(forKey: mySavesCamps)) != nil {
+                //self.collArr = userDefault.value(forKey: mySavesCamps) as! NSArray
+                
+                self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
+            }
+            
+            self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.savedBtn.setTitleColor(UIColor.white , for: .normal)
+            
+            self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
             
         } else {
+            self.campType = favouritesCamp
+            self.collArr = favouriteCampArr
+            
             self.backBtn.isHidden = true
             self.backBtnImgView.isHidden = true
             
+            self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
+            self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
         }
 //        self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
 //        self.savedBtn.setTitleColor(UIColor.white , for: .normal)
@@ -231,11 +246,7 @@ class savedCompositeVc: UIViewController {
 //        self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
 //        self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
         
-        self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
         
-        self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
         
     }
     
@@ -245,21 +256,30 @@ class savedCompositeVc: UIViewController {
             self.favouritesApiHit(pageNum: self.pageNo)
             
         } else {
-            if self.favouriteCampArr.count == 0 && (userDefault.value(forKey: mySavesCamps)) == nil {
-                self.recallAPIView.isHidden = false
-                self.noDataLbl.isHidden = true
+            self.collArr = []
+            var savedTempArr: NSArray = []
+            if (userDefault.value(forKey: mySavesCamps)) != nil {
+                //self.collArr = userDefault.value(forKey: mySavesCamps) as! NSArray
+                savedTempArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
                 
-            } else {
+                self.mainAllContentView.isHidden = false
+            }
+            if self.favouriteCampArr.count > 0 {
+                self.campType = favouritesCamp
+                
+                self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+                self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
+                
+                self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+                self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
+                
+                self.collArr = self.favouriteCampArr
+                
+                self.favouriteSavedCollView.delegate = self
+                self.favouriteSavedCollView.dataSource = self
+                self.favouriteSavedCollView.reloadData()
+            } else if savedTempArr.count > 0 {
                 self.campType = savedCamp
-                self.collArr = []
-                
-                if (userDefault.value(forKey: mySavesCamps)) != nil {
-                    //self.collArr = userDefault.value(forKey: mySavesCamps) as! NSArray
-                    
-                    self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
-                    
-                    self.mainAllContentView.isHidden = false
-                }
                 
                 self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
                 self.savedBtn.setTitleColor(UIColor.white , for: .normal)
@@ -267,15 +287,18 @@ class savedCompositeVc: UIViewController {
                 self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
                 self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
                 
+                self.collArr = savedTempArr
+                
                 self.favouriteSavedCollView.delegate = self
                 self.favouriteSavedCollView.dataSource = self
                 self.favouriteSavedCollView.reloadData()
-                
-                
+            } else {
+                self.recallAPIView.isHidden = false
+                self.noDataLbl.isHidden = true
             }
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
             
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
         }
     }
     
@@ -419,7 +442,8 @@ class savedCompositeVc: UIViewController {
             self.FavUnfavAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -472,8 +496,8 @@ class savedCompositeVc: UIViewController {
                 self.noDataLbl.isHidden = true
                 
             }
-            
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -484,7 +508,8 @@ class savedCompositeVc: UIViewController {
     }
     
     @IBAction func backAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        self.tabBarController?.selectedIndex = Singleton.sharedInstance.fromMyProfileTabbarIndex
+        //self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -742,10 +767,12 @@ extension savedCompositeVc {
             
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -836,10 +863,12 @@ extension savedCompositeVc {
             ////
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+              //  CommonFunctions.showAlert(self, message: serverError, title: appName)
 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
 
             }
         }

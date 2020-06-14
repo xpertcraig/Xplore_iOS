@@ -42,6 +42,16 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
         
         self.infoWindow = loadNiB()
         self.showMapVIew.delegate = self
+        
+        if Singleton.sharedInstance.nearByUsersArr.count > 0 {
+            self.nearByUserArr = Singleton.sharedInstance.nearByUsersArr
+            self.notFoundLbl.isHidden = true
+            self.showMapVIew.isHidden = false
+            self.sliderContaingView.isHidden = false
+            self.setMap()
+            self.showMapVIew.delegate = self
+        }
+        
         //
         self.callAPI()
     }
@@ -98,7 +108,8 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
             self.nearByUsersApiHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -255,8 +266,9 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
     
     //MARK:- API hit
     func nearByUsersApiHit() {
-        applicationDelegate.startProgressView(view: self.view)
-        
+        if Singleton.sharedInstance.nearByUsersArr.count == 0 {
+            applicationDelegate.startProgressView(view: self.view)
+        }
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "nearbyUser.php/?userId=\(DataManager.userId as! String)"+"&latitude=\(myCurrentLatitude)"+"&longitude=\(myCurrentLongitude)"+"&distance=\(self.distanceParam)", onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
             
@@ -264,16 +276,8 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValue = dict["result"] as! NSArray
                     
-                 //   print(retValue)
-                    
-                    
                     self.nearByUserArr = retValue
-//                    self.setMap()
-//                    self.showMapVIew.delegate = self
-//
                     if self.nearByUserArr.count == 0 {
-                        
-                      //  self.sliderContaingView.isHidden = true
                         self.notFoundLbl.isHidden = false
                         
                     } else {
@@ -284,7 +288,6 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
                         self.showMapVIew.delegate = self
                         
                     }
-                    
                 } else {
                     self.setMap1()
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -294,10 +297,12 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }

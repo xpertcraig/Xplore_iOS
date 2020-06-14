@@ -181,8 +181,13 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     
     override func viewWillDisappear(_ animated: Bool) {
         self.view.endEditing(true)
-        self.googleMapView.isHidden = true
-        self.activityIndicator.isHidden = true
+        
+        if self.googleMapView != nil {
+            self.googleMapView.isHidden = true
+        }
+        if self.activityIndicator != nil {
+            self.activityIndicator.isHidden = true
+        }
     }
     
     //MARK:- Function Definition
@@ -203,7 +208,8 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 self.recallAPIView.isHidden = false
                 
             }
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+           // CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -451,7 +457,8 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 self.recallAPIView.isHidden = false
                 
             }
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -491,7 +498,8 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.FavUnfavAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -743,10 +751,12 @@ extension CampDescriptionVc {
             }
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -775,10 +785,12 @@ extension CampDescriptionVc {
             self.markAsFavBtn.isUserInteractionEnabled = true
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -822,10 +834,12 @@ extension CampDescriptionVc {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+               // CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }

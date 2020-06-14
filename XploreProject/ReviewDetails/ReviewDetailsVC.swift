@@ -98,7 +98,8 @@ class ReviewDetailsVC: UIViewController {
          //   self.reviewDetailApi()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }

@@ -297,7 +297,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         ref.child(userId).observe(.value, with: { (shot) in
             
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
-                print(postDict)
+           //     print(postDict)
                 self.userNameLbl.text! = String(describing: postDict["username"]!)
                 
                 self.userIMgView.sd_setShowActivityIndicatorView(true)
@@ -355,7 +355,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
-                print(postDict)
+           //     print(postDict)
                 if let deviceToken = postDict["deviceToken"] as? String {
                     sender.sendPushNotification(to: "\(String(describing: postDict["deviceToken"]!))", title: "\(String(describing: (DataManager.name))) sent you a message", body: msg, userId: DataManager.userId as! String)
                 }

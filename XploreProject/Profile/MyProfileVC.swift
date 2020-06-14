@@ -135,7 +135,8 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
             self.profilesAPIHit()
             
         } else {
-            CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+         //   CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -166,28 +167,42 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         }) { (error) in
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
-                CommonFunctions.showAlert(self, message: serverError, title: appName)
+                self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
+              //  CommonFunctions.showAlert(self, message: serverError, title: appName)
                 
             } else {
-                CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+              //  CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
     }
     
     @objc func tapSavedCampSiteView() {
-        let tabbbar = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-        tabbbar.selectedIndex = 2
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "savedCompositeVc") as! savedCompositeVc
-        vc.comeFrom = myProfile
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.tabBarController?.selectedIndex = 2
+        Singleton.sharedInstance.fromMyProfile = true
+        if Singleton.sharedInstance.fromMyProfileTabbarIndex == 2 {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+        
+//        let tabbbar = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
+//        tabbbar.selectedIndex = 2
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "savedCompositeVc") as! savedCompositeVc
+//        vc.comeFrom = myProfile
+//        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
     @objc func tapMyCampSiteView() {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyCampsiteVc") as! MyCampsiteVc
-        vc.comeFrom = myProfile
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.tabBarController?.selectedIndex = 3
+        Singleton.sharedInstance.fromMyProfile = true
+        if Singleton.sharedInstance.fromMyProfileTabbarIndex == 3 {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+        
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyCampsiteVc") as! MyCampsiteVc
+//        vc.comeFrom = myProfile
+//        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     

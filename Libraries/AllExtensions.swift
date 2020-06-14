@@ -161,6 +161,32 @@ extension UIViewController {
         
         return code?.code
     }
+    
+    func showToast(message : String, font: UIFont) {
+
+        let toastLabel = UILabel(frame: CGRect(x: 20, y: self.view.frame.size.height-120, width: self.view.frame.width-40, height: 40))
+        toastLabel.numberOfLines = 2
+        toastLabel.backgroundColor = UIColor.appThemeKesariColor()
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        
+        toastLabel.alpha = 0.5
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
+             toastLabel.alpha = 1.0
+        }, completion: {(isCompleted) in
+            UIView.animate(withDuration: 5.0, delay: 0.4, options: .curveEaseOut, animations: {
+                 toastLabel.alpha = 0.0
+            }, completion: {(isCompleted) in
+                toastLabel.removeFromSuperview()
+            })
+        })
+    }
 }
 
 
@@ -423,3 +449,67 @@ extension UIColor{
         return UIColor(red:0/255 , green:109/255 ,blue:105/255 , alpha:1.00)
     }
 }
+
+
+extension UIView{
+func customActivityIndicator(view: UIView, widthView: CGFloat?,backgroundColor: UIColor?, textColor:UIColor?, message: String?) -> UIView{
+
+    //Config UIView
+    self.backgroundColor = backgroundColor //Background color of your view which you want to set
+
+    var selfWidth = view.frame.width
+    if widthView != nil{
+        selfWidth = widthView ?? selfWidth
+    }
+
+    let selfHeigh = view.frame.height
+    let loopImages = UIImageView()
+
+    let imageListArray = [UIImage(named: "Logo")!, UIImage(named: "Nearby")!] // Put your desired array of images in a specific order the way you want to display animation.
+
+    loopImages.animationImages = imageListArray
+    loopImages.animationDuration = TimeInterval(0.8)
+    loopImages.startAnimating()
+
+    let imageFrameX = (selfWidth / 2) - 60
+    let imageFrameY = (selfHeigh / 2) - 60
+    var imageWidth = CGFloat(120)
+    var imageHeight = CGFloat(62)
+
+    if widthView != nil{
+        imageWidth = widthView ?? imageWidth
+        imageHeight = widthView ?? imageHeight
+    }
+
+    //ConfigureLabel
+    let label = UILabel()
+    label.textAlignment = .center
+    label.textColor = .gray
+    label.font = UIFont(name: "Nunito-Regular", size: 17.0)! // Your Desired UIFont Style and Size
+    label.numberOfLines = 0
+    label.text = message ?? ""
+    label.textColor = textColor ?? UIColor.clear
+
+    //Config frame of label
+    let labelFrameX = (selfWidth / 2) - 60
+    let labelFrameY = (selfHeigh / 2) + 10
+    let labelWidth = CGFloat(120)
+    let labelHeight = CGFloat(21)
+
+    // Define UIView frame
+    //self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width , height: UIScreen.main.bounds.size.height)
+
+    self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width , height: UIScreen.main.bounds.size.height)
+
+    //ImageFrame
+    loopImages.frame = CGRect(x: imageFrameX, y: imageFrameY, width: imageWidth, height: imageHeight)
+
+    loopImages.backgroundColor = UIColor.white
+    //LabelFrame
+    label.frame = CGRect(x: labelFrameX, y: labelFrameY, width: labelWidth, height: labelHeight)
+
+    label.backgroundColor = UIColor.white
+    //add loading and label to customView
+    self.addSubview(loopImages)
+    self.addSubview(label)
+    return self }}

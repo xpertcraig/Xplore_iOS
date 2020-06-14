@@ -324,6 +324,10 @@ let homeFeaturesStr = "homeFeatureCampStr"
 let homeReviewBasedStr = "homeReviewBasedCampStr"
 let myCurrentLocStr = "currentLocStr"
 
+let featuredViewAll = "featuredViewAll"
+let reviewViewAllStr = "reviewViewAllStr"
+let viewAllCamps = "viewAllCamps"
+
 let fromProfile = "loginFromProfile"
 let fromNearByuser = "loginFromNearByUser"
 let fromTopBar = "loginFromTopBar"
