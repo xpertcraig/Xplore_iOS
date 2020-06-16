@@ -208,7 +208,7 @@ class savedCompositeVc: UIViewController {
     
         if Singleton.sharedInstance.fromMyProfile == true || Singleton.sharedInstance.fromMyProfileTabbarIndex != 2 {
             Singleton.sharedInstance.fromMyProfile = false
-            
+        
             if Singleton.sharedInstance.fromMyProfileTabbarIndex != 2 {
                 self.backBtn.isHidden = false
                 self.backBtnImgView.isHidden = false
@@ -803,13 +803,15 @@ extension savedCompositeVc {
             self.favouriteCampArr.add(arrR.object(at: i) as! NSDictionary)
             
         }
-        if self.campType == favouritesCamp {
+        if self.campType == favouritesCamp && Singleton.sharedInstance.fromMyProfile == false{
             self.collArr = self.favouriteCampArr
             Singleton.sharedInstance.favouritesCampArr = self.collArr
             
             if self.collArr.count == 0 {
                 self.setDelegateAndDataSource()
             }
+        } else {
+            fromFavourites = false
         }
         if self.firstTime == false {
             self.setDelegateAndDataSource()
