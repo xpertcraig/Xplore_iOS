@@ -413,7 +413,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSArray)
                     
-                    print(retValues)
+                 //   print(retValues)
                     
                     self.reloadTbl(arrR: retValues, pageR: pageNum)
                 } else {

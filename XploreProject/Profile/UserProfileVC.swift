@@ -187,7 +187,7 @@ class UserProfileVC: UIViewController {
                     otherUserId = (String(describing: (self.userInfoDict.value(forKey: "campAuthor"))!))
                 }
                 
-                let dictMessage: [String: Any] = ["othersUserId": otherUserId ,"otherUserProfileImage": (String(describing: (self.userInfoDict.value(forKey: "profileImage"))!)),"otherUsername": otherUserName, "userId": String(describing: (DataManager.userId)), "username": String(describing: (DataManager.name)) , "userProfileImage": String(describing: (DataManager.profileImage)) ,"last_msg": "", "last_msgTime": ""]
+                let dictMessage: [String: Any] = ["othersUserId": otherUserId ,"otherUserProfileImage": (String(describing: (self.userInfoDict.value(forKey: "profileImage"))!)),"otherUsername": otherUserName, "userId": String(describing: (DataManager.userId)), "username": String(describing: (DataManager.name)) , "userProfileImage": String(describing: (DataManager.profileImage)) ,"last_msg": "", "last_msgTime": "", "unread_\(otherUserId)": 0, "unread_\(String(describing: (DataManager.userId)))": 0]
                 
                 
                 ref.updateChildValues(dictMessage)

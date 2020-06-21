@@ -38,6 +38,9 @@ class ChatListingVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.usersListDict = []
         if Singleton.sharedInstance.chatListArr.count > 0 {
+            self.chatListingTblView.delegate = self
+            self.chatListingTblView.dataSource = self
+            
             self.noChatFound.isHidden = true
             self.reloadTbl()
             
@@ -52,8 +55,9 @@ class ChatListingVC: UIViewController {
             let fName = uName.components(separatedBy: " ")
             self.userNameBtn.setTitle(fName[0], for: .normal)
         }
-        self.observeChannels()
-        
+        self.observeChannels { (rMsg) in
+            applicationDelegate.dismissProgressView(view: self.view)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -64,6 +68,7 @@ class ChatListingVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateUnreadMsgCount), name: NSNotification.Name(rawValue: "chatmsgCount"), object: nil)
     }
     
     deinit {
@@ -71,6 +76,12 @@ class ChatListingVC: UIViewController {
     }
     
     //MARK:- Function Definitions
+    @objc func updateUnreadMsgCount(_ notification: NSNotification) {
+        self.observeChannels { (rMsg) in
+            applicationDelegate.dismissProgressView(view: self.view)
+        }
+    }
+    
     @objc func updateNotiCount(_ notification: NSNotification) {
         if let notiCount = notification.userInfo?["count"] as? Int {
             // An example of animating your label
@@ -86,10 +97,7 @@ class ChatListingVC: UIViewController {
     //MARK:- Function Definition
     func reloadTbl() {
         self.usersListDict = Singleton.sharedInstance.chatListArr
-        
-        self.chatListingTblView.delegate = self
-        self.chatListingTblView.dataSource = self
-        self.chatListingTblView.reloadData()
+        self.chatListingTblView.reloadWithAnimation()
     }
     
     func animateTbl() {
@@ -108,7 +116,7 @@ class ChatListingVC: UIViewController {
     }
     
     //MARK:- Fetch data from the firebase
-    func observeChannels() {
+    func observeChannels(completion: @escaping(_ msg: String) -> Void) {
         if (Singleton.sharedInstance.chatListArr.count == 0 && userDefault.value(forKey: chatListStr) == nil){
             applicationDelegate.startProgressView(view: self.view)
             
@@ -123,11 +131,10 @@ class ChatListingVC: UIViewController {
             if snapShot.value as? Dictionary<String, AnyObject> == nil {
                 self.chatListingTblView.isHidden = true
                 self.noChatFound.isHidden = false
-                applicationDelegate.dismissProgressView(view: self.view)
+                completion(success)
             }
         }
         ref.child("Users").observe(.childAdded, with: { (shot) in
-            applicationDelegate.dismissProgressView(view: self.view)
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
                 
             //    print(postDict)
@@ -150,10 +157,16 @@ class ChatListingVC: UIViewController {
                             
                         }
                         
-                        Singleton.sharedInstance.chatListArr = self.usersListDict
                         self.chatListingTblView.delegate = self
                         self.chatListingTblView.dataSource = self
-                        self.chatListingTblView.reloadWithAnimation()
+                        
+                        if Singleton.sharedInstance.chatListArr.count == 0 {
+                            self.chatListingTblView.reloadWithAnimation()
+                        } else {
+                            self.chatListingTblView.reloadData()
+                        }
+                        Singleton.sharedInstance.chatListArr = self.usersListDict
+                        
                         
 //                        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
 //                            self.animateTbl()
@@ -162,6 +175,8 @@ class ChatListingVC: UIViewController {
                 } else {
                     self.noChatFound.isHidden = false
                 }
+                
+                completion(success)
             } else {
                 self.noChatFound.isHidden = false
             }

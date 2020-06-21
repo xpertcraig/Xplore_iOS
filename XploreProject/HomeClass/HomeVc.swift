@@ -84,7 +84,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
  
         self.moveToControllerAfterLogin()
         var vcArray = (applicationDelegate.window?.rootViewController as! UINavigationController).viewControllers
-        print(vcArray)
+     //   print(vcArray)
         
         if self.sing.mycurrentLocationImage != nil {
             self.setMyCurrentLoc()
@@ -269,6 +269,7 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         self.reviewBasedArr = Singleton.sharedInstance.homeReviewBasedCampsArr
         
         self.homeScrollView.isHidden = false
+        self.setView(view: self.homeScrollView)
         self.recallAPIView.isHidden = true
         
         self.setDelegateAndDataSource()
@@ -298,6 +299,18 @@ class HomeVc: UIViewController, PayPalPaymentDelegate {
         }
         present(ImageViewerController(configuration: configuration), animated: true)
         
+    }
+    
+    func setView(view: UIView) {
+        self.homeScrollView.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0.2, options: UIView.AnimationOptions.curveEaseOut, animations: {
+            self.homeScrollView.alpha = 1
+        }, completion: { finished in
+            //objView.isHidden = true
+        })
+        
+//        UIView.transition(with: view, duration: 1.0, options: .transitionFlipFromTop, animations: {
+//        })
     }
     
     func animateLocView() {
@@ -1126,7 +1139,7 @@ extension HomeVc {
                     if (String(describing: (dict["success"])!)) == "1" {
                         let retValues = (dict["result"]! as! NSDictionary)
                         
-                        print(retValues)
+                    //    print(retValues)
                         
                         self.homeScrollView.isHidden = false
                         self.recallAPIView.isHidden = true
@@ -1228,25 +1241,6 @@ extension HomeVc {
                             tabBarItem5.isEnabled = false
                            
                         }
-                        
-//                        let alert = UIAlertController(title: appName, message: LogoutMessage, preferredStyle: .alert)
-//                        let yesBtn = UIAlertAction(title: yesBtntitle, style: .default, handler: { (UIAlertAction) in
-//                            alert.dismiss(animated: true, completion: nil)
-//
-//                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UpdatePaymentVC") as! UpdatePaymentVC
-//                            self.navigationController?.pushViewController(vc, animated: true)
-//
-//                        })
-//
-//                        let noBtn = UIAlertAction(title: cancel, style: .default, handler: { (UIAlertAction) in
-//                            alert.dismiss(animated: true, completion: nil)
-//
-//                            self.hitLogoutApi()
-//                        })
-//                        alert.addAction(yesBtn)
-//                        alert.addAction(noBtn)
-//                        self.present(alert, animated: true, completion: nil)
-                        
                     }
                 } else {
                     //CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)

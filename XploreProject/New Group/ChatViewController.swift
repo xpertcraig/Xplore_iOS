@@ -137,6 +137,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             chatUnitId = String(describing: (DataManager.userId)) + "-" + receiverId
             
         }
+        
         IQKeyboardManager.shared.enable = false
       //  IQKeyboardManager.sharedManager().enable = false
         
@@ -161,8 +162,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        applicationDelegate.startProgressView(view: self.view)
-        observeChannels()
+        observeChannels { (rMsg) in
+            applicationDelegate.dismissProgressView(view: self.view)
+        }
         observeChannelsToRemove()
         
     }
@@ -184,6 +186,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidAppear(_ animated: Bool) {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+        
+        DispatchQueue.main.async {
+            Database.database().reference().child("Users").child(self.chatUnitId).child("unread_\(DataManager.userId)").setValue(0)
+        }
         
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(willResignActive), name: UIScene.willDeactivateNotification, object: nil)
@@ -346,8 +352,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         childRef.updateChildValues(dictMessage)
         
         //update message and time in user database
-        Database.database().reference().child("Users").child(chatUnitId).child("last_msg").setValue(msg)
+        Database.database().reference().child("Users").child(chatUnitId).child("last_msg)").setValue(msg)
         Database.database().reference().child("Users").child(chatUnitId).child("last_msgTime").setValue(ServerValue.timestamp())
+        
+        Singleton.sharedInstance.updateUnreadMessageCount(chatUnitId: chatUnitId, receiverId: self.receiverId)
         
         let sender = PushNotificationSender()
         let refU = Database.database().reference().child("UsersProfile")
@@ -357,24 +365,28 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
            //     print(postDict)
                 if let deviceToken = postDict["deviceToken"] as? String {
-                    sender.sendPushNotification(to: "\(String(describing: postDict["deviceToken"]!))", title: "\(String(describing: (DataManager.name))) sent you a message", body: msg, userId: DataManager.userId as! String)
+                    if let name = DataManager.name as? String {
+                        let fName = name.components(separatedBy: " ")
+                        sender.sendPushNotification(to: "\(deviceToken)", title: "\(fName[0]) sent you a message", body: msg, userId: DataManager.userId as! String)
+                    }
                 }
             }
         })
     }
     
     //MARK:- Fetch data from the firebase
-    func observeChannels() {
+    func observeChannels(completion: @escaping(_ msg: String) -> Void) {
+        applicationDelegate.startProgressView(view: self.view)
         let ref = Database.database().reference()
         ref.child("Messages").child(chatUnitId).observe(.value) { (snapShot) in
             if snapShot.value as? Dictionary<String, AnyObject> == nil {
-                applicationDelegate.dismissProgressView(view: self.view)
+                completion(success)
             }
         }
         ref.child("Messages").child(chatUnitId).observe(.childAdded, with: { (shot) in
-            applicationDelegate.dismissProgressView(view: self.view)
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
                 
+                applicationDelegate.dismissProgressView(view: self.view)
                 if postDict["sender_id"] as? String == String(describing: (DataManager.userId)) && postDict["receiver_id"] as? String == self.receiverId {
                     let myMsgStatus = postDict["myMsg"] as! String
                     
@@ -402,6 +414,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         
                     }
                 }
+                completion(success)
             }
         })
     }
@@ -460,7 +473,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            applicationDelegate.dismissProgressView(view: self.view)
+           // applicationDelegate.dismissProgressView(view: self.view)
             
         }
     }

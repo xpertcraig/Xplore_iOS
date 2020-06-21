@@ -28,6 +28,7 @@ class NotificationVc: UIViewController {
         super.viewDidLoad()
         
         if Singleton.sharedInstance.notificationListingArr.count > 0 {
+            self.noNotificationLbl.isHidden = true
             self.notificationCountLbl.text! = "0"
             notificationCount = 0
             self.myNotificationsArr = Singleton.sharedInstance.notificationListingArr
@@ -150,7 +151,7 @@ class NotificationVc: UIViewController {
     //MARK:- Api's Hit
     func notificationsAPIHit(){
         if Singleton.sharedInstance.notificationListingArr.count == 0 {
-            applicationDelegate.startProgressView(view: self.view)
+            //applicationDelegate.startProgressView(view: self.view)
             
         }
         

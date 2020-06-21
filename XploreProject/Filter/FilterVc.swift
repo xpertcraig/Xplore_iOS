@@ -686,7 +686,7 @@ class FilterVc: UIViewController, selectTypeDelegate {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchCampVC") as! SearchCampVC
                 self.resetData()
                 
-                print(dict)
+              //  print(dict)
                 
                 vc.comeFrom = filterPush
                 vc.filterDataDict = dict

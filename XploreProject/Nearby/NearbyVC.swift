@@ -195,17 +195,17 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         print(String(Int(latitude)) )
         
      //   if self.apiCalled == false {
-            if self.delegateCaleed > 2 && (Int(zoom) != self.zoom || Int(zoom) != self.zoom) /*&& Int(zoom) > 2 */{
-                self.zoom = Int(zoom)
-                self.apiCalled = true
-                self.nearByUsersApiHit(zoomVal: self.zoom)
-            } else if (String(Int(latitude)) != String(describing: (Int(Double(self.recLat)!))) || String(Int(latitude)) != String(describing: (Int(Double(self.recLat)!)))) && self.delegateCaleed > 2 {
-                
-              //  self.zoom = Int(zoom)
-                self.recLat = String(describing: (latitude.roundToDecimal(3)))
-                self.recLong = String(describing: (longitude.roundToDecimal(3)))
-                self.nearByUsersApiHit(zoomVal: self.zoom)
-            }
+//            if self.delegateCaleed > 2 && (Int(zoom) != self.zoom || Int(zoom) != self.zoom) /*&& Int(zoom) > 2 */{
+//                self.zoom = Int(zoom)
+//                self.apiCalled = true
+//                self.nearByUsersApiHit(zoomVal: self.zoom)
+//            } else if (String(Int(latitude)) != String(describing: (Int(Double(self.recLat)!))) || String(Int(latitude)) != String(describing: (Int(Double(self.recLat)!)))) && self.delegateCaleed > 2 {
+//
+//              //  self.zoom = Int(zoom)
+//                self.recLat = String(describing: (latitude.roundToDecimal(3)))
+//                self.recLong = String(describing: (longitude.roundToDecimal(3)))
+//                self.nearByUsersApiHit(zoomVal: self.zoom)
+//            }
        // }
     }
     

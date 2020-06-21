@@ -22,7 +22,23 @@ class NotificationTableViewCell: UITableViewCell {
     
     @IBOutlet weak var removeNotificationBtn: UIButton!
     
+    @IBOutlet weak var unreadMsgView: UIViewCustomClass!
+    @IBOutlet weak var unreadMsgCountLbl: UILabel!
+    
     func cellConfig(indexV: NSDictionary) {
+        self.unreadMsgView.isHidden = true
+        if let uCount = indexV["unread_\(DataManager.userId)"] as? Int {
+            if uCount != 0 {
+                self.unreadMsgView.isHidden = false
+                if uCount < 10 {
+                    self.unreadMsgCountLbl.text! = "\(uCount)"
+                } else {
+                    self.unreadMsgCountLbl.text! = "\(9)+"
+                }
+            } else {
+                self.unreadMsgView.isHidden = true
+            }
+        }
          if String(describing: (DataManager.userId)) == String(describing: (indexV.value(forKey: "userId"))!) {
             self.getUserInfo(userId: String(describing: (indexV.value(forKey: "othersUserId"))!), indexV: indexV)
         } else {
@@ -35,7 +51,7 @@ class NotificationTableViewCell: UITableViewCell {
         ref.child(userId).observe(.value, with: { (shot) in
             
             if let postDict = shot.value as? Dictionary<String, AnyObject> {
-                print(postDict)
+          //      print(postDict)
                 self.userNameLbl.text! = String(describing: postDict["username"]!)
                 
                 self.userImgView.sd_setShowActivityIndicatorView(true)
@@ -43,7 +59,7 @@ class NotificationTableViewCell: UITableViewCell {
                 self.userImgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
                 
             } else {
-                print(indexV)
+              //  print(indexV)
                 if userId == String(describing: (indexV.value(forKey: "userId"))!) {
                     self.userNameLbl.text! = String(describing: (indexV.value(forKey: "username"))!)
                     

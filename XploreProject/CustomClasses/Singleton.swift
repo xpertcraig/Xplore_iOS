@@ -9,6 +9,10 @@ import UIKit
 import Foundation
 import GoogleMobileAds
 
+import Firebase
+import FirebaseDatabase
+import FirebaseStorage
+
 final class Singleton {
     private init() {}
     static let sharedInstance: Singleton = Singleton()
@@ -45,6 +49,31 @@ final class Singleton {
     var interstitial: GADInterstitial!
     var timerAdd = Timer()
     var addReady: Bool = false
+    
+    
+    func updateUnreadMessageCount(chatUnitId: String, receiverId: String) {
+        var msgCount: Int = 0
+        var calledOnce: Bool = false
+        
+        let ref = Database.database().reference()
+        ref.child("Users").child(chatUnitId).observe(.value) { (snapShot) in
+            if let postDict = snapShot.value as? Dictionary<String, AnyObject> {
+                
+                if let uCount = postDict["unread_\(receiverId)"] as? Int {
+                    if calledOnce == false {
+                        calledOnce = true
+                        msgCount = Int(uCount)
+                        msgCount += 1
+                        
+                        Database.database().reference().child("Users").child(chatUnitId).child("unread_\(receiverId)").setValue(msgCount)
+                        
+                        Database.database().reference().child("Users").child(chatUnitId).child("unread_\(DataManager.userId)").setValue(0)
+                       
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension UIViewController {

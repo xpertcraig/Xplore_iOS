@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             
-            let authOptions: UNAuthorizationOptions = [.alert,.sound]
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
             UNUserNotificationCenter.current().requestAuthorization(
                 options: authOptions,
                 completionHandler: {_, _ in })
@@ -339,7 +339,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //MARK: - ProgressIndicator view start
     func startProgressView(view:UIView){
         let spinnerActivity = MBProgressHUD.showAdded(to: view, animated: true)
-        // spinnerActivity.backgroundColor = UIColor.clear
+      //  spinnerActivity.backgroundColor = UIColor.clear
         spinnerActivity.bezelView.color = UIColor.clear
         spinnerActivity.mode = MBProgressHUDMode.indeterminate
         spinnerActivity.animationType = .zoomOut
@@ -517,7 +517,10 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
       //  notificationCount += 1
         
         if UIApplication.shared.applicationState == UIApplicationState.active {
-            
+            if let senderId = notificationRecdict.value(forKey: "user") as? String {
+                Singleton.sharedInstance.messageSentUserId = senderId
+                self.makeChatUnitId()
+            }
             
         } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             
@@ -526,10 +529,26 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             }
             if let senderId = notificationRecdict.value(forKey: "user") as? String {
                 Singleton.sharedInstance.messageSentUserId = senderId
+                self.makeChatUnitId()
             }
         }
         self.notificationRec()
         completionHandler([.alert])
+    }
+    
+    func makeChatUnitId() {
+//        var chatUnitId: String = ""
+//        if String(describing: (DataManager.userId)) < Singleton.sharedInstance.messageSentUserId {
+//            chatUnitId = Singleton.sharedInstance.messageSentUserId + "-" + String(describing: (DataManager.userId))
+//            
+//        } else {
+//            chatUnitId = String(describing: (DataManager.userId)) + "-" + Singleton.sharedInstance.messageSentUserId
+//            
+//        }
+       // Singleton.sharedInstance.updateUnreadMessageCount(chatUnitId: chatUnitId, receiverId: Singleton.sharedInstance.messageSentUserId)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "chatmsgCount"), object: nil, userInfo: nil)
+        
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -543,7 +562,10 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         }
       //  notificationCount += 1
         if UIApplication.shared.applicationState == UIApplicationState.active {
-            
+            if let senderId = notificationRecdict.value(forKey: "user") as? String {
+                Singleton.sharedInstance.messageSentUserId = senderId
+                self.makeChatUnitId()
+            }
         } else if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             
             notificationRecdict = userInfo as NSDictionary
@@ -551,7 +573,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                Singleton.sharedInstance.notiType = notyType
             }
             if let senderId = notificationRecdict.value(forKey: "user") as? String {
-               Singleton.sharedInstance.messageSentUserId = senderId
+                Singleton.sharedInstance.messageSentUserId = senderId
+                self.makeChatUnitId()
             }
         }
         self.notificationRec()
