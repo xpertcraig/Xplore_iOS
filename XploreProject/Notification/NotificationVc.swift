@@ -22,6 +22,7 @@ class NotificationVc: UIViewController {
     var myNotificationsArr: NSArray = []
     ///
     var notificationRefreshControl = UIRefreshControl()
+    var calledONCE: Bool = false
     
     //MARK:- Inbuild functions
     override func viewDidLoad() {
@@ -106,7 +107,13 @@ class NotificationVc: UIViewController {
         
         self.notificationTableview.delegate = self
         self.notificationTableview.dataSource = self
-        self.notificationTableview.reloadWithAnimation()
+        
+        if self.calledONCE == false {
+            self.calledONCE = true
+            self.notificationTableview.reloadWithAnimation()
+        } else {
+            self.notificationTableview.reloadData()
+        }
     }
     
     func refreshData() {

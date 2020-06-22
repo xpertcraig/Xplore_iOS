@@ -25,6 +25,7 @@ class ChatListingVC: UIViewController {
     
     //MARK:- Variable Declaration
     var hasLoaded = Bool()
+    var calledOnce: Bool = false
     
     //MARK:- Inbuild Function
     override func viewDidLoad() {
@@ -38,9 +39,6 @@ class ChatListingVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.usersListDict = []
         if Singleton.sharedInstance.chatListArr.count > 0 {
-            self.chatListingTblView.delegate = self
-            self.chatListingTblView.dataSource = self
-            
             self.noChatFound.isHidden = true
             self.reloadTbl()
             
@@ -55,8 +53,14 @@ class ChatListingVC: UIViewController {
             let fName = uName.components(separatedBy: " ")
             self.userNameBtn.setTitle(fName[0], for: .normal)
         }
-        self.observeChannels { (rMsg) in
-            applicationDelegate.dismissProgressView(view: self.view)
+        
+        if connectivity.isConnectedToInternet() {
+            self.observeChannels { (rMsg) in
+                applicationDelegate.dismissProgressView(view: self.view)
+                self.callRealodTblAnimationOrNot()
+            }
+        } else {
+            self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
         }
     }
     
@@ -79,6 +83,18 @@ class ChatListingVC: UIViewController {
     @objc func updateUnreadMsgCount(_ notification: NSNotification) {
         self.observeChannels { (rMsg) in
             applicationDelegate.dismissProgressView(view: self.view)
+            self.chatListingTblView.reloadData()
+        }
+    }
+    
+    func callRealodTblAnimationOrNot() {
+        self.chatListingTblView.isHidden = false
+        if self.calledOnce == false {
+            self.calledOnce = true
+            
+            self.chatListingTblView.reloadWithAnimation()
+        } else {
+            self.chatListingTblView.reloadData()
         }
     }
     
@@ -97,7 +113,16 @@ class ChatListingVC: UIViewController {
     //MARK:- Function Definition
     func reloadTbl() {
         self.usersListDict = Singleton.sharedInstance.chatListArr
-        self.chatListingTblView.reloadWithAnimation()
+        self.chatListingTblView.isHidden = false
+        if calledOnce == false {
+            self.calledOnce = true
+            
+            self.chatListingTblView.delegate = self
+            self.chatListingTblView.dataSource = self
+            self.chatListingTblView.reloadWithAnimation()
+        } else {
+            self.chatListingTblView.reloadData()
+        }
     }
     
     func animateTbl() {
@@ -157,16 +182,7 @@ class ChatListingVC: UIViewController {
                             
                         }
                         
-                        self.chatListingTblView.delegate = self
-                        self.chatListingTblView.dataSource = self
-                        
-                        if Singleton.sharedInstance.chatListArr.count == 0 {
-                            self.chatListingTblView.reloadWithAnimation()
-                        } else {
-                            self.chatListingTblView.reloadData()
-                        }
                         Singleton.sharedInstance.chatListArr = self.usersListDict
-                        
                         
 //                        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
 //                            self.animateTbl()
@@ -222,15 +238,15 @@ class ChatListingVC: UIViewController {
 
 extension ChatListingVC :UITableViewDataSource ,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.usersListDict.count == 0 {
-            //self.noChatFound.isHidden = false
-            self.chatListingTblView.isHidden = true
-            
-        } else {
-            self.noChatFound.isHidden = true
-            self.chatListingTblView.isHidden = false
-            
-        }
+//        if self.usersListDict.count == 0 {
+//            //self.noChatFound.isHidden = false
+//            self.chatListingTblView.isHidden = true
+//
+//        } else {
+//            self.noChatFound.isHidden = true
+//            self.chatListingTblView.isHidden = false
+//
+//        }
         
       //  print(self.usersListDict.count)
         return self.usersListDict.count
