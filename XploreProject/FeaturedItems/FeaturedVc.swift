@@ -845,7 +845,12 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
             
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
             cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: ""))
+            
+            if let img =  ((((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)) as? String) {
+                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            }
+            
+          //  cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: ""))
             
             cell.noImgLbl.isHidden = true
         } else {
@@ -878,7 +883,10 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
             
             cell.autherImgView.sd_setShowActivityIndicatorView(true)
             cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+            
+            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            
+           // cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
             
         }
         cell.autherNameLbl.text = ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
@@ -899,7 +907,9 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
                 if let img = (self.autherInfo["autherImg"] as? String) {                    
                     cell.autherImgView.sd_setShowActivityIndicatorView(true)
                     cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+                    cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    
+                  //  cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
                     
                 }
                 cell.autherNameLbl.text = (self.autherInfo["autherName"] as? String)

@@ -239,7 +239,8 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             
             self.autherImgView.sd_setShowActivityIndicatorView(true)
             self.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            self.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+            self.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+          //  self.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
             
         }        
         self.autherNameLbl.text = (recDict.value(forKey: "authorName") as? String)
@@ -872,7 +873,11 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
     
         cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
         cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-        cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (self.myCampImgArr.object(at: indexPath.row))))), placeholderImage: UIImage(named: ""))
+        if let img =  (self.myCampImgArr.object(at: indexPath.row)) as? String {
+            cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+        }
+        
+      //  cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (self.myCampImgArr.object(at: indexPath.row))))), placeholderImage: UIImage(named: ""))
        
         cell.imagLocNameLbl.text = (self.campDetailDict.value(forKey: "campTitle") as? String)
         
@@ -1070,7 +1075,11 @@ extension CampDescriptionVc : UITableViewDelegate,UITableViewDataSource {
             
             cell.reviewGivenUserImgView.sd_setShowActivityIndicatorView(true)
             cell.reviewGivenUserImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.reviewGivenUserImgView.sd_setImage(with: URL(string: ((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String)!), placeholderImage: UIImage(named: ""))
+            if let img =  ((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
+                cell.reviewGivenUserImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            }
+            
+          //  cell.reviewGivenUserImgView.sd_setImage(with: URL(string: ((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String)!), placeholderImage: UIImage(named: ""))
             
             if !(((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "reviewDate")) is NSNull) {
                 cell.reviewGivenDateLbl.text! = convertDateFormater(((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "reviewDate") as! String))

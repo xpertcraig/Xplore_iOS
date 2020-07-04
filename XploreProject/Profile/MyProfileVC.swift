@@ -113,7 +113,10 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
             
             self.myProfileImgView.sd_setShowActivityIndicatorView(true)
             self.myProfileImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            self.myProfileImgView.sd_setImage(with: URL(string: profileImg), placeholderImage: UIImage(named: ""))
+            
+            self.myProfileImgView.loadImageFromUrl(urlString: profileImg, placeHolderImg: "", contenMode: .scaleAspectFit)
+            
+           // self.myProfileImgView.sd_setImage(with: URL(string: profileImg), placeholderImage: UIImage(named: ""))
             
         }
         

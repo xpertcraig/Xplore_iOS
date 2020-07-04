@@ -108,7 +108,12 @@ class ReviewDetailsVC: UIViewController {
        // print(reviewDeatils)
         self.userImgView.sd_setShowActivityIndicatorView(true)
         self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-        self.userImgView.sd_setImage(with: URL(string: (String(describing: (self.reviewDeatils.value(forKey: "profileImage"))!))), placeholderImage: UIImage(named: ""))
+        
+        if let img =  (self.reviewDeatils.value(forKey: "profileImage") as? String) {
+            self.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+        }
+        
+       // self.userImgView.sd_setImage(with: URL(string: (String(describing: (self.reviewDeatils.value(forKey: "profileImage"))!))), placeholderImage: UIImage(named: ""))
         self.userNameLbl.text = (String(describing: (self.reviewDeatils.value(forKey: "name"))!))
         
         if !((self.reviewDeatils.value(forKey: "reviewDate")) is NSNull) {
@@ -228,7 +233,12 @@ extension ReviewDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource 
         
         cell.campImgVIew.sd_setShowActivityIndicatorView(true)
         cell.campImgVIew.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-        cell.campImgVIew.sd_setImage(with: URL(string: (String(describing:self.myGallaryImagesArr.object(at: indexPath.row)))), placeholderImage: UIImage(named: ""))
+        
+        if let img =  (self.myGallaryImagesArr.object(at: indexPath.row) as? String) {
+            cell.campImgVIew.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+        }
+        
+      //  cell.campImgVIew.sd_setImage(with: URL(string: (String(describing:self.myGallaryImagesArr.object(at: indexPath.row)))), placeholderImage: UIImage(named: ""))
         
         return cell
     }

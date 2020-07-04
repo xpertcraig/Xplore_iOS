@@ -56,7 +56,11 @@ class NotificationTableViewCell: UITableViewCell {
                 
                 self.userImgView.sd_setShowActivityIndicatorView(true)
                 self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                self.userImgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
+                if let img =  postDict["userProfileImage"] as? String {
+                    self.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                }
+                
+             //   self.userImgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
                 
             } else {
               //  print(indexV)
@@ -65,13 +69,21 @@ class NotificationTableViewCell: UITableViewCell {
                     
                     self.userImgView.sd_setShowActivityIndicatorView(true)
                     self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    self.userImgView.sd_setImage(with: URL(string: String(describing: (indexV.value(forKey: "userProfileImage"))!)), placeholderImage: UIImage(named: ""))
+                    if let img =  (indexV.value(forKey: "userProfileImage")) as? String {
+                        self.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    }
+                    
+                  //  self.userImgView.sd_setImage(with: URL(string: String(describing: (indexV.value(forKey: "userProfileImage"))!)), placeholderImage: UIImage(named: ""))
                 } else {
                     self.userNameLbl.text! = String(describing: (indexV.value(forKey: "otherUsername"))!)
                     
                     self.userImgView.sd_setShowActivityIndicatorView(true)
                     self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    self.userImgView.sd_setImage(with: URL(string: String(describing: (indexV.value(forKey: "otherUserProfileImage"))!)), placeholderImage: UIImage(named: ""))
+                    
+                    if let img =  (indexV.value(forKey: "otherUserProfileImage")) as? String {
+                        self.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    }
+                  //  self.userImgView.sd_setImage(with: URL(string: String(describing: (indexV.value(forKey: "otherUserProfileImage"))!)), placeholderImage: UIImage(named: ""))
                 }
             }
             self.notificationTxtLbl.text! = String(describing: (indexV.value(forKey: "last_msg"))!)

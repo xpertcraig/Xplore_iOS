@@ -205,6 +205,10 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     override func viewDidAppear(_ animated: Bool) {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
+            self.getStateAsPerCountry()
+        })
     }
     
     deinit {
@@ -212,6 +216,43 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     }
     
     //MARK:- Function Definitions
+    func getStateAsPerCountry() {
+        if self.countiesArr.count > 0 && self.Country.text! != "" {
+           
+            let searchPredicate = NSPredicate(format: "countryName == %@", self.Country.text!)
+            let array: [[String: Any]] = (self.countiesArr as NSArray).filtered(using: searchPredicate) as! [[String : Any]]
+            
+            if array.count > 0 {
+                if let zeroIndex = array[0] as? [String: Any] {
+                    if let cId = zeroIndex["countryId"] as? String {
+                        self.countryId = cId
+                        self.stateApiCall(callCityApi: true)
+                        
+                        self.getCitAsPerState()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getCitAsPerState() {
+        if self.stateArr.count > 0 && self.state.text! != "" {
+           
+            let searchPredicate = NSPredicate(format: "stateName == %@", self.state.text!)
+            let array: [[String: Any]] = (self.stateArr as NSArray).filtered(using: searchPredicate) as! [[String : Any]]
+            
+            if array.count > 0 {
+                if let zeroIndex = array[0] as? [String: Any] {
+                    if let cId = zeroIndex["stateId"] as? String {
+                        self.stateId = cId
+                        self.cityApiCall()
+                        self.getLatLong()
+                    }
+                }
+            }
+        }
+    }
+    
     @objc func updateNotiCount(_ notification: NSNotification) {
         if let notiCount = notification.userInfo?["count"] as? Int {
             // An example of animating your label
@@ -502,9 +543,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     @objc func searchFieldValueChanged() {
         var arr: NSArray = []
         
-        print(self.Country.text!)
-
-        
         if selectedType == country {
             self.searchData = (self.countiesArr).mutableCopy() as! NSMutableArray
             let predicate = NSPredicate(format: "countryName CONTAINS[c] %@", (self.Country.text!))
@@ -598,7 +636,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         }
     }
     
-    func stateApiCall() {
+    func stateApiCall(callCityApi: Bool) {
         applicationDelegate.startProgressView(view: self.view)
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "states.php?userId=" + (DataManager.userId as! String)+"&countryId="+countryId, onSuccess: { (responseData) in
@@ -611,6 +649,9 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                    // print(dict)
                     self.stateArr = retValue
                     
+                    if callCityApi == true {
+                        self.getCitAsPerState()
+                    }
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
@@ -1730,75 +1771,6 @@ extension AddNewCampsiteVc :UITextFieldDelegate, UITextViewDelegate {
 
     }
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        self.searchActive = false
-//        self.countryStateCityTblView.isHidden = true
-//
-//        if textField == self.Country || textField == self.state || textField == self.city || textField == self.closetTown {
-//
-//            var address: String = ""
-//            if self.closetTown.text! != "" {
-//                address = self.closetTown.text!
-//
-//            } else {
-//
-//                if self.Country.text != "" {
-//                    address.append(self.Country.text!)
-//                    address.append(",")
-//
-//                }
-//                if self.state.text != "" {
-//                    address.append(self.state.text!)
-//                    address.append(",")
-//
-//                }
-//                if self.city.text != "" {
-//                    address.append(self.city.text!)
-//                    address.append(",")
-//
-//                }
-//
-//                address = String(address.dropLast())
-//
-//            }
-//            let geoCoder = CLGeocoder()
-//            geoCoder.geocodeAddressString(address) { (placemarks, error) in
-//                guard
-//                    let placemarks = placemarks,
-//                    let location = placemarks.first?.location
-//                    else {
-//                        // handle no location found
-//                        if textField == self.closetTown {
-//                            CommonFunctions.showAlert(self, message: diffClosestLoc, title: appName)
-//
-//                        } else {
-//                            self.closetTown.isUserInteractionEnabled = true
-//                            CommonFunctions.showAlert(self, message: locationNotFound, title: appName)
-//
-//                        }
-//                        return
-//                }
-//                self.closetTown.isUserInteractionEnabled = false
-////                if self.campsiteAddress1.text! == "" {
-////                    CommonFunctions.showAlert(self, message: campsiteAddr1Empty, title: appName)
-////
-////                } else if self.Country.text! == "" {
-////                    CommonFunctions.showAlert(self, message: countryEmpty, title: appName)
-////
-////                } else if self.city.text! == "" {
-////                    CommonFunctions.showAlert(self, message: cityEmpty, title: appName)
-////
-////                } else if self.state.text! == "" {
-////                    CommonFunctions.showAlert(self, message: stateEmpty, title: appName)
-////
-////                } else {
-//                    self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
-//                    self.longitude.text! = String(describing: (location.coordinate.longitude).roundToDecimal(4))
-//
-//               // }
-//            }
-//        }
-//    }
 }
 
 //image and collctionView
@@ -2050,14 +2022,6 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
         let cell = self.countryStateCityTblView.dequeueReusableCell(withIdentifier: "CountryStateCityTableViewCell", for: indexPath) as! CountryStateCityTableViewCell
         
         if self.searchActive == true {
-            
-            //            cell.tasksImgView.sd_setImage(with: URL(string: String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "taskImage"))!)), placeholderImage: UIImage(named: "No-Image-Available"))
-            //            cell.taskNameLbl.text! = String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "taskTitle"))!)
-            //            cell.taskDesLbl.text! = String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "taskDescription"))!)
-            //            cell.taskTimeLbl.text! = String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "taskDate"))!)
-            //            cell.taskStatusLbl.text! = String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "taskStatus"))!)
-            
-            
             if self.selectedType == country {
                 cell.countryStateCityLbl.text! = (self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryName") as! String
                 
@@ -2096,7 +2060,7 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
                 
                 self.countryStateCityTblView.isHidden = true
                 self.countryId = String(describing: ((self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryId"))!)
-                self.stateApiCall()
+                self.stateApiCall(callCityApi: false)
                 self.Country.text! = (self.searchData.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryName") as! String
                
                 self.getLatLong()
@@ -2138,7 +2102,7 @@ extension AddNewCampsiteVc: UITableViewDelegate, UITableViewDataSource {
                 
                 self.countryStateCityTblView.isHidden = true
                 self.countryId = String(describing: ((self.countiesArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryId"))!)
-                self.stateApiCall()
+                self.stateApiCall(callCityApi: false)
                 self.Country.text! = (self.countiesArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "countryName") as! String
                 
                 self.getLatLong()

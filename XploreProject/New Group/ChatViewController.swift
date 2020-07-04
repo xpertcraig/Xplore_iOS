@@ -116,7 +116,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             self.userIMgView.sd_setShowActivityIndicatorView(true)
             self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            self.userIMgView.sd_setImage(with: URL(string: String(describing: (userInfoDict.value(forKey: "profileImage") as! String))), placeholderImage: UIImage(named: ""))
+            
+            if let img = (userInfoDict.value(forKey: "profileImage") as? String) {
+                self.userIMgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            }
+           // self.userIMgView.sd_setImage(with: URL(string: String(describing: (userInfoDict.value(forKey: "profileImage") as! String))), placeholderImage: UIImage(named: ""))
             
         } else if self.comeFrom == "Notification" {
             self.getUserInfo(userId: String(describing: (userInfoDict.value(forKey: "othersUserId"))!))
@@ -308,7 +312,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 self.userIMgView.sd_setShowActivityIndicatorView(true)
                 self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                self.userIMgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
+                
+                if let img =  postDict["userProfileImage"] as? String {
+                    self.userIMgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                }
+                //self.userIMgView.sd_setImage(with: URL(string: String(describing: postDict["userProfileImage"]!)), placeholderImage: UIImage(named: ""))
                 
             }  else {
                 if DataManager.userId as! String == String(describing: (self.userInfoDict.value(forKey: "userId") as! String)) {
@@ -319,7 +327,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     }
                     self.userIMgView.sd_setShowActivityIndicatorView(true)
                     self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    self.userIMgView.sd_setImage(with: URL(string: String(describing: (self.userInfoDict.value(forKey: "otherUserProfileImage") as! String))), placeholderImage: UIImage(named: ""))
+                    
+                    if let img =  self.userInfoDict.value(forKey: "otherUserProfileImage") as? String {
+                        self.userIMgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    }
+                  //  self.userIMgView.sd_setImage(with: URL(string: String(describing: (self.userInfoDict.value(forKey: "otherUserProfileImage") as! String))), placeholderImage: UIImage(named: ""))
                 } else {
                     if let name = (self.userInfoDict.value(forKey: "username") as? String) {
                         self.userNameLbl.text! = name
@@ -327,7 +339,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     }
                     self.userIMgView.sd_setShowActivityIndicatorView(true)
                     self.userIMgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    self.userIMgView.sd_setImage(with: URL(string: String(describing: (self.userInfoDict.value(forKey: "userProfileImage") as! String))), placeholderImage: UIImage(named: ""))
+                    
+                    if let img =  (self.userInfoDict.value(forKey: "userProfileImage") as? String) {
+                        self.userIMgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    }
+                    
+                  //  self.userIMgView.sd_setImage(with: URL(string: String(describing: (self.userInfoDict.value(forKey: "userProfileImage") as! String))), placeholderImage: UIImage(named: ""))
 
                 }
             }
@@ -698,11 +715,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SendImageCell") as! SendImageCell
                 
-                let imageUrl = URL(string: ((chatArray[indexPath.row] as! NSDictionary)["messageType"] as! String))
-                
                 cell.imgVwSend.sd_setShowActivityIndicatorView(true)
                 cell.imgVwSend.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                cell.imgVwSend.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
+                
+                if let img =  ((chatArray[indexPath.row] as! NSDictionary)["messageType"] as? String) {
+                    cell.imgVwSend.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                }
+                
+//                let imageUrl = URL(string: ((chatArray[indexPath.row] as! NSDictionary)["messageType"] as! String))
+//                cell.imgVwSend.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
                 return cell
             }
         } else {
@@ -721,11 +742,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ReceiveImageCell") as! ReceiveImageCell
                 cell.isUserInteractionEnabled = false
-                let imageUrl = URL(string: ((chatArray[indexPath.row] as! NSDictionary)["messageType"] as! String))
                 
                 cell.imgVwReceive.sd_setShowActivityIndicatorView(true)
                 cell.imgVwReceive.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                cell.imgVwReceive.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
+                
+                if let img =  ((chatArray[indexPath.row] as! NSDictionary)["messageType"] as? String) {
+                    cell.imgVwReceive.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                }
+                
+//                let imageUrl = URL(string: ((chatArray[indexPath.row] as! NSDictionary)["messageType"] as! String))
+//                cell.imgVwReceive.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
                 return cell
             }
         }

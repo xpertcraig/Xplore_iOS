@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import UserNotifications
 import CoreLocation
+import SDWebImage
 
 class AllExtensions: UIViewController {
     
@@ -272,6 +273,31 @@ extension UIImageView{
                 }
             }
         }
+    }
+    func loadImageFromUrl(urlString: String, placeHolderImg: String, contenMode: ContentMode)  {
+        if let imageFromCache = Singleton.sharedInstance.imageCache.object(forKey: urlString as AnyObject) as? UIImage{
+            self.image = imageFromCache
+            return
+        }
+
+        var foodImageURL: NSURL?
+        if let encoded = urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+             let url = URL(string: encoded){
+                 print(url)
+                 foodImageURL = url as NSURL
+         } else {
+             foodImageURL = NSURL(string: urlString)
+         }
+       
+        // self.contentMode = .scaleAspectFit
+         self.sd_setImage(with: foodImageURL as URL?, placeholderImage: UIImage(named: placeHolderImg),options: SDWebImageOptions(rawValue: 0), completed: { (image, error, cacheType, imageURL) in
+          // Perform operation.
+            if let imageToCache = self.image{
+                Singleton.sharedInstance.imageCache.setObject(imageToCache, forKey: urlString as AnyObject)
+                self.image = imageToCache
+            }
+          //  self.contentMode = contenMode
+         })
     }
 }
 

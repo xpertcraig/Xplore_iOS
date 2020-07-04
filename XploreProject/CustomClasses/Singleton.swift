@@ -49,7 +49,7 @@ final class Singleton {
     var interstitial: GADInterstitial!
     var timerAdd = Timer()
     var addReady: Bool = false
-    
+    let imageCache = NSCache<AnyObject, AnyObject>()
     
     func updateUnreadMessageCount(chatUnitId: String, receiverId: String) {
         var msgCount: Int = 0

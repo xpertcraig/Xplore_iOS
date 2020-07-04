@@ -764,9 +764,11 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 
                 cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
                 cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
+                if let img =  (((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)) as? String {
+                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "loading", contenMode: .scaleAspectFit)
+                }
                 
-                
-                cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: "loading"))
+              //  cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: "loading"))
                 
                 cell.noImgLbl.isHidden = true
             } else {
@@ -780,7 +782,11 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 
                 cell.autherImgView.sd_setShowActivityIndicatorView(true)
                 cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+                
+                cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                
+                
+              //  cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
                 
             }
             cell.autherNameLbl.text = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
@@ -838,7 +844,11 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 
                 cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
                 cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                cell.featuredReviewImgView.sd_setImage(with: URL(string: String(describing: (((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)))), placeholderImage: UIImage(named: "loading"))
+                if let img =  (((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)) as? String {
+                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "loading", contenMode: .scaleAspectFit)
+                }
+                
+         //       cell.featuredReviewImgView.sd_setImage(with: URL(string: String(describing: (((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)))), placeholderImage: UIImage(named: "loading"))
                 
                 cell.noImgLbl.isHidden = true
             } else {
@@ -871,7 +881,10 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 
                 cell.autherImgView.sd_setShowActivityIndicatorView(true)
                 cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+                
+                cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                
+                //cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
                 
             }
             cell.autherNameLbl.text = ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
@@ -1126,7 +1139,7 @@ extension HomeVc {
             }
             let param: NSDictionary = ["userId": userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude, "country": countryOnMyCurrentLatLong]
             
-            print(param)
+       //     print(param)
             
             AlamoFireWrapper.sharedInstance.getPost(action: "home.php", param: param as! [String : Any], onSuccess: { (responseData) in
                 
@@ -1139,7 +1152,7 @@ extension HomeVc {
                     if (String(describing: (dict["success"])!)) == "1" {
                         let retValues = (dict["result"]! as! NSDictionary)
                         
-                    //    print(retValues)
+                      //  print(retValues)
                         
                         self.homeScrollView.isHidden = false
                         self.recallAPIView.isHidden = true

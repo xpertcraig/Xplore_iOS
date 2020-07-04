@@ -194,7 +194,7 @@ extension CommonUseViewModel {
                 if (String(describing: (dict["success"])!)) == "1" {
                     let retValues = (dict["result"]! as! NSDictionary)
                     
-             //       print(retValues)
+                 //   print(retValues)
                     
                     if let featuerd = retValues.value(forKey: "featuredCampsite") as? NSArray {
                         self.sing.homeFeaturesCampsArr = featuerd

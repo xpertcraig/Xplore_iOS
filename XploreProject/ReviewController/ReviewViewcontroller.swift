@@ -280,7 +280,11 @@ extension  ReviewViewcontroller : UITableViewDataSource , UITableViewDelegate {
         
         cell.reviewGivenUserImgView.sd_setShowActivityIndicatorView(true)
         cell.reviewGivenUserImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-        cell.reviewGivenUserImgView.sd_setImage(with: URL(string: ((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String)!), placeholderImage: UIImage(named: ""))
+        if let img =  ((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
+            cell.reviewGivenUserImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+        }
+        
+       // cell.reviewGivenUserImgView.sd_setImage(with: URL(string: ((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String)!), placeholderImage: UIImage(named: ""))
         cell.reviewGivenDateLbl.text! = convertDateFormater(((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "reviewDate") as! String))
         cell.ratingView.rating = Double(String(describing: ((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "reviewAverage"))!))!
         cell.reviewDescriptionLbl.text = (self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "description") as? String

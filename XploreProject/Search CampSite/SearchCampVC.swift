@@ -708,7 +708,11 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
             
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
             cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: ""))
+            
+            if let img =  (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0) as? String) {
+                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            }
+           // cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: ""))
             
             cell.noImgLbl.isHidden = true
         } else {
@@ -740,7 +744,10 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
             
             cell.autherImgView.sd_setShowActivityIndicatorView(true)
             cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
+            
+            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            
+          //  cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
             
         }
         cell.autherNameLbl.text = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)

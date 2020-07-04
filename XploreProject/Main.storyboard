@@ -3989,7 +3989,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back" translatesAutoresizingMaskIntoConstraints="NO" id="ryS-vW-Zrx">
-                                                <rect key="frame" x="9" y="20.5" width="23" height="19"/>
+                                                <rect key="frame" x="9" y="16" width="23" height="19"/>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QU4-MH-JF2">
                                                 <rect key="frame" x="0.0" y="5" width="50" height="50"/>
@@ -4479,9 +4479,9 @@
                                             <constraint firstItem="drZ-sl-j7D" firstAttribute="centerY" secondItem="QU4-MH-JF2" secondAttribute="centerY" multiplier="0.85" id="4Ls-rX-uzC"/>
                                             <constraint firstAttribute="bottom" secondItem="kOw-R1-nPb" secondAttribute="bottom" constant="20" id="5j0-V9-rh8"/>
                                             <constraint firstItem="7Un-ZC-hxE" firstAttribute="trailing" secondItem="UEa-9d-elM" secondAttribute="trailing" id="7NW-yr-Pck"/>
+                                            <constraint firstItem="ryS-vW-Zrx" firstAttribute="centerY" secondItem="drZ-sl-j7D" secondAttribute="centerY" id="8n9-5j-F2S"/>
                                             <constraint firstItem="bBP-yD-TEc" firstAttribute="trailing" secondItem="7Un-ZC-hxE" secondAttribute="trailing" id="Cd5-wh-DTn"/>
                                             <constraint firstItem="5gj-F4-cuf" firstAttribute="centerY" secondItem="YQT-cC-Uvg" secondAttribute="centerY" id="FEs-f8-hCs"/>
-                                            <constraint firstItem="ryS-vW-Zrx" firstAttribute="centerY" secondItem="QU4-MH-JF2" secondAttribute="centerY" id="FRg-bn-BkV"/>
                                             <constraint firstItem="kOw-R1-nPb" firstAttribute="centerX" secondItem="wGt-Az-e04" secondAttribute="centerX" id="FbC-h3-zIR"/>
                                             <constraint firstItem="UEa-9d-elM" firstAttribute="leading" secondItem="08Q-ZO-ard" secondAttribute="leading" constant="20" id="I54-pP-5y5"/>
                                             <constraint firstItem="wGt-Az-e04" firstAttribute="top" secondItem="Wkn-9Z-J2d" secondAttribute="bottom" constant="22" id="I9C-N5-Vel"/>
@@ -20547,6 +20547,6 @@
         <image name="upload video" width="169" height="169"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="jex-Mt-GBW"/>
+        <segue reference="2IF-Kg-P59"/>
     </inferredMetricsTieBreakers>
 </document>

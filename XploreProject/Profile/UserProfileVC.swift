@@ -86,7 +86,12 @@ class UserProfileVC: UIViewController {
       
         self.myProfileImgView.sd_setShowActivityIndicatorView(true)
         self.myProfileImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-        self.myProfileImgView.sd_setImage(with: URL(string: String(describing: userInfoDict.value(forKey: "profileImage")!)), placeholderImage: UIImage(named: ""))
+        
+        if let img =  (userInfoDict.value(forKey: "profileImage") as? String) {
+            self.myProfileImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+        }
+        
+      //  self.myProfileImgView.sd_setImage(with: URL(string: String(describing: userInfoDict.value(forKey: "profileImage")!)), placeholderImage: UIImage(named: ""))
         
         if let name = userInfoDict.value(forKey: "name") as? String {
             self.userNameLbl.text =  name

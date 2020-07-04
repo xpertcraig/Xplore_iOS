@@ -130,45 +130,55 @@ class MyCampDescriptionVc: UIViewController, AVPlayerViewControllerDelegate {
         
       //  self.campgroundTypeLbl.text! = stringType
         
-        let stringBestMnth = (self.recDraft.value(forKey: "bestMonth") as! NSArray).componentsJoined(by: ", ")
-        
-        if stringBestMnth == "" {
-            self.bstMnthLbl.text! = "-"
-        //    self.bstMnthLbl.textColor = UIColor.white
+        if let bstMonthArr = (self.recDraft.value(forKey: "bestMonth") as? NSArray) {
+            let stringBestMnth = bstMonthArr.componentsJoined(by: ", ")
             
+            if stringBestMnth == "" {
+                self.bstMnthLbl.text! = "-"
+            //    self.bstMnthLbl.textColor = UIColor.white
+                
+            } else {
+                self.bstMnthLbl.text! = stringBestMnth
+                self.bstMnthLbl.textColor = UIColor.darkGray
+                
+            }
         } else {
-            self.bstMnthLbl.text! = stringBestMnth
-            self.bstMnthLbl.textColor = UIColor.darkGray
-            
+            self.bstMnthLbl.text! = "-"
         }
-        
      //   self.bstMnthLbl.text! = stringBestMnth
         
-        let stringHookup = (self.recDraft.value(forKey: "hookupsAvailable") as! NSArray).componentsJoined(by: ", ")
-        
-        if stringHookup == "" {
-            self.hookupsLbl.text! = "-"
-          //  self.hookupsLbl.textColor = UIColor.white
-            
+        if let hookupArr = (self.recDraft.value(forKey: "hookupsAvailable") as? NSArray) {
+            let stringHookup = hookupArr.componentsJoined(by: ", ")
+            if stringHookup == "" {
+                self.hookupsLbl.text! = "-"
+              //  self.hookupsLbl.textColor = UIColor.white
+                
+            } else {
+                self.hookupsLbl.text! = stringHookup
+                self.hookupsLbl.textColor = UIColor.darkGray
+                
+            }
         } else {
-            self.hookupsLbl.text! = stringHookup
-            self.hookupsLbl.textColor = UIColor.darkGray
-            
+            self.hookupsLbl.text! = "-"
         }
-        
         //self.hookupsLbl.text! = stringHookup
         
-        let stringAmen = (self.recDraft.value(forKey: "campsiteamenities") as! NSArray).componentsJoined(by: ", ")
-        
-        if stringAmen == "" {
-            self.amentiesLbl.text! = "-"
-           // self.amentiesLbl.textColor = UIColor.white
+        if let amentArr = (self.recDraft.value(forKey: "campsiteamenities") as? NSArray) {
+            let stringAmen = amentArr.componentsJoined(by: ", ")
             
+            if stringAmen == "" {
+                self.amentiesLbl.text! = "-"
+               // self.amentiesLbl.textColor = UIColor.white
+                
+            } else {
+                self.amentiesLbl.text! = stringAmen
+                self.amentiesLbl.textColor = UIColor.darkGray
+                
+            }
         } else {
-            self.amentiesLbl.text! = stringAmen
-            self.amentiesLbl.textColor = UIColor.darkGray
-            
+            self.amentiesLbl.text! = "-"
         }
+        
         
       //  self.amentiesLbl.text! = stringAmen
         
@@ -606,7 +616,11 @@ extension MyCampDescriptionVc : UICollectionViewDataSource, UICollectionViewDele
                 
                 cell.campImgVIew.sd_setShowActivityIndicatorView(true)
                 cell.campImgVIew.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                cell.campImgVIew.sd_setImage(with: URL(string: (String(describing: ((self.myCampImgArr.object(at: indexPath.row) as! String))))), placeholderImage: UIImage(named: ""))
+                
+                if let img =  ((self.myCampImgArr.object(at: indexPath.row) as? String)) {
+                    cell.campImgVIew.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                }
+               // cell.campImgVIew.sd_setImage(with: URL(string: (String(describing: ((self.myCampImgArr.object(at: indexPath.row) as! String))))), placeholderImage: UIImage(named: ""))
                 
             }
         }
