@@ -14,11 +14,19 @@ class TermsVc: UIViewController {
     @IBOutlet weak var termsTxtView: UITextView!
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var userNameBtn: UIButton!
+    @IBOutlet weak var topNavigationView: UIView!
+    @IBOutlet weak var naviViewHeight: NSLayoutConstraint!
+    
+    var comeFromSignup: Bool = false
     
     //MARK:- Inbuild FUnctions
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if self.comeFromSignup == true {
+            self.naviViewHeight.constant = 0
+            self.topNavigationView.isHidden = true
+        }
         //api
         self.callAPI()
     }

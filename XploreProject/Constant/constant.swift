@@ -27,7 +27,7 @@ let googleApiKey = "AIzaSyBwACZfpIgU47tZP_IeJQSj2ubYERgYciQ"
 
 var notificationCount: Int = 0
 
-let appName = "Xplorecampsite"
+let appName = "Xplore"
 let okBtnTitle = "ok"
 let yesBtntitle = "yes"
 let noBtnTitle = "no"
@@ -130,6 +130,7 @@ let PrivacyPolicy = "Privacy Policy"
 let ContactUs = "Contact Us"
 let validWebUrl = "Please enter valid weburl"
 let mismatchPass = "Password does not match."
+let agreeTermsPrivacy = "Please agree our Terms of Services and Privacy Policy to continue to sign up."
 
 let verifyEmail = "Please verify your email to continue."
 let LogoutMessage = "Are you sure want to logout?"

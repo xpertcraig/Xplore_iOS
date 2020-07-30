@@ -14,11 +14,19 @@ class PrivacyVc: UIViewController {
     @IBOutlet weak var privacyTxtVIew: UITextView!
     @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var notificationCountLbl: UILabel!
+    @IBOutlet weak var topNavigationView: UIView!
+    @IBOutlet weak var naviViewHeight: NSLayoutConstraint!
+    
+    var comeFromSignup: Bool = false
     
     //MARK:- Inbuild Functions
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if self.comeFromSignup == true {
+            self.naviViewHeight.constant = 0
+            self.topNavigationView.isHidden = true
+        }
         //api
         self.callAPI()
        

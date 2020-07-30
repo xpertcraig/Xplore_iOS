@@ -32,15 +32,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var firstCalled: Bool = false
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     private let commonDataViewModel = CommonUseViewModel()
-    var window: UIWindow?    
-    
+    var window: UIWindow?
     let gcmMessageIDKey = "gcm.message_id"
+    var backgroundUpdateTask: UIBackgroundTaskIdentifier!
     
     //location
     var locationManager = CLLocationManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        UIApplication.shared.statusBarStyle = .lightContent
+       // UIApplication.shared.statusBarStyle = .lightContent
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         //
         Singleton.sharedInstance.interstitial = createAndLoadInterstitial()
@@ -98,10 +100,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        self.saveAppData()
+        self.doBackgroundTask()
+        
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        self.locationManager.startUpdatingLocation()
         self.getAppData()
     }
 
@@ -176,11 +180,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             userDefault.removeObject(forKey: chatListStr)
             
         }
-        if userDefault.value(forKey: myCurrentLocStr) != nil {
-            Singleton.sharedInstance.myCurrentLocDict = (userDefault.value(forKey: myCurrentLocStr) as! [String: Any] )
-           // userDefault.removeObject(forKey: myCurrentLocStr)
-            
-        }
+//        if userDefault.value(forKey: myCurrentLocStr) != nil {
+//            Singleton.sharedInstance.myCurrentLocDict = (userDefault.value(forKey: myCurrentLocStr) as! [String: Any] )
+//
+//        }
     }
     
     func saveAppData() {
@@ -225,10 +228,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             userDefault.set(Singleton.sharedInstance.chatListArr, forKey: chatListStr)
             
         }
-        if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
-            userDefault.set(Singleton.sharedInstance.myCurrentLocDict, forKey: myCurrentLocStr)
-            
-        }
+//        if Singleton.sharedInstance.myCurrentLocDict.count > 0 {
+//            userDefault.set(Singleton.sharedInstance.myCurrentLocDict, forKey: myCurrentLocStr)
+//
+//        }
     }
     
     //fb and gmail integration
@@ -244,12 +247,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         UINavigationBar.appearance().barTintColor = barColor
         UINavigationBar.appearance().tintColor = UIColor.white
         // Color and font of typed text in the search bar.
-        var searchBarTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: textColor, NSAttributedStringKey.font.rawValue: UIFont(name: "Helvetica Neue", size: 16)]
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = searchBarTextAttributes
+        let searchBarTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: textColor, NSAttributedStringKey.font.rawValue: UIFont(name: "Helvetica Neue", size: 16)]
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = searchBarTextAttributes as [String : Any]
         // Color of the placeholder text in the search bar prior to text entry.
-        var placeholderAttributes = [NSAttributedStringKey.foregroundColor: backgroundColor, NSAttributedStringKey.font: UIFont(name: "Helvetica", size: 15)]
+        let placeholderAttributes = [NSAttributedStringKey.foregroundColor: backgroundColor, NSAttributedStringKey.font: UIFont(name: "Helvetica", size: 15)]
         // Color of the default search text.
-        var attributedPlaceholder = NSAttributedString(string: "Search", attributes: placeholderAttributes)
+        let attributedPlaceholder = NSAttributedString(string: "Search", attributes: placeholderAttributes as [NSAttributedStringKey : Any])
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = attributedPlaceholder
         
     }
@@ -269,7 +272,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        var options: [String: AnyObject] = [UIApplicationOpenURLOptionsKey.sourceApplication.rawValue: sourceApplication as AnyObject,UIApplicationOpenURLOptionsKey.annotation.rawValue: annotation as AnyObject]
+        var _: [String: AnyObject] = [UIApplicationOpenURLOptionsKey.sourceApplication.rawValue: sourceApplication as AnyObject,UIApplicationOpenURLOptionsKey.annotation.rawValue: annotation as AnyObject]
         
         return GIDSignIn.sharedInstance().handle(url as URL?,sourceApplication: sourceApplication,annotation: annotation)
     }
@@ -323,7 +326,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func notificationRec() {
         self.notificationCountApi()
         if UIApplication.shared.applicationState == UIApplicationState.active {
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let _: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             self.window?.makeKeyAndVisible()
             
             /* active stage is working */
@@ -339,26 +342,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //MARK: - ProgressIndicator view start
     func startProgressView(view:UIView){
         let spinnerActivity = MBProgressHUD.showAdded(to: view, animated: true)
-      //  spinnerActivity.backgroundColor = UIColor.clear
         spinnerActivity.bezelView.color = UIColor.clear
         spinnerActivity.mode = MBProgressHUDMode.indeterminate
         spinnerActivity.animationType = .zoomOut
         
-        
-//        if Singleton.sharedInstance.loaderActive == false {
-//            Singleton.sharedInstance.loaderActive = true
-//            view.addSubview(UIView().customActivityIndicator(view: view, widthView: nil, backgroundColor: UIColor.clear, textColor: UIColor.appThemeKesariColor(), message: "Processing..."))
-//        }
     }
     
     //MARK: - ProgressIndicator View Stop
     func dismissProgressView(view:UIView)  {
         MBProgressHUD.hide(for: view, animated: true)
         
-//        if Singleton.sharedInstance.loaderActive == true {
-//            Singleton.sharedInstance.loaderActive = false
-//            view.subviews.last?.removeFromSuperview()
-//        }
     }
     
     func checkLogin() {
@@ -367,9 +360,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "SplashVC") as! SplashVC
         (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
-        
-//        let revealViewControllerVcObj = storyboard.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//        (self.window?.rootViewController as! UINavigationController).pushViewController(revealViewControllerVcObj, animated: false)
    
     }    
     
@@ -400,6 +390,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 self.commonDataViewModel.getCampAllApiResponse()
             }
         }
+        self.locationManager.stopUpdatingLocation()
     }
     
     func getLocationNameAndImage() {
@@ -537,16 +528,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
     
     func makeChatUnitId() {
-//        var chatUnitId: String = ""
-//        if String(describing: (DataManager.userId)) < Singleton.sharedInstance.messageSentUserId {
-//            chatUnitId = Singleton.sharedInstance.messageSentUserId + "-" + String(describing: (DataManager.userId))
-//            
-//        } else {
-//            chatUnitId = String(describing: (DataManager.userId)) + "-" + Singleton.sharedInstance.messageSentUserId
-//            
-//        }
-       // Singleton.sharedInstance.updateUnreadMessageCount(chatUnitId: chatUnitId, receiverId: Singleton.sharedInstance.messageSentUserId)
-        
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "chatmsgCount"), object: nil, userInfo: nil)
         
     }
@@ -650,4 +631,32 @@ extension AppDelegate: GADInterstitialDelegate {
         Singleton.sharedInstance.interstitial = createAndLoadInterstitial()
     
     }
+}
+
+extension AppDelegate {
+    func beginBackgroundUpdateTask() {
+        self.backgroundUpdateTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            self.endBackgroundUpdateTask()
+        })
+    }
+
+    func endBackgroundUpdateTask() {
+        UIApplication.shared.endBackgroundTask(self.backgroundUpdateTask)
+        self.backgroundUpdateTask = UIBackgroundTaskInvalid
+    }
+
+    func doBackgroundTask() {
+        let qos = DispatchQoS(qosClass: .background, relativePriority: 0)
+        let backgroundQueue = DispatchQueue.global(qos: qos.qosClass)
+        backgroundQueue.async {
+            self.beginBackgroundUpdateTask()
+
+            // Do something with the result.
+            self.saveAppData()
+            
+            // End the background task.
+            self.endBackgroundUpdateTask()
+        }
+    }
+
 }

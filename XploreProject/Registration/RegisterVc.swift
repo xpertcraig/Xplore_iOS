@@ -25,6 +25,7 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var paymentView: UIView!
     @IBOutlet weak var amountLbl: UILabel!
+    @IBOutlet weak var selectUnselectBtn: UIButton!
     
     //MARK:- Variable Declarations
     var fbbDataDict: NSDictionary = [:]
@@ -66,6 +67,10 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
         /////
         self.addKeyBoardObservers()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -198,6 +203,35 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
         
     }
     
+    //agree terms and privacy
+    @IBAction func tapTermsBtn(_ sender: Any) {
+        self.view.endEditing(true)
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "TermsVc") as! TermsVc
+        self.tabBarController?.tabBar.isHidden = true
+        vc.comeFromSignup = true
+        navigationController? .pushViewController(vc, animated: true)
+    }
+    
+    @IBAction func tapPrivacyPolicyBtn(_ sender: Any) {
+        self.view.endEditing(true)
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "PrivacyVc") as! PrivacyVc
+        self.tabBarController?.tabBar.isHidden = true
+        vc.comeFromSignup = true
+            
+        navigationController? .pushViewController(vc, animated: true)
+    }
+    
+    @IBAction func tapSelectUnselectBtn(_ sender: Any) {
+        if self.selectUnselectBtn.isSelected == false{
+            self.selectUnselectBtn.isSelected = true
+            self.selectUnselectBtn.setImage(UIImage(named: "checkBoxSq"), for: .normal)
+        } else {
+            self.selectUnselectBtn.isSelected = false
+            self.selectUnselectBtn.setImage(UIImage(named: "uncheckBoxSq"), for: .normal)
+        }
+    }
 }
 
 extension RegisterVc {
@@ -238,6 +272,9 @@ extension RegisterVc {
             self.confirmPassowrd.becomeFirstResponder()
             CommonFunctions.showAlert(self, message: mismatchPass, title: appName)
             
+            return true
+        } else if self.selectUnselectBtn.isSelected == false {
+            CommonFunctions.showAlert(self, message: agreeTermsPrivacy, title: appName)
             return true
         }
         return false

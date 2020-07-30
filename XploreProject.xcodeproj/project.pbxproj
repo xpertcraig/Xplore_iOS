@@ -61,6 +61,7 @@
 		E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93733802438431E00D69C4B /* CommonUseViewModel.swift */; };
 		E94ED8B9248A220400B1495B /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ED8B8248A220400B1495B /* SplashVC.swift */; };
 		E95EFED3243CA44C004A6B91 /* PushNotificationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */; };
+		E96BA8DF24D1ECBF00CA1F7A /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96BA8DE24D1ECBF00CA1F7A /* BackgroundTask.swift */; };
 		E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */; };
 		E9BA7E762358BAA600E84A89 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BA7E752358BAA600E84A89 /* Singleton.swift */; };
 		E9BCA98C22E47E6E0079B8FD /* TOCropViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E9BCA95B22E47E6E0079B8FD /* TOCropViewControllerLocalizable.strings */; };
@@ -193,7 +194,8 @@
 		E93733802438431E00D69C4B /* CommonUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseViewModel.swift; sourceTree = "<group>"; };
 		E94ED8B8248A220400B1495B /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationSender.swift; sourceTree = "<group>"; };
-		E985F1F92388459F00A3F26C /* XploreProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XploreProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E96BA8DE24D1ECBF00CA1F7A /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
+		E985F1F92388459F00A3F26C /* Xplore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Xplore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E9BA7E752358BAA600E84A89 /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		E9BCA95922E47E6E0079B8FD /* TOCropViewConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropViewConstants.h; sourceTree = "<group>"; };
@@ -527,7 +529,7 @@
 				FF662F78215F365B001328E9 /* Data Manager */,
 				18BB687E205F9BA5002C2151 /* XploreProject */,
 				FF662F7D215F367D001328E9 /* Libraries */,
-				E985F1F92388459F00A3F26C /* XploreProject.app */,
+				E985F1F92388459F00A3F26C /* Xplore.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -652,6 +654,7 @@
 			isa = PBXGroup;
 			children = (
 				E93733802438431E00D69C4B /* CommonUseViewModel.swift */,
+				E96BA8DE24D1ECBF00CA1F7A /* BackgroundTask.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -921,7 +924,7 @@
 			);
 			name = XploreProject;
 			productName = XploreProject;
-			productReference = E985F1F92388459F00A3F26C /* XploreProject.app */;
+			productReference = E985F1F92388459F00A3F26C /* Xplore.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1218,6 +1221,7 @@
 				FF962923215E04B0008A93A5 /* NearByUsersVC.swift in Sources */,
 				FF5E3C5C2164917B009928BE /* ForgotPasswordVC.swift in Sources */,
 				FF662F94215F3853001328E9 /* AllExtensions.swift in Sources */,
+				E96BA8DF24D1ECBF00CA1F7A /* BackgroundTask.swift in Sources */,
 				E9CE1C3223031A8700333248 /* PaymentHistoryVC.swift in Sources */,
 				FF482DA6215B4EDA0047262D /* EditProfileVC.swift in Sources */,
 				FF662F7C215F365B001328E9 /* UserData.swift in Sources */,
@@ -1576,7 +1580,7 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.explorecampsites.app.world;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Xplore;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
 				PROVISIONING_PROFILE_SPECIFIER = exploreDev29.03.20;
 				SWIFT_OBJC_BRIDGING_HEADER = "Data Manager/XploreProject-Bridging-Header.h";
@@ -1759,7 +1763,7 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.explorecampsites.app.world;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Xplore;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
 				PROVISIONING_PROFILE_SPECIFIER = exploreDev29.03.20;
 				SWIFT_OBJC_BRIDGING_HEADER = "Data Manager/XploreProject-Bridging-Header.h";

@@ -63,6 +63,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     @IBOutlet weak var countryCode: UILabel!
     
     @IBOutlet weak var myLocationOnOffSwitch: UISwitch!
+    @IBOutlet weak var activityOnSwitch: UIActivityIndicatorView!
     @IBOutlet weak var myCampImgCollVIew: UICollectionView!
     @IBOutlet weak var myImgHeightConstant: NSLayoutConstraint!
     
@@ -137,14 +138,11 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(Locale.currency["IN"])
-        
         self.countryStateCityTblView.layer.borderColor = UIColor.lightGray.cgColor
         self.countryStateCityTblView.layer.borderWidth = 0.5
         self.countryStateCityTblView.layer.masksToBounds = true
         
         self.countryStateCityTblView.tableFooterView = UIView()
-     //   self.scroolView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeCountryStateCityTbl)))
                 
         self.closestView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapClosestView)))
         self.countrySelectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCountryView)))
@@ -186,6 +184,10 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             self.locationOn()
             
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+4, execute: {
+            self.getStateAsPerCountry()
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -206,9 +208,6 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
         
-        DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
-            self.getStateAsPerCountry()
-        })
     }
     
     deinit {
@@ -637,7 +636,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     }
     
     func stateApiCall(callCityApi: Bool) {
-        applicationDelegate.startProgressView(view: self.view)
+      //  applicationDelegate.startProgressView(view: self.view)
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "states.php?userId=" + (DataManager.userId as! String)+"&countryId="+countryId, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
@@ -672,7 +671,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     }
     
     func cityApiCall() {
-        applicationDelegate.startProgressView(view: self.view)
+     //   applicationDelegate.startProgressView(view: self.view)
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "cities.php?userId=" + (DataManager.userId as! String)+"&stateId="+stateId, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.view)
@@ -875,80 +874,76 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                             self.longitude.text = ""
                             self.latitude.text = ""
                             
-                            self.descriptionTxtFld.text = ""
-                            self.elevation.text = ""
-                            self.numberOfSites.text = ""
-                            self.climate.text = ""
+                            self.myLocationOnOffSwitch.isHidden = false
+                            self.activityOnSwitch.isHidden = true
+                            self.activityOnSwitch.stopAnimating()
                             
-                            self.bestMonthToVisit.text = ""
-                            self.bestMonthLbl.text = ""
-                            self.bestMonthLbl.isHidden = true
+//                            self.descriptionTxtFld.text = ""
+//                            self.elevation.text = ""
+//                            self.numberOfSites.text = ""
+//                            self.climate.text = ""
                             
-                            self.hookupsAvailable.text = ""
-                            self.hookupLbl.text = ""
-                            self.hookupLbl.isHidden = true
-                            self.campHokupsIdArr = []
+//                            self.bestMonthToVisit.text = ""
+//                            self.bestMonthLbl.text = ""
+//                            self.bestMonthLbl.isHidden = true
                             
-                            self.amenities.text = ""
-                            self.amentiesLbl.text = ""
-                            self.amentiesLbl.isHidden = true
-                            self.campAmentiesIdArr = []
+//                            self.hookupsAvailable.text = ""
+//                            self.hookupLbl.text = ""
+//                            self.hookupLbl.isHidden = true
+//                            self.campHokupsIdArr = []
                             
+//                            self.amenities.text = ""
+//                            self.amentiesLbl.text = ""
+//                            self.amentiesLbl.isHidden = true
+//                            self.campAmentiesIdArr = []
+                            //
 //                            self.campType.text = ""
 //                            self.campTypeLbl.text = ""
 //                            self.campTypeLbl.isHidden = true
 //                            self.campTypeIdsArr = []
-                            
-                            self.price.text = ""
-                            self.myCampImgArr = []
-                            self.myImgHeightConstant.constant = 0
-                            self.myCampImgCollVIew.reloadData()
+                            //
+//                            self.price.text = ""
+//                            self.myCampImgArr = []
+//                            self.myImgHeightConstant.constant = 0
+//                            self.myCampImgCollVIew.reloadData()
                             
                         } else {
-                            //                        print(placemark?.addressDictionary)
-                            //                        print(placemark?.addressDictionary!["State"])
-                            //                        print(placemark?.country)
-                            //                        print(placemark?.locality)
-                            //                        print(placemark?.location)
-                            //                        print(placemark?.region)
-                            //                        print(placemark?.subAdministrativeArea)
-                            //                        print(placemark?.subLocality)
-                            //                        print(placemark?.subThoroughfare)
-                            //                        print(placemark?.thoroughfare)
-                            //                        print(placemark?.ocean)
-                            
-                           // self.closetTown.isUserInteractionEnabled = false
-                            if placemark?.addressDictionary != nil {
-                                if (placemark?.addressDictionary!["State"]) != nil {
-                                    self.state.text = (placemark?.addressDictionary!["State"]) as? String
+                            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                                if placemark?.addressDictionary != nil {
+                                    if (placemark?.addressDictionary!["State"]) != nil {
+                                        self.state.text = (placemark?.addressDictionary!["State"]) as? String
+                                        
+                                    }
+                                    if (placemark?.addressDictionary!["Country"]) != nil {
+                                        self.Country.text = (placemark?.addressDictionary!["Country"]) as? String
+                                       
+                                    }
+                                    if (placemark?.addressDictionary!["City"]) != nil {
+                                        self.city.text = (placemark?.addressDictionary!["City"]) as? String
+                                        
+                                    }
+                                    if (placemark?.addressDictionary!["Name"]) != nil {
+                                        self.campsiteAddress1.text = (placemark?.addressDictionary!["Name"]) as? String
+                                        
+                                    }
                                     
+                                    if (placemark?.addressDictionary!["SubLocality"]) != nil {
+                                        self.campsiteAddress2.text = (placemark?.addressDictionary!["SubLocality"]) as? String
+                                        
+                                    }
                                 }
-                                if (placemark?.addressDictionary!["Country"]) != nil {
-                                    self.Country.text = (placemark?.addressDictionary!["Country"]) as? String
-                                   
-                                }
-                                if (placemark?.addressDictionary!["City"]) != nil {
-                                    self.city.text = (placemark?.addressDictionary!["City"]) as? String
-                                    
-                                }
-                                if (placemark?.addressDictionary!["Name"]) != nil {
-                                    self.campsiteAddress1.text = (placemark?.addressDictionary!["Name"]) as? String
-                                    
-                                }
-                                
-                                if (placemark?.addressDictionary!["SubLocality"]) != nil {
-                                    self.campsiteAddress2.text = (placemark?.addressDictionary!["SubLocality"]) as? String
-                                    
-                                }
+                                self.getLatLong()
                             }
-                            
-                            self.getLatLong()
-                            
-//                            self.longitude.text = String(describing: (myCurrentLongitude))
-//                            self.latitude.text = String(describing: (myCurrentLatitude))
-                            
                         }
+                    } else {
+                        self.myLocationOnOffSwitch.isHidden = false
+                        self.activityOnSwitch.isHidden = true
+                        self.activityOnSwitch.stopAnimating()
                     }
+                } else {
+                    self.myLocationOnOffSwitch.isHidden = false
+                    self.activityOnSwitch.isHidden = true
+                    self.activityOnSwitch.stopAnimating()
                 }
             }
         }
@@ -1074,6 +1069,11 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     
     @IBAction func tapSwitchBtn(_ sender: UISwitch) {
         self.view.endEditing(true)
+        
+        self.myLocationOnOffSwitch.isHidden = true
+        self.activityOnSwitch.isHidden = false
+        self.activityOnSwitch.startAnimating()
+        
         self.locationOn()
         
     }
@@ -1626,6 +1626,9 @@ extension AddNewCampsiteVc {
             self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
             self.longitude.text! = String(describing: (location.coordinate.longitude).roundToDecimal(4))
             
+            self.myLocationOnOffSwitch.isHidden = false
+            self.activityOnSwitch.isHidden = true
+            self.activityOnSwitch.stopAnimating()
         }
     }
     
