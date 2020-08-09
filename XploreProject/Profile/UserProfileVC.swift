@@ -210,13 +210,9 @@ class UserProfileVC: UIViewController {
             
         }
         chatVC.comeFrom = "UserProfile"
-       // chatVC.receiverId = (String(describing: (userInfoDict.value(forKey: "userId"))!))
         chatVC.userInfoDict = userInfoDict
         self.navigationController?.pushViewController(chatVC, animated: true)
 
-//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChatListVC") as! ChatListVC
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @IBAction func tapBackBtn(_ sender: UIButton) {
