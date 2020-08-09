@@ -207,19 +207,18 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     @IBAction func tapTermsBtn(_ sender: Any) {
         self.view.endEditing(true)
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "TermsVc") as! TermsVc
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebkitVC") as! WebkitVC
         self.tabBarController?.tabBar.isHidden = true
-        vc.comeFromSignup = true
+        vc.urlString = webViewUrlString.terms.rawValue
         navigationController? .pushViewController(vc, animated: true)
     }
     
     @IBAction func tapPrivacyPolicyBtn(_ sender: Any) {
         self.view.endEditing(true)
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "PrivacyVc") as! PrivacyVc
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebkitVC") as! WebkitVC
         self.tabBarController?.tabBar.isHidden = true
-        vc.comeFromSignup = true
-            
+        vc.urlString = webViewUrlString.privacyPolicy.rawValue
         navigationController? .pushViewController(vc, animated: true)
     }
     

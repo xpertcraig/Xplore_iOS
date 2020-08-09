@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-1944596028719929~1709488790</string>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Will you allow this app to always know your location?</string>
 	<key>com.apple.developer.networking.wifi-info</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

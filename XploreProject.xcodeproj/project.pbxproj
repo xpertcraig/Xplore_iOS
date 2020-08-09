@@ -57,6 +57,7 @@
 		18BB68E8205FE94A002C2151 /* GalleryVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E7205FE94A002C2151 /* GalleryVc.swift */; };
 		6347FFB62E03D414F33ADC92 /* Pods_XploreProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16618643E92023492CB801C3 /* Pods_XploreProject.framework */; };
 		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
+		E92EFB5A24DAFA4A00E78503 /* WebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */; };
 		E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931F9A922882E8900DA6054 /* myCustomSlider.swift */; };
 		E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93733802438431E00D69C4B /* CommonUseViewModel.swift */; };
 		E94ED8B9248A220400B1495B /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ED8B8248A220400B1495B /* SplashVC.swift */; };
@@ -77,6 +78,7 @@
 		E9BCA99B22E480770079B8FD /* CropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BCA99922E480770079B8FD /* CropViewController.swift */; };
 		E9CE1C3223031A8700333248 /* PaymentHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CE1C3123031A8700333248 /* PaymentHistoryVC.swift */; };
 		E9CE1C3423031AA300333248 /* PaymentHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CE1C3323031AA300333248 /* PaymentHistoryTableViewCell.swift */; };
+		E9D6E4B124DF998B00C08360 /* WebkitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D6E4B024DF998A00C08360 /* WebkitVC.swift */; };
 		FF130E95217F4B600053A567 /* UpdatePaymentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF130E94217F4B600053A567 /* UpdatePaymentVC.swift */; };
 		FF28C7402182F90D0079E13F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF28C73F2182F90C0079E13F /* Accelerate.framework */; };
 		FF28C7422182F9190079E13F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF28C7412182F9180079E13F /* AudioToolbox.framework */; };
@@ -190,6 +192,7 @@
 		74F2FE507F07312EFCB64C3A /* Pods-XploreProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.release.xcconfig"; sourceTree = "<group>"; };
 		D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.debug.xcconfig"; sourceTree = "<group>"; };
 		E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xplore.xcdatamodel; sourceTree = "<group>"; };
+		E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVC.swift; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
 		E93733802438431E00D69C4B /* CommonUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseViewModel.swift; sourceTree = "<group>"; };
 		E94ED8B8248A220400B1495B /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
@@ -246,6 +249,7 @@
 		E9BCA99922E480770079B8FD /* CropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CropViewController.swift; sourceTree = "<group>"; };
 		E9CE1C3123031A8700333248 /* PaymentHistoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHistoryVC.swift; sourceTree = "<group>"; };
 		E9CE1C3323031AA300333248 /* PaymentHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHistoryTableViewCell.swift; sourceTree = "<group>"; };
+		E9D6E4B024DF998A00C08360 /* WebkitVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebkitVC.swift; sourceTree = "<group>"; };
 		FF130E94217F4B600053A567 /* UpdatePaymentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePaymentVC.swift; sourceTree = "<group>"; };
 		FF28C73F2182F90C0079E13F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		FF28C7412182F9180079E13F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -536,6 +540,7 @@
 		18BB687E205F9BA5002C2151 /* XploreProject */ = {
 			isa = PBXGroup;
 			children = (
+				E9D6E4AF24DF998A00C08360 /* Webkit */,
 				E94ED8B7248A21DF00B1495B /* Launch */,
 				E95EFED1243CA3F9004A6B91 /* PushNotification */,
 				FF6606BD2181CC6300D5F570 /* Chat */,
@@ -582,6 +587,7 @@
 				18BB688B205F9BA6002C2151 /* LaunchScreen.storyboard */,
 				FF662F9C215F591B001328E9 /* GoogleService-Info.plist */,
 				18BB688E205F9BA6002C2151 /* Info.plist */,
+				E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */,
 			);
 			path = XploreProject;
 			sourceTree = "<group>";
@@ -749,6 +755,14 @@
 				E9BCA99922E480770079B8FD /* CropViewController.swift */,
 			);
 			path = CropViewController;
+			sourceTree = "<group>";
+		};
+		E9D6E4AF24DF998A00C08360 /* Webkit */ = {
+			isa = PBXGroup;
+			children = (
+				E9D6E4B024DF998A00C08360 /* WebkitVC.swift */,
+			);
+			path = Webkit;
 			sourceTree = "<group>";
 		};
 		FF130E93217F4B430053A567 /* Payment */ = {
@@ -1153,6 +1167,7 @@
 			files = (
 				E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */,
 				FF57DBE2217703B4005D9CB8 /* NotificationTableViewCell.swift in Sources */,
+				E9D6E4B124DF998B00C08360 /* WebkitVC.swift in Sources */,
 				E9BCA99422E47E6E0079B8FD /* TOCropOverlayView.m in Sources */,
 				E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */,
 				1867ABA920663E49009DE2C8 /* addReviewVc.swift in Sources */,
@@ -1185,6 +1200,7 @@
 				FFC4A79521B55574009EBA19 /* SkyFloatingDiffFont.swift in Sources */,
 				FF482DA4215B4EC90047262D /* MyProfileVC.swift in Sources */,
 				18BB6880205F9BA5002C2151 /* AppDelegate.swift in Sources */,
+				E92EFB5A24DAFA4A00E78503 /* WebViewVC.swift in Sources */,
 				FF85FBB12146970500CAC94F /* UITextFieldFontSize.swift in Sources */,
 				E9BCA98E22E47E6E0079B8FD /* TOCropViewControllerTransitioning.m in Sources */,
 				E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */,
