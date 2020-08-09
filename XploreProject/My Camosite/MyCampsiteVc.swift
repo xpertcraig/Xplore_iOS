@@ -488,7 +488,7 @@ class MyCampsiteVc: UIViewController {
     }
 }
 
-extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
+extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         if self.collArr.count == 0 {
             if recallAPIView.isHidden == true {
@@ -630,6 +630,16 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate {
             }
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(320))
+           
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

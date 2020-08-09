@@ -72,22 +72,15 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             
         } else {
             self.dataContainingView.isHidden = true
-            
             self.tapSearchView()
-            
             self.searchViewHeight.constant = 0
-            //self.filterBtnStackView.isHidden = false
-            
         }
         
-       // self.dataContainingView.isHidden = true
         self.recallAPIView.isHidden = true
         
         self.overlayview.isHidden = true
         self.favMarkbottomConstraint.constant = 150
-//        let tapper = UITapGestureRecognizer(target: self, action:#selector(endEditing))
-//        self.overlayview.addGestureRecognizer(tapper)
-        
+      
         self.searchView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapSearchView)))
         
         //call api
@@ -162,9 +155,6 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     }
     
     func passFilterData(fillDict: NSDictionary) {
-        
-       // print(fillDict)
-        
         self.filterDataDict = fillDict
         self.callAPI()
         
@@ -287,11 +277,8 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
    
     //MARK:- Api's Hit
     func searchAPIHit(pageNum: Int) {
-       // if self.searchDataArr.count == 0 {
-       //     applicationDelegate.startProgressView(view: self.dataContainingView)
-            
-       // } else
-    if searchType == "Home" {
+      
+        if searchType == "Home" {
             self.categoryCollectionView.isHidden = true
             
         }
@@ -313,7 +300,6 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
         }
         
         let api:String = apo1 + api2
-        
         
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: api, onSuccess: { (responseData) in
             applicationDelegate.dismissProgressView(view: self.dataContainingView)
@@ -455,9 +441,6 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             let cell = self.categoryCollectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell
             cell.favouriteButton.isUserInteractionEnabled = true
             
-            ///////
-        //    applicationDelegate.dismissProgressView(view: self.dataContainingView)
-            
             if let dict:NSDictionary = responseData.result.value as? NSDictionary {
                 if (String(describing: (dict["success"])!)) == "1" {
                     
@@ -483,9 +466,6 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
                             
                         }
                     }
-                    
-                   // self.searchAPIHit(pageNum: self.pageNo)
-                     
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
@@ -614,8 +594,6 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
                 
                 userDefault.set(NSKeyedArchiver.archivedData(withRootObject: tempArr), forKey: mySavesCamps)
                 
-               // userDefault.set(tempArr, forKey: mySavesCamps)
-                
                 CommonFunctions.showAlert(self, message: campSavedAlert, title: appName)
             } else {
                 matched = false
@@ -632,7 +610,6 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
             
         }
     }
-    
 }
 
 extension SearchCampVC {
@@ -670,12 +647,11 @@ extension SearchCampVC {
     }
 }
 
-extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
+extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         if self.searchDataArr.count == 0 {
             if recallAPIView.isHidden == true {
                 self.noDataFoundLbl.isHidden = false
-                
             }
         } else {
             self.noDataFoundLbl.isHidden = true
@@ -693,7 +669,6 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
             config.imageView = cell.featuredReviewImgView
             
         }
-        
         present(ImageViewerController(configuration: configuration), animated: true)
         
     }
@@ -705,15 +680,13 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
         cell.favouriteButton.addTarget(self, action:#selector(favoutiteAction(sender:)), for:.touchUpInside)
         
         if ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
-            
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
             cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             
             if let img =  (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0) as? String) {
                 cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
             }
-           // cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: ""))
-            
+          
             cell.noImgLbl.isHidden = true
         } else {
             cell.featuredReviewImgView.image = UIImage(named: "")
@@ -722,7 +695,6 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
         }
         
         cell.imagLocNameLbl.text = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as? String)
-        
         cell.ttlRatingLbl.text! = String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campRating"))!) //String(describing: (reducedNumberSum))
         cell.reviewFeaturedStarView.rating = Double(String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campRating"))!))!
         cell.ttlReviewLbl.text! = (String(describing: (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
@@ -736,22 +708,14 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
                 trimmedAddr = addr.replacingOccurrences(of: ", , ", with: ", ")
             }
             cell.locationAddressLbl.text! = trimmedAddr
-            
-          //  cell.locationAddressLbl.text! = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
-            
+           
         }
         if let img = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
-            
             cell.autherImgView.sd_setShowActivityIndicatorView(true)
             cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            
             cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
-            
-          //  cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
-            
         }
         cell.autherNameLbl.text = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
-        
         
         if String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "isFav"))!) == "0" {
             cell.favouriteButton.setImage(UIImage(named: "Favoutites"), for: .normal)
@@ -760,10 +724,6 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
             cell.favouriteButton.setImage(UIImage(named: "markAsFavourite"), for: .normal)
             
         }
-        
-//        cell.showImgBtn.tag = indexPath.row
-//        cell.showImgBtn.addTarget(self, action: #selector(tapTripsShowImgView(sender:)), for: .touchUpInside)
-        
         cell.tapProfilePicBtn.tag = indexPath.row
         cell.tapProfilePicBtn.addTarget(self, action: #selector(tapSearchProfilePicBtn(sender:)), for: .touchUpInside)
         
@@ -775,9 +735,7 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate {
             cell.playImg.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
             
         } else {
-           // cell.playBtn.isHidden = true
             cell.playImg.isHidden = true
-            
         }
         
         return cell

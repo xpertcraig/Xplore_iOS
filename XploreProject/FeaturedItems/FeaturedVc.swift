@@ -988,10 +988,10 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         } else {
             
             if comeFrom == myProfile {
-                return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(330))
+                return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(320))
                 
             } else {
-                return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(330))
+                return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(320))
                 
             }
         }

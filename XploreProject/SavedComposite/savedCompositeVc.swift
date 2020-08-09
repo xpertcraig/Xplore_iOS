@@ -572,7 +572,7 @@ class savedCompositeVc: UIViewController {
 
     
 }
-extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
+extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 {
     @objc func tapTripsShowImgView(sender: UIButton) {
         let indexPath = NSIndexPath(row: sender.tag, section: 0)
@@ -701,6 +701,16 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
         }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(320))
+           
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
+        
     }
     
     @objc func tapFevoritesProfilePicBtn(sender: UIButton) {
