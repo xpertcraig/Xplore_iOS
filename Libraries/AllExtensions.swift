@@ -474,6 +474,14 @@ extension UIColor{
     class func appThemeGreenColor() -> UIColor {
         return UIColor(red:0/255 , green:109/255 ,blue:105/255 , alpha:1.00)
     }
+    
+    class func lightBlackColor() -> UIColor {
+        return UIColor(red:223/255 , green:223/255 ,blue:223/255 , alpha:1.0)
+    }
+    
+    class func darkBlackColor() -> UIColor {
+        return UIColor(red:46/255 , green:46/255 ,blue:46/255 , alpha:1.0)
+    }
 }
 
 
@@ -538,4 +546,45 @@ func customActivityIndicator(view: UIView, widthView: CGFloat?,backgroundColor: 
     //add loading and label to customView
     self.addSubview(loopImages)
     self.addSubview(label)
-    return self }}
+    return self
+    
+    }
+}
+
+enum GradientDirection {
+    case leftToRight
+    case rightToLeft
+    case topToBottom
+    case bottomToTop
+}
+
+extension UIView {
+    func gradientBackground(from color1: UIColor, to color2: UIColor, to color3: UIColor, to color4: UIColor,to color5: UIColor  , direction: GradientDirection) {
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.frame.size.width  = self.frame.size.width + 50
+       // gradient.frame.size.height  = self.frame.size.height + 20
+        
+        gradient.colors = [color1.cgColor, color2.cgColor, color3.cgColor, color4.cgColor,color5.cgColor]
+
+        switch direction {
+            case .topToBottom:
+                gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
+                gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
+        case .leftToRight:
+            gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        case .rightToLeft:
+            gradient.startPoint = CGPoint(x: 1.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 0.0, y: 0.5)
+        case .bottomToTop:
+            gradient.startPoint = CGPoint(x: 0.5, y: 1.0)
+            gradient.endPoint = CGPoint(x: 0.5, y: 0.0)
+            
+        default:
+            break
+        }
+
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+}

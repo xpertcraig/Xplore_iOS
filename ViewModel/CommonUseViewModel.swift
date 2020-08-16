@@ -377,3 +377,63 @@ extension CommonUseViewModel {
         }
     }
 }
+
+extension CommonUseViewModel {
+    func shareAppLinkAndImage(campTitle: String, campimg: String, sender: UIButton, vc: UIViewController) {
+        // Setting description
+        let firstActivityItem = campTitle
+
+        // Setting url
+        let secondActivityItem : NSURL = NSURL(string: "")!
+        
+        // If you want to use an image
+        let url = URL(string: campimg)
+        let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+        
+        var imgToShare: UIImage?
+        if let img = UIImage(data: data!) {
+            imgToShare? = img
+        } else {
+            imgToShare = UIImage(named: "PlaceHolder")
+        }
+        
+        let activityViewController : UIActivityViewController = UIActivityViewController(
+            activityItems: [firstActivityItem, secondActivityItem, imgToShare], applicationActivities: nil)
+        
+        // This lines is for the popover you need to show in iPad
+        activityViewController.popoverPresentationController?.sourceView = (sender)
+        
+        // This line remove the arrow of the popover to show in iPad
+        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
+        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+        
+        // Pre-configuring activity items
+        if #available(iOS 13.0, *) {
+            activityViewController.activityItemsConfiguration = [
+                UIActivity.ActivityType.message
+                ] as? UIActivityItemsConfigurationReading
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        // Anything you want to exclude
+        activityViewController.excludedActivityTypes = [
+            UIActivity.ActivityType.postToWeibo,
+            UIActivity.ActivityType.print,
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.saveToCameraRoll,
+            UIActivity.ActivityType.addToReadingList,
+            UIActivity.ActivityType.postToFlickr,
+            UIActivity.ActivityType.postToVimeo,
+            UIActivity.ActivityType.postToTencentWeibo,
+            UIActivity.ActivityType.postToFacebook
+        ]
+        
+        if #available(iOS 13.0, *) {
+            activityViewController.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
+        vc.present(activityViewController, animated: true, completion: nil)
+    }
+}

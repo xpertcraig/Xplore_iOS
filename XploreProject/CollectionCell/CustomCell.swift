@@ -42,5 +42,14 @@ class CustomCell: UICollectionViewCell {
     @IBOutlet weak var playImg: UIImageView!
     @IBOutlet weak var playBtn: UIButton!
     
-    //Cell DescriptionCell    
+    @IBOutlet weak var gradientView: UIView!
+    
+    @IBOutlet weak var followUnfollowBtn: UIButtonCustomClass!
+    @IBOutlet weak var shareCampBtn: UIButton!
+    
+    
+    override func awakeFromNib() {
+        self.gradientView.gradientBackground(from: UIColor.white.withAlphaComponent(0.0), to: UIColor.white.withAlphaComponent(0.1), to: UIColor.white.withAlphaComponent(0.2), to: UIColor.black.withAlphaComponent(0.2), to: UIColor.black.withAlphaComponent(1.0), direction: .topToBottom)
+       
+    }
 }

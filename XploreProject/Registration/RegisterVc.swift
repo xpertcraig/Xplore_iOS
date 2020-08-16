@@ -469,8 +469,11 @@ extension RegisterVc: ASAuthorizationControllerDelegate {
         let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .whiteOutline)
         authorizationButton.addTarget(self, action: #selector(handleAppleIdRequest), for: .touchUpInside)
         
-        authorizationButton.frame = CGRect(x: 0, y: 0, width: 140, height: 42)
-        authorizationButton.cornerRadius = 21
+        authorizationButton.frame = CGRect(x: 0, y: -20, width: 40, height: 80)
+
+        self.applePayBtn.layer.borderColor = UIColor.black.cgColor
+        self.applePayBtn.layer.borderWidth = 1.0
+        self.applePayBtn.layer.masksToBounds = true
         
           //Add button on some view or stack
         self.applePayBtn.addSubview(authorizationButton)

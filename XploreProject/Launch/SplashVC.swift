@@ -13,6 +13,7 @@ class SplashVC: UIViewController {
 
     let sing = Singleton.sharedInstance
     private let commonDataViewModel = CommonUseViewModel()
+    @IBOutlet weak var logoImg: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +23,22 @@ class SplashVC: UIViewController {
         
     }
     
+    func animateImgae() {
+        UIView.animate(withDuration: 1.0, animations: {() -> Void in
+            self.logoImg?.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        }, completion: {(_ finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.5, animations: {() -> Void in
+                self.logoImg?.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            })
+        })
+    }
+    
     func initializeTimer() {
         Singleton.sharedInstance.timerAdd = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(checkAddsIsReady), userInfo: nil, repeats: true)
     }
     
     @objc func checkAddsIsReady() {
+        self.animateImgae()
         CheckAndShowAdds(vc: self)
     }
     

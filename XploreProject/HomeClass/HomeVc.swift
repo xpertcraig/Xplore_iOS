@@ -760,20 +760,34 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             cell.favouriteButton.tag = indexPath.row
             cell.favouriteButton.addTarget(self, action:#selector(favoutiteAction(sender:)), for:.touchUpInside)
             
+            //share button
+            cell.shareCampBtn.tag = indexPath.row
+            cell.shareCampBtn.addTarget(self, action: #selector(tapShareBtn(sender:)), for: .touchUpInside)
+            
             if ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
                 
                 cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
                 cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 if let img =  (((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)) as? String {
-                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "loading", contenMode: .scaleAspectFit)
+                    
+                    cell.gradientView.isHidden = true
+                    cell.featuredReviewImgView.contentMode = .center
+                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+                        // Your code inside completion block
+                        cell.gradientView.isHidden = false
+                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
+                        
+                    }
+                    
+                    //cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
                 }
-                
-              //  cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: "loading"))
-                
+               // cell.gradientView.isHidden = false
                 cell.noImgLbl.isHidden = true
             } else {
-                cell.featuredReviewImgView.image = UIImage(named: "")
-                cell.noImgLbl.isHidden = false
+                cell.gradientView.isHidden = true
+                cell.featuredReviewImgView.contentMode = .center
+                cell.featuredReviewImgView.image = UIImage(named: "PlaceHolder")
+              //  cell.noImgLbl.isHidden = false
                 
             }
             cell.imagLocNameLbl.text = ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTitle") as? String)//((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campState") as? String)
@@ -845,15 +859,26 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
                 cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 if let img =  (((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)) as? String {
-                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "loading", contenMode: .scaleAspectFit)
+                    
+                    cell.gradientView.isHidden = true
+                    cell.featuredReviewImgView.contentMode = .center
+                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+                        // Your code inside completion block
+                        cell.gradientView.isHidden = false
+                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
+                        
+                    }
+                    
+                   // cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
                 }
                 
-         //       cell.featuredReviewImgView.sd_setImage(with: URL(string: String(describing: (((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)))), placeholderImage: UIImage(named: "loading"))
-                
+              //  cell.gradientView.isHidden = false
                 cell.noImgLbl.isHidden = true
             } else {
-                cell.featuredReviewImgView.image = UIImage(named: "")
-                cell.noImgLbl.isHidden = false
+                cell.gradientView.isHidden = true
+                cell.featuredReviewImgView.contentMode = .center
+                cell.featuredReviewImgView.image = UIImage(named: "PlaceHolder")
+                //cell.noImgLbl.isHidden = false
                 
             }
             
@@ -917,6 +942,18 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
         }
         
         return cell
+    }
+    
+    //share app campsite
+    @objc func tapShareBtn(sender: UIButton) {
+        print((self.featuredArr.object(at: sender.tag) as! NSDictionary))
+        
+        let indexVal = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
+        let campTitle = indexVal.value(forKey: "campTitle") as! String
+        let campImgArr = indexVal.value(forKey: "campImages") as! [String]
+        let campImg = campImgArr[0]
+        
+        self.commonDataViewModel.shareAppLinkAndImage(campTitle: campTitle, campimg: campImg, sender: sender, vc: self)
     }
     
     @objc func tapFeaturedProfilePicBtn(sender: UIButton) {
@@ -1137,6 +1174,11 @@ extension HomeVc {
                 userId = ""
                 
             }
+            if myCurrentLatitude == 0.0 {
+                myCurrentLatitude = 28.64
+                myCurrentLongitude = 77.22
+            }
+            
             let param: NSDictionary = ["userId": userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude, "country": countryOnMyCurrentLatLong]
             
        //     print(param)

@@ -615,14 +615,26 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
             cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             
             if let img =  ((((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0)) as? String) {
-                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "loading", contenMode: .scaleAspectFit)
+                
+                cell.gradientView.isHidden = true
+                cell.featuredReviewImgView.contentMode = .center
+                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+                    // Your code inside completion block
+                    cell.gradientView.isHidden = false
+                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
+                    
+                }
+                
+              //  cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
             }
-        //    cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0))))), placeholderImage: UIImage(named: "loading"))
-           
+        
+          //  cell.gradientView.isHidden = false
             cell.noImgLbl.isHidden = true
         } else {
-            cell.featuredReviewImgView.image = UIImage(named: "")
-            cell.noImgLbl.isHidden = false
+            cell.gradientView.isHidden = true
+            cell.featuredReviewImgView.contentMode = .center
+            cell.featuredReviewImgView.image = UIImage(named: "PlaceHolder")
+           // cell.noImgLbl.isHidden = false
             
         }
         

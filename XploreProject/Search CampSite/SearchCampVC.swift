@@ -675,7 +675,7 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
-        
+      
         cell.favouriteButton.tag = indexPath.row
         cell.favouriteButton.addTarget(self, action:#selector(favoutiteAction(sender:)), for:.touchUpInside)
         
@@ -684,13 +684,26 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
             cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             
             if let img =  (((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).object(at: 0) as? String) {
-                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                
+                cell.gradientView.isHidden = true
+                cell.featuredReviewImgView.contentMode = .center
+                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+                    // Your code inside completion block
+                    cell.gradientView.isHidden = false
+                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
+                    
+                }
+                
+              //  cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
             }
           
+            //cell.gradientView.isHidden = false
             cell.noImgLbl.isHidden = true
         } else {
-            cell.featuredReviewImgView.image = UIImage(named: "")
-            cell.noImgLbl.isHidden = false
+            cell.gradientView.isHidden = true
+            cell.featuredReviewImgView.contentMode = .center
+            cell.featuredReviewImgView.image = UIImage(named: "PlaceHolder")
+           // cell.noImgLbl.isHidden = false
             
         }
         

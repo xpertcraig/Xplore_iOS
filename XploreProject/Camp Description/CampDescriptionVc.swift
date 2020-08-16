@@ -874,7 +874,18 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
         cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
         cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         if let img =  (self.myCampImgArr.object(at: indexPath.row)) as? String {
-            cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            
+            cell.gradientView.isHidden = true
+            cell.featuredReviewImgView.contentMode = .center
+            cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+                // Your code inside completion block
+                cell.gradientView.isHidden = false
+                cell.featuredReviewImgView.contentMode = .scaleAspectFill
+                
+            }
+
+            
+            //cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
         }
         
       //  cell.featuredReviewImgView.sd_setImage(with: URL(string: (String(describing: (self.myCampImgArr.object(at: indexPath.row))))), placeholderImage: UIImage(named: ""))
@@ -1019,32 +1030,11 @@ extension CampDescriptionVc : UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.descriptionTableView {
             return self.campDetailArr.count
-            
         } else {
-//            if self.reviewsArr.count < 3 {
-//                if self.reviewsArr.count == 1 {
-//                    self.revieTableHeight.constant = CGFloat(self.reviewsArr.count * 100)
-//
-//                } else {
-//                    self.revieTableHeight.constant = CGFloat(self.reviewsArr.count * 100)
-//
-//                }
-//            } else {
-//                self.revieTableHeight.constant = 300
-//
-//            }
-            
-          //  self.revieTableHeight.constant = CGFloat(self.reviewsArr.count * 100)
             return self.reviewsArr.count
-            
         }
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension;
-//
-//    }
-    
+  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.descriptionTableView {
             let cell = self.descriptionTableView.dequeueReusableCell(withIdentifier: "CampDetailsTableViewCell", for: indexPath) as! CampDetailsTableViewCell
