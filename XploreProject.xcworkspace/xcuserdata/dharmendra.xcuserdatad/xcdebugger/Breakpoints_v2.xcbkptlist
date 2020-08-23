@@ -153,7 +153,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "652"
             endingLineNumber = "652"
-            landmarkName = "collectionView(_:numberOfItemsInSection:)"
+            landmarkName = "tapShareBtn(sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -478,8 +478,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "271"
             endingLineNumber = "271"
-            landmarkName = "SearchCampVC"
-            landmarkType = "3">
+            landmarkName = "scrollViewDidEndDragging(_:willDecelerate:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -604,10 +604,10 @@
             filePath = "ViewModel/CommonUseViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "removeDataonLogout()"
-            landmarkType = "7">
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -670,7 +670,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "508"
             endingLineNumber = "508"
-            landmarkName = "tapDraftShowImgView(sender:)"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -734,8 +734,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "64"
             endingLineNumber = "64"
-            landmarkName = "MyCampsiteVc"
-            landmarkType = "3">
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -798,8 +798,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "238"
             endingLineNumber = "238"
-            landmarkName = "FeaturedVc"
-            landmarkType = "3">
+            landmarkName = "callAPI()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -862,8 +862,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "820"
             endingLineNumber = "820"
-            landmarkName = "FeaturedVc"
-            landmarkType = "21">
+            landmarkName = "favoutiteAction(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -972,10 +972,10 @@
             filePath = "ViewModel/CommonUseViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
-            landmarkName = "featuredViewAllApiFirst(apistartStr:)"
-            landmarkType = "7">
+            startingLineNumber = "319"
+            endingLineNumber = "319"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1150,7 +1150,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "443"
             endingLineNumber = "443"
-            landmarkName = "onPubishBtn()"
+            landmarkName = "onDraftBtn()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1308,8 +1308,8 @@
             filePath = "XploreProject/HomeClass/HomeVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "reloadTbl()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1470,7 +1470,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "469"
                   endingLineNumber = "469"
-                  offsetFromSymbolStart = "5045">
+                  offsetFromSymbolStart = "4256">
                </Location>
                <Location
                   uuid = "2FC6C779-2187-470D-9DBA-93FAE2D5ECF6 - ee9ee33f32f4239e"
@@ -1485,7 +1485,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "469"
                   endingLineNumber = "469"
-                  offsetFromSymbolStart = "5218">
+                  offsetFromSymbolStart = "4384">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1564,10 +1564,10 @@
             filePath = "ViewModel/CommonUseViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
-            landmarkName = "homeAPICallInStart()"
-            landmarkType = "7">
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1724,8 +1724,8 @@
             filePath = "XploreProject/HomeClass/HomeVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "413"
-            endingLineNumber = "413"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
             landmarkName = "tapSearchView()"
             landmarkType = "7">
          </BreakpointContent>

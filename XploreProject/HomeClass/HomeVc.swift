@@ -11,6 +11,7 @@ import CoreLocation
 import GooglePlaces
 
 import SimpleImageViewer
+import LinkPresentation
 
 class HomeVc: UIViewController, PayPalPaymentDelegate {
     
@@ -762,7 +763,11 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             
             //share button
             cell.shareCampBtn.tag = indexPath.row
-            cell.shareCampBtn.addTarget(self, action: #selector(tapShareBtn(sender:)), for: .touchUpInside)
+            cell.shareCampBtn.addTarget(self, action: #selector(tapShareTripsBtn(sender:)), for: .touchUpInside)
+            
+            //follow/unfollow button
+            cell.followUnfollowBtn.tag = indexPath.row
+            cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowTripsBtn(sender:)), for: .touchUpInside)
             
             if ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
                 
@@ -853,6 +858,14 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             
             cell.favouriteButton.tag = indexPath.row
             cell.favouriteButton.addTarget(self, action:#selector(revfavAction(sender:)), for:.touchUpInside)
+            
+            //share button
+            cell.shareCampBtn.tag = indexPath.row
+            cell.shareCampBtn.addTarget(self, action: #selector(tapShareReviewBtn(sender:)), for: .touchUpInside)
+            
+            //follow/unfollow button
+            cell.followUnfollowBtn.tag = indexPath.row
+            cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowReviewBtn(sender:)), for: .touchUpInside)
             
             if ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
                 
@@ -945,15 +958,45 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     }
     
     //share app campsite
-    @objc func tapShareBtn(sender: UIButton) {
-        print((self.featuredArr.object(at: sender.tag) as! NSDictionary))
+    @objc func tapShareTripsBtn(sender: UIButton) {
+        let indexP = IndexPath(item: sender.tag, section: 0)
+        let cell = self.tripsCollectionView.cellForItem(at: indexP) as? CustomCell
         
         let indexVal = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
         let campTitle = indexVal.value(forKey: "campTitle") as! String
         let campImgArr = indexVal.value(forKey: "campImages") as! [String]
         let campImg = campImgArr[0]
         
-        self.commonDataViewModel.shareAppLinkAndImage(campTitle: campTitle, campimg: campImg, sender: sender, vc: self)
+        self.commonDataViewModel.shareAppLinkAndImage(campTitle: "\(campTitle)\n" , campImg: (cell?.featuredReviewImgView.image)!, campimg1: campImg, sender: sender, vc: self)
+    }
+    
+    @objc func tapShareReviewBtn(sender: UIButton) {
+        if String(describing: ((self.reviewBasedArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: postReviewFirst, title: appName)
+        } else {
+            let indexP = IndexPath(item: sender.tag, section: 0)
+            let cell = self.reviewCollView.cellForItem(at: indexP) as? CustomCell
+            
+            let indexVal = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
+            let campTitle = indexVal.value(forKey: "campTitle") as! String
+            let campImgArr = indexVal.value(forKey: "campImages") as! [String]
+            let campImg = campImgArr[0]
+            
+            self.commonDataViewModel.shareAppLinkAndImage(campTitle: "\(campTitle)\n" , campImg: (cell?.featuredReviewImgView.image)!, campimg1: campImg, sender: sender, vc: self)
+        }
+    }
+    
+    //follow/unfollow
+    @objc func tapFollowUnfollowTripsBtn(sender: UIButton) {
+           
+    }
+    
+    @objc func tapFollowUnfollowReviewBtn(sender: UIButton) {
+        if String(describing: ((self.reviewBasedArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: postReviewFirst, title: appName)
+        } else {
+            
+        }
     }
     
     @objc func tapFeaturedProfilePicBtn(sender: UIButton) {
@@ -1537,6 +1580,30 @@ extension HomeVc  :CLLocationManagerDelegate{
                 print("Full Access")
                 break
             }
+        }
+    }
+}
+
+extension HomeVc {
+    func share(shareText:String?,shareImage:UIImage?){
+
+        var objectsToShare = [Any]()
+
+        if let shareTextObj = shareText{
+            objectsToShare.append(shareTextObj)
+        }
+
+        if let shareImageObj = shareImage{
+            objectsToShare.append(shareImageObj)
+        }
+
+        if shareText != nil || shareImage != nil{
+            let activityViewController = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+
+            present(activityViewController, animated: true, completion: nil)
+        }else{
+            print("There is nothing to share")
         }
     }
 }

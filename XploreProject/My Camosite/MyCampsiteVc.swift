@@ -34,6 +34,7 @@ class MyCampsiteVc: UIViewController {
     
     
     //MARK:- Variable Declarations
+    private let commonDataViewModel = CommonUseViewModel()
     var comeFrom = ""
     var collArr: NSArray = []
     var draftArr: NSArray = []
@@ -297,6 +298,19 @@ class MyCampsiteVc: UIViewController {
         self.view.layoutIfNeeded()
     }
     
+    @objc func tapShareBtn(sender: UIButton) {
+        let indexP = IndexPath(item: sender.tag, section: 0)
+        let cell = self.publishSavedCollView.cellForItem(at: indexP) as? CustomCell
+        
+        let indexVal = (self.publishCampArr.object(at: sender.tag) as! NSDictionary)
+        let campTitle = indexVal.value(forKey: "campTitle") as! String
+        let campImgArr = indexVal.value(forKey: "campImages") as! [String]
+        let campImg = campImgArr[0]
+        
+        self.commonDataViewModel.shareAppLinkAndImage(campTitle: "\(campTitle)\n" , campImg: (cell?.featuredReviewImgView.image)!, campimg1: campImg, sender: sender, vc: self)
+        
+    }
+    
     //MARK:- Button Actions
     @IBAction func closeFavouritesView(_ sender: Any) {
         //favMarkbottomConstraint.constant = 150
@@ -519,7 +533,8 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UI
         
         if campType == draftCamp {
             cell.favouriteButton.isHidden = true
-            
+            cell.shareCampBtn.isHidden = true
+           
             cell.editPencilImgView.isHidden = false
             cell.editDraftBtn.isHidden = false
             cell.editDraftBtn.tag = indexPath.row
@@ -567,13 +582,18 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UI
             cell.ttlReviewLbl.isHidden = false
             
             cell.favouriteButton.isHidden = false
-            
+            cell.shareCampBtn.isHidden = false
+           
             cell.removeDraftBtn.isHidden = true
             cell.editPencilImgView.isHidden = true
             cell.editDraftBtn.isHidden = true
             
             cell.favouriteButton.tag = indexPath.row
             cell.favouriteButton.addTarget(self, action:#selector(favoutiteAction(sender:)), for:.touchUpInside)
+            
+            //share button
+            cell.shareCampBtn.tag = indexPath.row
+            cell.shareCampBtn.addTarget(self, action: #selector(tapShareBtn(sender:)), for: .touchUpInside)
             
             if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
                 
@@ -644,7 +664,7 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(320))
+        return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(292))
            
     }
     

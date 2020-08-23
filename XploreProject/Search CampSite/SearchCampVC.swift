@@ -42,6 +42,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK:- Variable Declaration
+    private let commonDataViewModel = CommonUseViewModel()
     var searchType: String = ""
     
     var campId: Int = -1
@@ -645,6 +646,26 @@ extension SearchCampVC {
             Singleton.sharedInstance.favIndex = sender.tag
         }
     }
+    
+    //share app campsite
+    @objc func tapShareBtn(sender: UIButton) {
+        let indexP = IndexPath(item: sender.tag, section: 0)
+        let cell = self.categoryCollectionView.cellForItem(at: indexP) as? CustomCell
+        
+        let indexVal = (self.searchDataArr.object(at: sender.tag) as! NSDictionary)
+        let campTitle = indexVal.value(forKey: "campTitle") as! String
+        let campImgArr = indexVal.value(forKey: "campImages") as! [String]
+        let campImg = campImgArr[0]
+        
+        self.commonDataViewModel.shareAppLinkAndImage(campTitle: "\(campTitle)\n" , campImg: (cell?.featuredReviewImgView.image)!, campimg1: campImg, sender: sender, vc: self)
+        
+    }
+    
+    //follow/unfollow
+    @objc func tapFollowUnfollowBtn(sender: UIButton) {
+           
+    }
+    
 }
 
 extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -678,6 +699,14 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
       
         cell.favouriteButton.tag = indexPath.row
         cell.favouriteButton.addTarget(self, action:#selector(favoutiteAction(sender:)), for:.touchUpInside)
+        
+        //share button
+        cell.shareCampBtn.tag = indexPath.row
+        cell.shareCampBtn.addTarget(self, action: #selector(tapShareBtn(sender:)), for: .touchUpInside)
+        
+        //follow/unfollow button
+        cell.followUnfollowBtn.tag = indexPath.row
+        cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowBtn(sender:)), for: .touchUpInside)
         
         if ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)

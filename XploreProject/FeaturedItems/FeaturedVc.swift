@@ -39,6 +39,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     @IBOutlet weak var noDataFound: UILabel!
     
     //MARK:- Variable Declaration
+    private let commonDataViewModel = CommonUseViewModel()
     var campId: Int = -1
     var campIndex: Int = -1
     var featuredReviewArr: NSMutableArray = []
@@ -841,6 +842,14 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         cell.favouriteButton.tag = indexPath.row
         cell.favouriteButton.addTarget(self, action:#selector(favoutiteAction(sender:)), for:.touchUpInside)
         
+        //share button
+        cell.shareCampBtn.tag = indexPath.row
+        cell.shareCampBtn.addTarget(self, action: #selector(tapShareBtn(sender:)), for: .touchUpInside)
+        
+        //follow/unfollow button
+        cell.followUnfollowBtn.tag = indexPath.row
+        cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowBtn(sender:)), for: .touchUpInside)
+        
         if ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
             
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
@@ -950,6 +959,7 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         return cell
     }
     
+    
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
         if DataManager.isUserLoggedIn! == false {
             self.loginAlertFunc(vc: "campUserProfile", viewController: self)
@@ -967,6 +977,25 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
                 
             }
         }
+    }
+    
+    //share app campsite
+    @objc func tapShareBtn(sender: UIButton) {
+        let indexP = IndexPath(item: sender.tag, section: 0)
+        let cell = self.categoryCollectionView.cellForItem(at: indexP) as? CustomCell
+        
+        let indexVal = (self.featuredReviewArr.object(at: sender.tag) as! NSDictionary)
+        let campTitle = indexVal.value(forKey: "campTitle") as! String
+        let campImgArr = indexVal.value(forKey: "campImages") as! [String]
+        let campImg = campImgArr[0]
+        
+        self.commonDataViewModel.shareAppLinkAndImage(campTitle: "\(campTitle)\n" , campImg: (cell?.featuredReviewImgView.image)!, campimg1: campImg, sender: sender, vc: self)
+        
+    }
+    
+    //follow/unfollow
+    @objc func tapFollowUnfollowBtn(sender: UIButton) {
+           
     }
     
     @objc func tapTripsShowImgView(sender: UIButton) {
