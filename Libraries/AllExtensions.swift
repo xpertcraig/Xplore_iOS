@@ -274,9 +274,15 @@ extension UIImageView{
             }
         }
     }
-    func loadImageFromUrl(urlString: String, placeHolderImg: String, contenMode: ContentMode)  {
+    func loadImageFromUrl(urlString: String, placeHolderImg: String, contenMode: ContentMode, completion: @escaping ( _ rMsg: Bool) -> Void)  {
         if let imageFromCache = Singleton.sharedInstance.imageCache.object(forKey: urlString as AnyObject) as? UIImage{
             self.image = imageFromCache
+            if imageFromCache != UIImage(named: "PlaceHolder") {
+                self.contentMode = contenMode
+                completion(true)
+            } else {
+                completion(false)
+            }
             return
         }
 
@@ -295,8 +301,16 @@ extension UIImageView{
             if let imageToCache = self.image{
                 Singleton.sharedInstance.imageCache.setObject(imageToCache, forKey: urlString as AnyObject)
                 self.image = imageToCache
+                
+                if imageToCache != UIImage(named: "PlaceHolder") {
+                    self.contentMode = contenMode
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            } else {
+                completion(false)
             }
-          //  self.contentMode = contenMode
          })
     }
 }

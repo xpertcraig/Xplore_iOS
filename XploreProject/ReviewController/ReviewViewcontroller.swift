@@ -281,7 +281,9 @@ extension  ReviewViewcontroller : UITableViewDataSource , UITableViewDelegate {
         cell.reviewGivenUserImgView.sd_setShowActivityIndicatorView(true)
         cell.reviewGivenUserImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         if let img =  ((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
-            cell.reviewGivenUserImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.reviewGivenUserImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
        // cell.reviewGivenUserImgView.sd_setImage(with: URL(string: ((self.reviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String)!), placeholderImage: UIImage(named: ""))

@@ -39,6 +39,8 @@ final class Singleton {
     
     var notificationListingArr: NSArray = []
     var chatListArr: [[String: Any]] = []
+    var followingListArr: [[String: Any]] = []
+    var followerListArr: [[String: Any]] = []
     
     var loginComeFrom: String = ""
     var favIndex: Int = -1

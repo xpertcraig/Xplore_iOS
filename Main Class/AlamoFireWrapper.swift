@@ -135,9 +135,49 @@ class AlamoFireWrapper: NSObject {
         
         let url : String = baseURL + action
         print(url)
-        
-        Alamofire.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, headers: nil).responseJSON {
+        let header: [String: String] = ["Content-Type": "application/json"]
+        Alamofire.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, headers: header).responseJSON {
             (response:DataResponse<Any>) in
+            switch(response.result) {
+            case .success(_):
+                if response.result.value != nil{
+                    //   print("response = ",response.result.value!)
+                    onSuccess(response)
+                    
+                }
+                break
+            case .failure(_):
+                onFailure(response.result.error!)
+                //    print("error",response.result.error!)
+                break
+                
+            }
+        }
+    }
+    
+    func getPostApplicationJSON(action:String,param: [String:Any], onSuccess: @escaping(DataResponse<Any>) -> Void, onFailure: @escaping(Error) -> Void) {
+        
+        let url : String = baseURL + action
+        print(url)
+       
+        let ulr =  NSURL(string: url)
+        var request = URLRequest(url: ulr! as URL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let data = try! JSONSerialization.data(withJSONObject: param, options: JSONSerialization.WritingOptions.prettyPrinted)
+
+        let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+        if let json = json {
+            print(json)
+        }
+        request.httpBody = json!.data(using: String.Encoding.utf8.rawValue);
+
+        
+        Alamofire.request(request as URLRequestConvertible)
+            .responseJSON { response in
+                // do whatever you want here
+            print(response.result.value)
+            
             switch(response.result) {
             case .success(_):
                 if response.result.value != nil{

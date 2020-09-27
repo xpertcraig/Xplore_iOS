@@ -56,6 +56,7 @@
 		18BB68E5205FE866002C2151 /* UIImageViewCustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E4205FE866002C2151 /* UIImageViewCustomClass.swift */; };
 		18BB68E8205FE94A002C2151 /* GalleryVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E7205FE94A002C2151 /* GalleryVc.swift */; };
 		6347FFB62E03D414F33ADC92 /* Pods_XploreProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16618643E92023492CB801C3 /* Pods_XploreProject.framework */; };
+		E9120E522504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9120E512504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift */; };
 		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
 		E92EFB5A24DAFA4A00E78503 /* WebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */; };
 		E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931F9A922882E8900DA6054 /* myCustomSlider.swift */; };
@@ -79,6 +80,8 @@
 		E9CE1C3223031A8700333248 /* PaymentHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CE1C3123031A8700333248 /* PaymentHistoryVC.swift */; };
 		E9CE1C3423031AA300333248 /* PaymentHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CE1C3323031AA300333248 /* PaymentHistoryTableViewCell.swift */; };
 		E9D6E4B124DF998B00C08360 /* WebkitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D6E4B024DF998A00C08360 /* WebkitVC.swift */; };
+		E9DD627C2504AA50008031DB /* FollowFollowingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DD627B2504AA50008031DB /* FollowFollowingVC.swift */; };
+		E9E59908250D0DEE00B8764A /* FollowerFollowingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E59907250D0DEE00B8764A /* FollowerFollowingViewModel.swift */; };
 		FF130E95217F4B600053A567 /* UpdatePaymentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF130E94217F4B600053A567 /* UpdatePaymentVC.swift */; };
 		FF28C7402182F90D0079E13F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF28C73F2182F90C0079E13F /* Accelerate.framework */; };
 		FF28C7422182F9190079E13F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF28C7412182F9180079E13F /* AudioToolbox.framework */; };
@@ -191,6 +194,7 @@
 		18BB68E7205FE94A002C2151 /* GalleryVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryVc.swift; sourceTree = "<group>"; };
 		74F2FE507F07312EFCB64C3A /* Pods-XploreProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.release.xcconfig"; sourceTree = "<group>"; };
 		D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.debug.xcconfig"; sourceTree = "<group>"; };
+		E9120E512504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFollowingTableViewCell.swift; sourceTree = "<group>"; };
 		E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xplore.xcdatamodel; sourceTree = "<group>"; };
 		E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVC.swift; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
@@ -250,6 +254,8 @@
 		E9CE1C3123031A8700333248 /* PaymentHistoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHistoryVC.swift; sourceTree = "<group>"; };
 		E9CE1C3323031AA300333248 /* PaymentHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		E9D6E4B024DF998A00C08360 /* WebkitVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebkitVC.swift; sourceTree = "<group>"; };
+		E9DD627B2504AA50008031DB /* FollowFollowingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFollowingVC.swift; sourceTree = "<group>"; };
+		E9E59907250D0DEE00B8764A /* FollowerFollowingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerFollowingViewModel.swift; sourceTree = "<group>"; };
 		FF130E94217F4B600053A567 /* UpdatePaymentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePaymentVC.swift; sourceTree = "<group>"; };
 		FF28C73F2182F90C0079E13F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		FF28C7412182F9180079E13F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -540,6 +546,7 @@
 		18BB687E205F9BA5002C2151 /* XploreProject */ = {
 			isa = PBXGroup;
 			children = (
+				E9DD627A2504AA2E008031DB /* FollowFollowing */,
 				E9D6E4AF24DF998A00C08360 /* Webkit */,
 				E94ED8B7248A21DF00B1495B /* Launch */,
 				E95EFED1243CA3F9004A6B91 /* PushNotification */,
@@ -661,6 +668,7 @@
 			children = (
 				E93733802438431E00D69C4B /* CommonUseViewModel.swift */,
 				E96BA8DE24D1ECBF00CA1F7A /* BackgroundTask.swift */,
+				E9E59907250D0DEE00B8764A /* FollowerFollowingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -763,6 +771,15 @@
 				E9D6E4B024DF998A00C08360 /* WebkitVC.swift */,
 			);
 			path = Webkit;
+			sourceTree = "<group>";
+		};
+		E9DD627A2504AA2E008031DB /* FollowFollowing */ = {
+			isa = PBXGroup;
+			children = (
+				E9DD627B2504AA50008031DB /* FollowFollowingVC.swift */,
+				E9120E512504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift */,
+			);
+			path = FollowFollowing;
 			sourceTree = "<group>";
 		};
 		FF130E93217F4B430053A567 /* Payment */ = {
@@ -1171,6 +1188,7 @@
 				E9BCA99422E47E6E0079B8FD /* TOCropOverlayView.m in Sources */,
 				E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */,
 				1867ABA920663E49009DE2C8 /* addReviewVc.swift in Sources */,
+				E9120E522504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift in Sources */,
 				E94ED8B9248A220400B1495B /* SplashVC.swift in Sources */,
 				FF8C5D932171AFA200CA7A58 /* CountryStateCityTableViewCell.swift in Sources */,
 				FF5F121A217064F9007EE157 /* addPhotosCollectionViewCell.swift in Sources */,
@@ -1212,6 +1230,7 @@
 				186EF7D62063D89A006B4E96 /* savedCompositeVc.swift in Sources */,
 				1867ABAF20665F39009DE2C8 /* UILabelCustomClass.swift in Sources */,
 				FF6606C92181CCC400D5F570 /* ChatViewController.swift in Sources */,
+				E9DD627C2504AA50008031DB /* FollowFollowingVC.swift in Sources */,
 				FF54604D217EF4D300E8F3AD /* UserProfileVC.swift in Sources */,
 				FF662F96215F3868001328E9 /* CommenFunc.swift in Sources */,
 				FF614AFD2175F0BE0071E2B6 /* CustomInfoWindow.swift in Sources */,
@@ -1225,6 +1244,7 @@
 				E9BCA99622E47E6E0079B8FD /* UIImage+CropRotate.m in Sources */,
 				FF8FFCB0217462CD00EC41EA /* MarkAbouseAlert.swift in Sources */,
 				FF54604B217EDE9C00E8F3AD /* MarkerUserInfo.swift in Sources */,
+				E9E59908250D0DEE00B8764A /* FollowerFollowingViewModel.swift in Sources */,
 				186EF7C72063B8AC006B4E96 /* FeaturedVc.swift in Sources */,
 				186EF7C1206384B2006B4E96 /* LoginVc.swift in Sources */,
 				FF962921215DE846008A93A5 /* NearbyVC.swift in Sources */,

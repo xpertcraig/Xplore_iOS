@@ -84,12 +84,10 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 self.dataContainingView.isHidden = false
                 self.reloadTbl(arrR: self.sing.featuredViewAllArr, pageR: 0)
             }
-            
         } else if comeFrom == myProfile {
             self.campsiteTypeLbl.text! = "Campsites"
             self.sortBtn.isHidden = true
             self.filterBtn.isHidden = true
-            
         } else if comeFrom == reviewBased {
             self.campsiteTypeLbl.text! = "Review Based"
             self.sortBtn.isHidden = false
@@ -100,7 +98,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                 self.dataContainingView.isHidden = false
                 self.reloadTbl(arrR: self.sing.featuredViewAllArr, pageR: 0)
             }
-            
         } else {
             self.campsiteTypeLbl.text! = allCamps
             self.sortBtn.isHidden = true
@@ -121,8 +118,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         
         //refresh controll
         self.refreshData()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -171,13 +166,11 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.view.endEditing(true)
-        
     }
     
     //MARK: - Status Color
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
-        
     }
     
     //MARK:- Function Definitions
@@ -185,29 +178,23 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         self.activityView.isHidden = false
         self.activityViewHeight.constant = 80
         self.activityIndicator.startAnimating()
-        
     }
     
     func stopAnimateAcitivity() {
         self.activityView.isHidden = true
         self.activityViewHeight.constant = 0
         self.activityIndicator.stopAnimating()
-        
     }
     
     func resetPaginationVar() {
         isDataLoading = false
         pageNo = 0
         limit = 5
-        
     }
     
     func passFilterData(fillDict: NSDictionary) {
-      //  print(fillDict)
-        
         self.filterDataDict = fillDict
         self.callAPI()
-        
     }
     
     func callAPI() {
@@ -220,20 +207,15 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             } else {
                 if comeFrom == reviewBased {
                     self.revieweBasedAPIHit(pageNum: pageNo)
-                    
                 } else {
                     self.featuredAPIHit(pageNum: pageNo)
-                    
                 }
             }
         } else {
             if self.featuredReviewArr.count == 0  {
                 self.recallAPIView.isHidden = false
-                
             }
             self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
-           // CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
         }
     }
     
@@ -318,22 +300,17 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                   //  print(retValues)
                     
                     self.dataContainingView.isHidden = false
-                    
                     if (retValues.count) % 5 == 0 {
                         self.upToLimit = (pageNum+1)*5 + 1
-                        
                     } else {
                         self.upToLimit = self.upToLimit + (retValues.count)
-                        
                     }
                     if pageNum == 0 {
                         self.featuredReviewArr = []
-                        
                     }
                     let count: Int = self.featuredReviewArr.count
                     for i in 0..<retValues.count {
                         self.featuredReviewArr.add(retValues.object(at: i) as! NSDictionary)
-                        
                     }
                     if pageNum == 0 {
                         self.categoryCollectionView.delegate = self
@@ -345,7 +322,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                             let indexpathG = IndexPath(item: count, section: 0)
                             self.categoryCollectionView.scrollToItem(at: indexpathG, at: .top, animated: true)
                             self.categoryCollectionView.setNeedsLayout()
-                            
                         }
                     }
                 } else {
@@ -380,12 +356,12 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         var api1: String = ""
         var api2: String = ""
         
-        if self.comeFrom != myProfile {
+      //  if self.comeFrom != myProfile {
             if let userId1 = DataManager.userId as? String {
                 userId = userId1
                 
             }
-        }
+     //   }
         
      //   http://clientstagingdev.com/explorecampsite/api/userPublished.php?userId=43&offset=0&userCamps=33
         //&country\(countryOnMyCurrentLatLong)
@@ -448,6 +424,11 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             applicationDelegate.startProgressView(view: self.view)
          
         }
+        if let userId1 = DataManager.userId as? String {
+            userId = userId1
+            
+        }
+        
         let apo1: String = "reviewCampsites.php?userId=" + userId
         let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)&country=\(countryOnMyCurrentLatLong)"
         
@@ -578,15 +559,16 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     let pagN = self.campIndex+1/5
                     self.pageNo = pagN
                     self.limit = (pagN+1)*5
-                    if self.comeFrom == reviewBased {
-                        //self.revieweBasedAPIHit(pageNum: self.pageNo)
-                        
-                        
-                        
+                    if self.searchType == filter {
+                        self.filterApiHit(pageNum: self.pageNo)
+
                     } else {
-                        //self.featuredAPIHit(pageNum: self.pageNo)
-                        
-                        
+                        if self.comeFrom == reviewBased {
+                            self.revieweBasedAPIHit(pageNum: self.pageNo)
+
+                        } else {
+                            self.featuredAPIHit(pageNum: self.pageNo)
+                        }
                     }
                 } else {
                     CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
@@ -850,6 +832,25 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         cell.followUnfollowBtn.tag = indexPath.row
         cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowBtn(sender:)), for: .touchUpInside)
         
+        let indexVal = (self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary)
+        if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+            cell.followUnfollowBtn.isHidden = true
+        } else {
+            let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+            if followStatus == "0" {
+                cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
+              //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+            } else {
+                cell.followUnfollowBtn.backgroundColor = UIColor.white
+                cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
+               // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+            }
+            cell.followUnfollowBtn.isHidden = false
+        }
+        
         if ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
             
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
@@ -859,12 +860,17 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
                 
                 cell.gradientView.isHidden = true
                 cell.featuredReviewImgView.contentMode = .center
-                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                    // Your code inside completion block
-                    cell.gradientView.isHidden = false
-                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                    
+                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                    //
                 }
+                cell.gradientView.isHidden = false
+                
+//                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                    // Your code inside completion block
+//                    cell.gradientView.isHidden = false
+//                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//
+//                }
                 //cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
             }
             
@@ -903,7 +909,9 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
             cell.autherImgView.sd_setShowActivityIndicatorView(true)
             cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             
-            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
             
            // cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
             
@@ -926,7 +934,9 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
                 if let img = (self.autherInfo["autherImg"] as? String) {                    
                     cell.autherImgView.sd_setShowActivityIndicatorView(true)
                     cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-                    cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                        //
+                    }
                     
                   //  cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
                     
@@ -995,7 +1005,47 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
     
     //follow/unfollow
     @objc func tapFollowUnfollowBtn(sender: UIButton) {
-           
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "viewProfile", viewController: self)
+            
+        } else {
+            if connectivity.isConnectedToInternet() {
+                applicationDelegate.startProgressView(view: self.view)
+                let indexVal: NSDictionary = (self.featuredReviewArr.object(at: sender.tag) as! NSDictionary)
+                let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
+                
+                var apiToBeCalled: String = ""
+                let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                if followStatus == "0" {
+                    apiToBeCalled = apiUrl.followApi.rawValue
+                } else {
+                    apiToBeCalled = apiUrl.unFollowApi.rawValue
+                }
+                print(param)
+                self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
+                    print(rMsg)
+                    applicationDelegate.dismissProgressView(view: self.view)
+                    
+                    let pagN = (sender.tag)/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
+                    
+                    if self.searchType == filter {
+                        self.filterApiHit(pageNum: self.pageNo)
+
+                    } else {
+                        if self.comeFrom == reviewBased {
+                            self.revieweBasedAPIHit(pageNum: self.pageNo)
+
+                        } else {
+                            self.featuredAPIHit(pageNum: self.pageNo)
+                        }
+                    }
+                }
+            } else {
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+            }
+        }
     }
     
     @objc func tapTripsShowImgView(sender: UIButton) {

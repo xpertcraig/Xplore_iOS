@@ -194,7 +194,9 @@ class NearByUsersVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDele
         self.infoWindow.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         
         if let img =  ((self.nearByUserArr.object(at: Int(index)) as! NSDictionary).value(forKey: "profileImage") as? String) {
-            self.infoWindow.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            self.infoWindow.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
       //  self.infoWindow.userImgView.sd_setImage(with: URL(string: String(describing: (self.nearByUserArr.object(at: Int(index)) as! NSDictionary).value(forKey: "profileImage")!)), placeholderImage: UIImage(named: ""))

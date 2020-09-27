@@ -337,7 +337,9 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
         cell.mygallaryImgView.sd_setShowActivityIndicatorView(true)
         cell.mygallaryImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         if let img =  ((self.gallaryArr.object(at: indexPath.row)) as? String) {
-            cell.mygallaryImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.mygallaryImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
        // cell.mygallaryImgView.sd_setImage(with: URL(string: (String(describing: (self.gallaryArr.object(at: indexPath.row))))), placeholderImage: UIImage(named: ""))

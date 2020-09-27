@@ -16,7 +16,10 @@ class savedCompositeVc: UIViewController {
     @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var mainAllContentView: UIView!
     @IBOutlet weak var favouritesBtn: UIButtonCustomClass!
+    @IBOutlet weak var favUnderLbl: UILabel!
     @IBOutlet weak var savedBtn: UIButtonCustomClass!
+    @IBOutlet weak var savedUnderLbl: UILabel!
+    
     @IBOutlet weak var favouriteSavedCollView: UICollectionView!
     @IBOutlet weak var backBtnImgView: UIImageView!
     @IBOutlet weak var backBtn: UIButton!
@@ -66,6 +69,10 @@ class savedCompositeVc: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.stopAnimateAcitivity()
+        
+        self.favouritesBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.favUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.favouritesBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
         
         self.tabBarController?.selectedIndex = 2
         if Singleton.sharedInstance.favouritesCampArr.count > 0 {
@@ -222,10 +229,12 @@ class savedCompositeVc: UIViewController {
                 self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
             }
             
-            self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-            self.savedBtn.setTitleColor(UIColor.white , for: .normal)
+            self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.savedUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.savedBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
             
-            self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.favouritesBtn.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.favUnderLbl.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
             self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
             
         } else {
@@ -235,19 +244,13 @@ class savedCompositeVc: UIViewController {
             self.backBtn.isHidden = true
             self.backBtnImgView.isHidden = true
             
-            self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-            self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
-            self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.favouritesBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.favUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.favouritesBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
+            self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.savedUnderLbl.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
             self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
         }
-//        self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-//        self.savedBtn.setTitleColor(UIColor.white , for: .normal)
-//
-//        self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-//        self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
-        
-        
-        
     }
     
     func callAPI() {
@@ -267,11 +270,13 @@ class savedCompositeVc: UIViewController {
             if self.favouriteCampArr.count > 0 {
                 self.campType = favouritesCamp
                 
-                self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+                self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+                self.savedUnderLbl.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
                 self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
                 
-                self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-                self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
+                self.favouritesBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+                self.favUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+                self.favouritesBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
                 
                 self.collArr = self.favouriteCampArr
                 
@@ -281,10 +286,12 @@ class savedCompositeVc: UIViewController {
             } else if savedTempArr.count > 0 {
                 self.campType = savedCamp
                 
-                self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-                self.savedBtn.setTitleColor(UIColor.white , for: .normal)
+                self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+                self.savedUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+                self.savedBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
                 
-                self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+                self.favouritesBtn.backgroundColor = UIColor.clear  //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+                self.favUnderLbl.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
                 self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
                 
                 self.collArr = savedTempArr
@@ -384,11 +391,13 @@ class savedCompositeVc: UIViewController {
         self.collArr = []
         self.collArr = self.favouriteCampArr
         
-        self.favouritesBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        self.favouritesBtn.setTitleColor(UIColor.white , for: .normal)
+        self.favouritesBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.favUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.favouritesBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
         
-        self.savedBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
+        self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.savedUnderLbl.backgroundColor = UIColor(red: 236/255, green: 237/255, blue: 238/255, alpha: 1.0)
+        self.savedBtn.setTitleColor(UIColor.lightGray, for: .normal)
         
         self.favouriteSavedCollView.reloadData()
         
@@ -406,11 +415,13 @@ class savedCompositeVc: UIViewController {
             self.collArr = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: mySavesCamps)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
         }
         
-        self.savedBtn.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        self.savedBtn.setTitleColor(UIColor.white , for: .normal)
+        self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.savedUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.savedBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
         
-        self.favouritesBtn.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.favouritesBtn.setTitleColor(UIColor.darkGray, for: .normal)
+        self.favouritesBtn.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.favUnderLbl.backgroundColor = UIColor(red: 236/255, green: 237/255, blue: 238/255, alpha: 1.0)
+        self.favouritesBtn.setTitleColor(UIColor.lightGray, for: .normal)
         
         self.favouriteSavedCollView.reloadData()
     }
@@ -616,6 +627,25 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
         cell.followUnfollowBtn.tag = indexPath.row
         cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowBtn(sender:)), for: .touchUpInside)
         
+        let indexVal = (self.collArr.object(at: indexPath.row) as! NSDictionary)
+        if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+            cell.followUnfollowBtn.isHidden = true
+        } else {
+            let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+            if followStatus == "0" {
+                cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
+              //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+            } else {
+                cell.followUnfollowBtn.backgroundColor = UIColor.white
+                cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
+               // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+            }
+            cell.followUnfollowBtn.isHidden = false
+        }
+        
         if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
             cell.featuredReviewImgView.image = nil
             
@@ -626,12 +656,17 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
                 
                 cell.gradientView.isHidden = true
                 cell.featuredReviewImgView.contentMode = .center
-                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                    // Your code inside completion block
-                    cell.gradientView.isHidden = false
-                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                    
+//                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                    // Your code inside completion block
+//                    cell.gradientView.isHidden = false
+//                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//
+//                }
+                
+                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                    //
                 }
+                cell.gradientView.isHidden = false
                 
               //  cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
             }
@@ -671,7 +706,9 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
             
             cell.autherImgView.sd_setShowActivityIndicatorView(true)
             cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
        //     cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
             
         }
@@ -689,9 +726,10 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
             cell.favouriteButton.isHidden = false
             
             cell.removeDraftBtn.isHidden = true
+            cell.followUnfollowBtn.isHidden = false
         } else {
             cell.favouriteButton.isHidden = true
-            
+            cell.followUnfollowBtn.isHidden = true
             cell.removeDraftBtn.isHidden = false
             cell.removeDraftBtn.tag = indexPath.row
             cell.removeDraftBtn.addTarget(self, action: #selector(discardSavedCampBtn(sender:)), for: .touchUpInside)
@@ -700,9 +738,6 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
             cell.removeDraftBtn.setImage(image, for: .normal)
             cell.removeDraftBtn.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
         }
-        
-//        cell.showImgBtn.tag = indexPath.row
-//        cell.showImgBtn.addTarget(self, action: #selector(tapTripsShowImgView(sender:)), for: .touchUpInside)
         
         cell.tapProfilePicBtn.tag = indexPath.row
         cell.tapProfilePicBtn.addTarget(self, action: #selector(tapFevoritesProfilePicBtn(sender:)), for: .touchUpInside)
@@ -749,7 +784,38 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
     
     //follow/unfollow
     @objc func tapFollowUnfollowBtn(sender: UIButton) {
-           
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "viewProfile", viewController: self)
+            
+        } else {
+            if connectivity.isConnectedToInternet() {
+                applicationDelegate.startProgressView(view: self.view)
+                let indexVal: NSDictionary = (self.collArr.object(at: sender.tag) as! NSDictionary)
+                let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
+                 
+                var apiToBeCalled: String = ""
+                let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                if followStatus == "0" {
+                    apiToBeCalled = apiUrl.followApi.rawValue
+                } else {
+                    apiToBeCalled = apiUrl.unFollowApi.rawValue
+                }
+                print(param)
+                self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
+                    print(rMsg)
+                    applicationDelegate.dismissProgressView(view: self.view)
+                    let pagN = self.campIndex/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
+                    
+                    Singleton.sharedInstance.favouritesCampArr = []
+                    self.favouritesApiHit(pageNum: self.pageNo)
+                }
+            } else {
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
+        }
     }
     
     @objc func tapFevoritesProfilePicBtn(sender: UIButton) {

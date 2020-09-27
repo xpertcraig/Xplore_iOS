@@ -480,6 +480,7 @@ extension LoginVc {
                     
                   //  print(dict)
                     if String(describing: (dict["result"])!) == "1" {
+                        self.commonViewModel.getCampAllApiResponse()
                         self.moveBackToApp()
                         
                     } else {
@@ -559,7 +560,7 @@ extension LoginVc {
                         
                         self.overlayView.isHidden = true
 //                        objUser.parseUserData(recUserDict: recValue)
-                        
+                        self.commonViewModel.getCampAllApiResponse()
                         self.moveBackToApp()
 //                        DataManager.isUserLoggedIn = true
 //
@@ -685,6 +686,7 @@ extension LoginVc: ASAuthorizationControllerDelegate {
                                 applicationDelegate.notificationCountApi()
                                 self.commonViewModel.updateFirebaseProfile()
                                 self.checkSubscription(recValue: retValues)
+                                
                             } else {
                                 CommonFunctions.showAlert(self, message: message, title: appName)
                             }
@@ -704,6 +706,7 @@ extension LoginVc: ASAuthorizationControllerDelegate {
             }
         }
     }
+    
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.

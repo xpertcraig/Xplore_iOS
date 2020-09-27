@@ -663,9 +663,52 @@ extension SearchCampVC {
     
     //follow/unfollow
     @objc func tapFollowUnfollowBtn(sender: UIButton) {
-           
+        if DataManager.isUserLoggedIn! == false {
+            self.loginAlertFunc(vc: "viewProfile", viewController: self)
+            
+        } else {
+            if connectivity.isConnectedToInternet() {
+                applicationDelegate.startProgressView(view: self.view)
+                let indexVal: NSDictionary = (self.searchDataArr.object(at: sender.tag) as! NSDictionary)
+                let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
+                
+                var apiToBeCalled: String = ""
+                let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                if followStatus == "0" {
+                    apiToBeCalled = apiUrl.followApi.rawValue
+                } else {
+                    apiToBeCalled = apiUrl.unFollowApi.rawValue
+                }
+                print(param)
+                self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
+                    print(rMsg)
+                    applicationDelegate.dismissProgressView(view: self.view)
+                    let pagN = self.campIndex/5
+                    self.pageNo = pagN
+                    self.limit = (pagN+1)*5
+                    
+                    if self.comeFrom == filterPush {
+                        self.filterApiHit(pageNum: self.pageNo)
+                        
+                    } else {
+                        if self.searchType == googleSearch {
+                            self.searchAPIHit(pageNum: self.pageNo)
+                            
+                        } else if self.searchType == "Home"{
+                            
+                            
+                        } else {
+                            self.filterApiHit(pageNum: self.pageNo)
+                            
+                        }
+                    }
+                }
+            } else {
+                self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
+            }
+        }
     }
-    
 }
 
 extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -708,6 +751,29 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
         cell.followUnfollowBtn.tag = indexPath.row
         cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowBtn(sender:)), for: .touchUpInside)
         
+        let indexVal = (self.searchDataArr.object(at: indexPath.row) as! NSDictionary)
+        if let campAuth = indexVal.value(forKey: "campAuthor") as? String {
+            if String(describing: (DataManager.userId)) == campAuth {
+                cell.followUnfollowBtn.isHidden = true
+            } else {
+                let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                if followStatus == "0" {
+                    cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                    cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                    cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
+                  //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+                } else {
+                    cell.followUnfollowBtn.backgroundColor = UIColor.white
+                    cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                    cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
+                   // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+                }
+                cell.followUnfollowBtn.isHidden = false
+            }
+        } else {
+            cell.followUnfollowBtn.isHidden = true
+        }
+        
         if ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
             cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
             cell.featuredReviewImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
@@ -716,12 +782,17 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
                 
                 cell.gradientView.isHidden = true
                 cell.featuredReviewImgView.contentMode = .center
-                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                    // Your code inside completion block
-                    cell.gradientView.isHidden = false
-                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                    
+                cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                    //
                 }
+                cell.gradientView.isHidden = false
+                
+//                cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                    // Your code inside completion block
+//                    cell.gradientView.isHidden = false
+//                    cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//
+//                }
                 
               //  cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
             }
@@ -755,7 +826,9 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
         if let img = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
             cell.autherImgView.sd_setShowActivityIndicatorView(true)
             cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         cell.autherNameLbl.text = ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "authorName") as? String)
         

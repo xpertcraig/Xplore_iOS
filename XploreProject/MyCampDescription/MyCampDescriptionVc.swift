@@ -618,7 +618,9 @@ extension MyCampDescriptionVc : UICollectionViewDataSource, UICollectionViewDele
                 cell.campImgVIew.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 
                 if let img =  ((self.myCampImgArr.object(at: indexPath.row) as? String)) {
-                    cell.campImgVIew.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                    cell.campImgVIew.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                        //
+                    }
                 }
                // cell.campImgVIew.sd_setImage(with: URL(string: (String(describing: ((self.myCampImgArr.object(at: indexPath.row) as! String))))), placeholderImage: UIImage(named: ""))
                 

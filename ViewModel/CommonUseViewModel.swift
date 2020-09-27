@@ -176,7 +176,21 @@ extension CommonUseViewModel {
                 downloadGroup.leave()
                 
                 downloadGroup.enter()
+                self.profilesAPIHit()
+                downloadGroup.leave()
+                
+                downloadGroup.enter()
                 self.nearByUsersOnStart()
+                downloadGroup.leave()
+                
+                downloadGroup.enter()
+                self.getFollowerListFromAPI(actionUrl: apiUrl.followerListApiStr.rawValue) { (rMsg) in
+                }
+                downloadGroup.leave()
+                
+                downloadGroup.enter()
+                self.getFollowerListFromAPI(actionUrl: apiUrl.followingListApiStr.rawValue) { (rMsg) in
+                }
                 downloadGroup.leave()
             }
         }
@@ -358,6 +372,49 @@ extension CommonUseViewModel {
             
         }
     }
+    
+    func profilesAPIHit(){
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "myProfile.php?userId=" + (DataManager.userId as! String), onSuccess: { (responseData) in
+            if let dict:NSDictionary = responseData.result.value as? NSDictionary {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    
+                    let retValue = dict["result"] as! NSDictionary
+                    Singleton.sharedInstance.myProfileDict = retValue
+                    
+                }
+            }
+        }) { (error) in
+            
+        }
+    }
+
+    
+    func getFollowerListFromAPI(actionUrl: String, completion: @escaping (_ msg: String) -> Void) {
+        AlamoFireWrapper.sharedInstance.getOnlyApi(action: "\(actionUrl)/?userId=\(DataManager.userId as! String)", onSuccess: { (responseData) in
+                   
+            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    if let listDict = dict["result"] as? [String: Any] {
+                        if actionUrl == apiUrl.followerListApiStr.rawValue {
+                            Singleton.sharedInstance.followerListArr = listDict["allfollowers"] as! [[String : Any]]
+                        } else {
+                            Singleton.sharedInstance.followingListArr = listDict["allfollowing"] as! [[String : Any]]
+                        }
+                        completion(success)
+                    }
+                } else if (String(describing: (dict["success"])!)) == "0" {
+                    if actionUrl == apiUrl.followerListApiStr.rawValue {
+                        Singleton.sharedInstance.followerListArr = []
+                    } else {
+                        Singleton.sharedInstance.followingListArr = []
+                    }
+                    completion(success)
+                }
+            }
+        }) { (error) in
+            
+        }
+    }
 }
 
 extension CommonUseViewModel {
@@ -386,9 +443,9 @@ extension CommonUseViewModel {
         let firstActivityItem = campTitle
 
         // Setting url
-        let secondActivityItem : NSURL = NSURL(string: "")!
+        let appLink : NSURL = NSURL(string: "http://itunes.apple.com/app/1525560350")!
 
-        let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: [(campImg), firstActivityItem], applicationActivities: nil)
+        let activityViewController: UIActivityViewController = UIActivityViewController(activityItems: [(campImg), firstActivityItem, "\nAppstore Link: \(appLink)" ], applicationActivities: nil)
         
         // This lines is for the popover you need to show in iPad
         activityViewController.popoverPresentationController?.sourceView = (sender)
@@ -426,5 +483,32 @@ extension CommonUseViewModel {
         }
         vc.present(activityViewController, animated: true, completion: nil)
         
+    }
+}
+
+//MARK: Follow/Unfollow user
+extension CommonUseViewModel {
+    func followUnfollowUwser(actionUrl: String, param: [String: Any], completion: @escaping ( _ msg: String) -> Void) {
+        AlamoFireWrapper.sharedInstance.getPostApplicationJSON(action: actionUrl, param: param, onSuccess: { (responseData) in
+            if let dict:[String:Any] = responseData.result.value as? [String : Any] {
+                if (String(describing: (dict["success"])!)) == "1" {
+                    if let retValues = (dict["result"]! as? Int) {
+                        print(retValues)
+                    }
+                    self.getFollowerListFromAPI(actionUrl: apiUrl.followerListApiStr.rawValue) { (rMsg) in
+                        completion(success)
+                    }
+                    self.getFollowerListFromAPI(actionUrl: apiUrl.followingListApiStr.rawValue) { (rMsg) in
+                        completion(success)
+                    }
+                    //completion(success)
+                
+                } else {
+                    completion("Failed")
+                }
+            }
+        }) { (error) in
+            completion(error.localizedDescription)
+        }
     }
 }

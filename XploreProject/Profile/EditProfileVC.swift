@@ -117,7 +117,9 @@ class EditProfileVC: UIViewController {
             
             self.userProfileImgView.sd_setShowActivityIndicatorView(true)
             self.userProfileImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            self.userProfileImgView.loadImageFromUrl(urlString: profileImg, placeHolderImg: "", contenMode: .scaleAspectFit)
+            self.userProfileImgView.loadImageFromUrl(urlString: profileImg, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
             
            // self.userProfileImgView.sd_setImage(with: URL(string: profileImg), placeholderImage: UIImage(named: ""))
             

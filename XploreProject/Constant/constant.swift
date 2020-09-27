@@ -383,3 +383,17 @@ enum webViewTitleString: String {
 //1. https://www.explorecampsites.com/cookies-policy.html
 //2. https://www.explorecampsites.com/privacy-policy.html
 //3. https://www.explorecampsites.com/terms-and-condition.html
+
+enum apiUrl: String {
+    case followApi = "follow.php"
+    case unFollowApi = "unFollow.php"
+    
+    case followerListApiStr = "followers.php"
+    case followingListApiStr = "following.php"
+}
+
+enum switchTypeStr: String {
+    case showFollower = "followerList"
+    case showFollowings = "followingList"
+    
+}

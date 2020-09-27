@@ -24,11 +24,14 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     @IBOutlet weak var messageView: UIViewCustomClass!
     @IBOutlet weak var myProfileScrollVIew: UIScrollView!
     @IBOutlet weak var addCampsiteView: UIViewCustomClass!
-    
     @IBOutlet weak var notificationCountLbl: UILabel!
+    
+    @IBOutlet weak var ttlFollowers: UIButton!
+    @IBOutlet weak var ttlFolowings: UIButton!
     
     //MARK:- Variable Declaration
     var myProfileDict: NSDictionary = [:]
+    var commonDataViewModel = CommonUseViewModel()
     
     //MARK:- Inbuild Function
     override func viewDidLoad() {
@@ -40,7 +43,14 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         self.myCampsitView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapMyCampSiteView)))
         self.messageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapMessageView)))
         self.addCampsiteView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapAddCampsiteView)))
+        //
         
+        self.ttlFollowers.titleLabel?.textAlignment = .center
+        self.ttlFolowings.titleLabel?.textAlignment = .center
+        let followTitleStr = "\(Singleton.sharedInstance.followerListArr.count)\nFollowers"
+        
+        self.ttlFollowers.setTitle(followTitleStr, for: .normal)
+        self.ttlFolowings.setTitle("\(Singleton.sharedInstance.followingListArr.count)\nFollowing ", for: .normal)
     }
    
     override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +75,6 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.view.endEditing(true)
-        
         self.tabBarController?.tabBar.isHidden = false
         
     }
@@ -114,10 +123,9 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
             self.myProfileImgView.sd_setShowActivityIndicatorView(true)
             self.myProfileImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             
-            self.myProfileImgView.loadImageFromUrl(urlString: profileImg, placeHolderImg: "", contenMode: .scaleAspectFit)
-            
-           // self.myProfileImgView.sd_setImage(with: URL(string: profileImg), placeholderImage: UIImage(named: ""))
-            
+            self.myProfileImgView.loadImageFromUrl(urlString: profileImg, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
         Database.database().reference().child("UsersProfile").child(DataManager.userId as! String).child("username").setValue(self.userNameLbl.text!)
@@ -130,17 +138,34 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
        // print(dict)
         self.userNameLbl.text! = dict.value(forKey: "name") as! String
         self.myProfileImgView.image = dict.value(forKey: "profileImage") as? UIImage
-        
     }
     
     func callAPI() {
+        let downloadGroup = DispatchGroup()
         if connectivity.isConnectedToInternet() {
+            downloadGroup.enter()
             self.profilesAPIHit()
+            downloadGroup.leave()
+           
+            downloadGroup.enter()
+            self.commonDataViewModel.getFollowerListFromAPI(actionUrl: apiUrl.followerListApiStr.rawValue) { (rMsg) in
+                self.ttlFollowers.setTitle("\(Singleton.sharedInstance.followerListArr.count)\nFollowers", for: .normal)
+            }
+            downloadGroup.leave()
+        
+            downloadGroup.enter()
+            self.commonDataViewModel.getFollowerListFromAPI(actionUrl: apiUrl.followingListApiStr.rawValue) { (rMsg) in
+                self.ttlFolowings.setTitle("\(Singleton.sharedInstance.followingListArr.count)\nFollowing", for: .normal)
+            }
+            downloadGroup.leave()
+            
+            downloadGroup.notify(queue: DispatchQueue.main) {
+                self.ttlFollowers.setTitle("\(Singleton.sharedInstance.followerListArr.count)\nFollowers", for: .normal)
+                self.ttlFolowings.setTitle("\(Singleton.sharedInstance.followingListArr.count)\nFollowing", for: .normal)
+            }
             
         } else {
             self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
-         //   CommonFunctions.showAlert(self, message: noInternet, title: appName)
-            
         }
     }
     
@@ -171,12 +196,8 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
             applicationDelegate.dismissProgressView(view: self.view)
             if connectivity.isConnectedToInternet() {
                 self.showToast(message: serverError, font: .systemFont(ofSize: 12.0))
-              //  CommonFunctions.showAlert(self, message: serverError, title: appName)
-                
             } else {
                 self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
-              //  CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
             }
         }
     }
@@ -187,13 +208,6 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         if Singleton.sharedInstance.fromMyProfileTabbarIndex == 2 {
             self.navigationController?.popToRootViewController(animated: true)
         }
-        
-//        let tabbbar = self.storyboard?.instantiateViewController(withIdentifier: "MytabbarControllerVc") as! MytabbarControllerVc
-//        tabbbar.selectedIndex = 2
-//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "savedCompositeVc") as! savedCompositeVc
-//        vc.comeFrom = myProfile
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @objc func tapMyCampSiteView() {
@@ -202,11 +216,6 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
         if Singleton.sharedInstance.fromMyProfileTabbarIndex == 3 {
             self.navigationController?.popToRootViewController(animated: true)
         }
-        
-//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MyCampsiteVc") as! MyCampsiteVc
-//        vc.comeFrom = myProfile
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @objc func tapMessageView() {
@@ -266,6 +275,20 @@ class MyProfileVC: UIViewController, updateProfileDelegate {
     @IBAction func tapBackBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         
+    }
+    
+    @IBAction func tapFollowerBtn(_ sender: Any) {
+        self.view.endEditing(true)
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FollowFollowingVC") as! FollowFollowingVC
+        vc.switchType = switchTypeStr.showFollower.rawValue
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @IBAction func tapFollowingsBtn(_ sender: Any) {
+        self.view.endEditing(true)
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "FollowFollowingVC") as! FollowFollowingVC
+        vc.switchType = switchTypeStr.showFollowings.rawValue
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

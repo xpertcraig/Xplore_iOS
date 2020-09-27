@@ -769,6 +769,25 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             cell.followUnfollowBtn.tag = indexPath.row
             cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowTripsBtn(sender:)), for: .touchUpInside)
             
+            let indexVal = (self.featuredArr.object(at: indexPath.row) as! NSDictionary)
+            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                cell.followUnfollowBtn.isHidden = true
+            } else {
+                let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                if followStatus == "0" {
+                    cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                    cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                    cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
+                  //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+                } else {
+                    cell.followUnfollowBtn.backgroundColor = UIColor.white
+                    cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                    cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
+                   // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+                }
+                cell.followUnfollowBtn.isHidden = false
+            }
+            
             if ((self.featuredArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
                 
                 cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
@@ -777,12 +796,17 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                     
                     cell.gradientView.isHidden = true
                     cell.featuredReviewImgView.contentMode = .center
-                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                        // Your code inside completion block
-                        cell.gradientView.isHidden = false
-                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                        
+                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                        //
                     }
+                    cell.gradientView.isHidden = false
+                    
+//                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                        // Your code inside completion block
+//                        cell.gradientView.isHidden = false
+//                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//
+//                    }
                     
                     //cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
                 }
@@ -802,7 +826,9 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 cell.autherImgView.sd_setShowActivityIndicatorView(true)
                 cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 
-                cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                    //
+                }
                 
                 
               //  cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
@@ -867,6 +893,25 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
             cell.followUnfollowBtn.tag = indexPath.row
             cell.followUnfollowBtn.addTarget(self, action: #selector(tapFollowUnfollowReviewBtn(sender:)), for: .touchUpInside)
             
+            let indexVal = (self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary)
+            if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                cell.followUnfollowBtn.isHidden = true
+            } else {
+                let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                if followStatus == "0" {
+                    cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                    cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                    cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
+                  //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+                } else {
+                    cell.followUnfollowBtn.backgroundColor = UIColor.white
+                    cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                    cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
+                   // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+                }
+                cell.followUnfollowBtn.isHidden = false
+            }
+            
             if ((self.reviewBasedArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campImages") as! NSArray).count != 0 {
                 
                 cell.featuredReviewImgView.sd_setShowActivityIndicatorView(true)
@@ -875,12 +920,18 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                     
                     cell.gradientView.isHidden = true
                     cell.featuredReviewImgView.contentMode = .center
-                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                        // Your code inside completion block
-                        cell.gradientView.isHidden = false
-                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                        
+                    
+                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                        //
                     }
+                    cell.gradientView.isHidden = false
+                    
+//                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                        // Your code inside completion block
+//                        cell.gradientView.isHidden = false
+//                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//
+//                    }
                     
                    // cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
                 }
@@ -920,7 +971,9 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                 cell.autherImgView.sd_setShowActivityIndicatorView(true)
                 cell.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
                 
-                cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                cell.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                    //
+                }
                 
                 //cell.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
                 
@@ -988,14 +1041,72 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
     
     //follow/unfollow
     @objc func tapFollowUnfollowTripsBtn(sender: UIButton) {
-           
+        if String(describing: ((self.featuredArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
+        } else {
+            if DataManager.isUserLoggedIn! == false {
+                self.loginAlertFunc(vc: "viewProfile", viewController: self)
+                
+            } else {
+                if connectivity.isConnectedToInternet() {
+                    applicationDelegate.startProgressView(view: self.view)
+                    let indexVal: NSDictionary = (self.featuredArr.object(at: sender.tag) as! NSDictionary)
+                    let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
+                    
+                    var apiToBeCalled: String = ""
+                    let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                    if followStatus == "0" {
+                        apiToBeCalled = apiUrl.followApi.rawValue
+                    } else {
+                        apiToBeCalled = apiUrl.unFollowApi.rawValue
+                    }
+                    print(param)
+                    self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
+                        print(rMsg)
+                        applicationDelegate.dismissProgressView(view: self.view)
+                        self.disptchG.enter()
+                        self.HomeAPIHit()
+                    }
+                } else {
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                    //CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                }
+            }
+        }
     }
     
     @objc func tapFollowUnfollowReviewBtn(sender: UIButton) {
         if String(describing: ((self.reviewBasedArr.object(at: sender.tag) as! NSDictionary).value(forKey: "campId"))!) == "0" {
             CommonFunctions.showAlert(self, message: postReviewFirst, title: appName)
         } else {
-            
+            if DataManager.isUserLoggedIn! == false {
+                self.loginAlertFunc(vc: "viewProfile", viewController: self)
+                
+            } else {
+                if connectivity.isConnectedToInternet() {
+                    applicationDelegate.startProgressView(view: self.view)
+                    let indexVal: NSDictionary = (self.reviewBasedArr.object(at: sender.tag) as! NSDictionary)
+                    let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
+                    
+                    var apiToBeCalled: String = ""
+                    let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                    if followStatus == "0" {
+                        apiToBeCalled = apiUrl.followApi.rawValue
+                    } else {
+                        apiToBeCalled = apiUrl.unFollowApi.rawValue
+                    }
+                    print(param)
+                    self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
+                        print(rMsg)
+                        applicationDelegate.dismissProgressView(view: self.view)
+                        self.disptchG.enter()
+                        self.HomeAPIHit()
+                    }
+                } else {
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                    //CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                }
+            }
         }
     }
     
@@ -1224,7 +1335,7 @@ extension HomeVc {
             
             let param: NSDictionary = ["userId": userId, "latitude": myCurrentLatitude, "longitude": myCurrentLongitude, "country": countryOnMyCurrentLatLong]
             
-       //     print(param)
+            print(param)
             
             AlamoFireWrapper.sharedInstance.getPost(action: "home.php", param: param as! [String : Any], onSuccess: { (responseData) in
                 

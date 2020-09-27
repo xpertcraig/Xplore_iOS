@@ -239,9 +239,9 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             
             self.autherImgView.sd_setShowActivityIndicatorView(true)
             self.autherImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
-            self.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
-          //  self.autherImgView.sd_setImage(with: URL(string: img), placeholderImage: UIImage(named: ""))
-            
+            self.autherImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit) { (rSuccess) in
+                //
+            }
         }        
         self.autherNameLbl.text = (recDict.value(forKey: "authorName") as? String)
         
@@ -877,13 +877,17 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
             
             cell.gradientView.isHidden = true
             cell.featuredReviewImgView.contentMode = .center
-            cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                // Your code inside completion block
-                cell.gradientView.isHidden = false
-                cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                
-            }
+//            cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                // Your code inside completion block
+//                cell.gradientView.isHidden = false
+//                cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//                
+//            }
 
+            cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill) { (rSuccess) in
+                //
+            }
+            cell.gradientView.isHidden = false
             
             //cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
         }
@@ -934,8 +938,7 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
         }
     }
     
-    @objc func didfinishplaying(note : NSNotification)
-    {
+    @objc func didfinishplaying(note : NSNotification) {
         playerController.dismiss(animated: true,completion: nil)
 //        let alertview = UIAlertController(title:"Finished",message:"Video Finished",preferredStyle: .alert)
 //        alertview.addAction(UIAlertAction(title:"Ok",style: .default, handler: nil))
@@ -945,36 +948,27 @@ extension CampDescriptionVc : UICollectionViewDataSource,UICollectionViewDelegat
     func playerViewController(_ playerViewController: AVPlayerViewController, restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void) {
         let currentviewController =  navigationController?.visibleViewController
         
-        if currentviewController != playerViewController
-        {
+        if currentviewController != playerViewController {
             currentviewController?.present(playerViewController,animated: true,completion:nil)
         }
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let indexPath = NSIndexPath(row: indexPath.row, section: 0)
         
         let cell = collectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell
         let configuration = ImageViewerConfiguration { config in
-            
             config.imageView = cell.featuredReviewImgView
-            
         }
-        
         present(ImageViewerController(configuration: configuration), animated: true)
-
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             return CGSize(width: CGFloat(collectionView.frame.size.width), height: CGFloat(collectionView.frame.size.height))
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets.zero
-        
     }
     
     
@@ -1066,7 +1060,9 @@ extension CampDescriptionVc : UITableViewDelegate,UITableViewDataSource {
             cell.reviewGivenUserImgView.sd_setShowActivityIndicatorView(true)
             cell.reviewGivenUserImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
             if let img =  ((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
-                cell.reviewGivenUserImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+                cell.reviewGivenUserImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                    //
+                }
             }
             
           //  cell.reviewGivenUserImgView.sd_setImage(with: URL(string: ((self.reviewsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String)!), placeholderImage: UIImage(named: ""))

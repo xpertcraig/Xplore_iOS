@@ -374,7 +374,9 @@ extension NotificationVc :UITableViewDataSource ,UITableViewDelegate {
         cell.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         
         if let img =  (((self.myNotificationsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "userImage") as? String)) {
-            cell.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
        // cell.userImgView.sd_setImage(with: URL(string: (String(describing: (((self.myNotificationsArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "userImage") as! String))))), placeholderImage: UIImage(named: ""))

@@ -110,7 +110,9 @@ class ReviewDetailsVC: UIViewController {
         self.userImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         
         if let img =  (self.reviewDeatils.value(forKey: "profileImage") as? String) {
-            self.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            self.userImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
        // self.userImgView.sd_setImage(with: URL(string: (String(describing: (self.reviewDeatils.value(forKey: "profileImage"))!))), placeholderImage: UIImage(named: ""))
@@ -235,7 +237,9 @@ extension ReviewDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource 
         cell.campImgVIew.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         
         if let img =  (self.myGallaryImagesArr.object(at: indexPath.row) as? String) {
-            cell.campImgVIew.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit)
+            cell.campImgVIew.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
+                //
+            }
         }
         
       //  cell.campImgVIew.sd_setImage(with: URL(string: (String(describing:self.myGallaryImagesArr.object(at: indexPath.row)))), placeholderImage: UIImage(named: ""))

@@ -14,7 +14,9 @@ class MyCampsiteVc: UIViewController {
     
     @IBOutlet weak var userNameBtn: UIButton!
     @IBOutlet weak var draftButton: UIButton!
+    @IBOutlet weak var draftUnderLbl: UILabel!
     @IBOutlet weak var publishedButton: UIButton!
+    @IBOutlet weak var publishedUnderLbl: UILabel!
     @IBOutlet weak var mainAllContentView: UIView!
     @IBOutlet weak var publishSavedCollView: UICollectionView!
     @IBOutlet weak var overlayView: UIView!
@@ -70,10 +72,12 @@ class MyCampsiteVc: UIViewController {
             self.onDraftBtn()
             
         } else {
-            self.publishedButton.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-            self.publishedButton.setTitleColor(UIColor.white , for: .normal)
+            self.publishedButton.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.publishedUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+            self.publishedButton.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
                
-            self.draftButton.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.draftButton.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            self.draftUnderLbl.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
             self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
             
         }
@@ -434,11 +438,13 @@ class MyCampsiteVc: UIViewController {
         } else {
             self.collArr = self.draftArr
         }
-        draftButton.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        draftButton.setTitleColor(UIColor.white , for: .normal)
+        draftButton.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.draftUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        draftButton.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
         
-        publishedButton.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        publishedButton.setTitleColor(UIColor.darkGray, for: .normal)
+        publishedButton.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.publishedUnderLbl.backgroundColor = UIColor(red: 236/255, green: 237/255, blue: 238/255, alpha: 1.0)
+        publishedButton.setTitleColor(UIColor.lightGray, for: .normal)
         
         self.publishSavedCollView.reloadData()
     }
@@ -454,11 +460,13 @@ class MyCampsiteVc: UIViewController {
         
         self.collArr = self.publishCampArr
         
-        self.publishedButton.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
-        self.publishedButton.setTitleColor(UIColor.white , for: .normal)
+        self.publishedButton.backgroundColor = UIColor.clear //UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.publishedUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
+        self.publishedButton.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
         
-        self.draftButton.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.draftButton.setTitleColor(UIColor.darkGray, for: .normal)
+        self.draftButton.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.draftUnderLbl.backgroundColor = UIColor(red: 236/255, green: 237/255, blue: 238/255, alpha: 1.0)
+        self.draftButton.setTitleColor(UIColor.lightGray, for: .normal)
         
         self.publishSavedCollView.reloadData()
     }
@@ -603,12 +611,18 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UI
                     
                     cell.gradientView.isHidden = true
                     cell.featuredReviewImgView.contentMode = .center
-                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
-                        // Your code inside completion block
-                        cell.gradientView.isHidden = false
-                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
-                        
+                    
+                    cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                        //
                     }
+                    cell.gradientView.isHidden = false
+                    
+//                    cell.featuredReviewImgView.sd_setImage(with: URL(string: img)) { (image, error, cache, url) in
+//                        // Your code inside completion block
+//                        cell.gradientView.isHidden = false
+//                        cell.featuredReviewImgView.contentMode = .scaleAspectFill
+//
+//                    }
                     
                   //  cell.featuredReviewImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill)
                 }
