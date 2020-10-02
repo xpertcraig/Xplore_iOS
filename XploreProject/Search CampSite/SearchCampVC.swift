@@ -99,7 +99,10 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
         } else {
             self.notificationCountLbl.text! = "\(notificationCount)"
         }
-        
+        if let uName = DataManager.name as? String {
+            let fName = uName.components(separatedBy: " ")
+            self.userNameBtn.setTitle(fName[0], for: .normal)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

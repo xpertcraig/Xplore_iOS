@@ -169,9 +169,9 @@ class MyCampsiteVc: UIViewController {
             self.onDraftBtn()
         } else if self.firstTime == false {
             fromSaveDraft = false
+            self.firstTime = true
             Singleton.sharedInstance.fromMyProfile = false
             self.setInitialDesign()
-            self.firstTime = true
         }
         
         self.mainAllContentView.isHidden = false
@@ -180,13 +180,19 @@ class MyCampsiteVc: UIViewController {
     
     func startAnimateAcitivity() {
         self.activityView.isHidden = false
-        self.activityViewHeight.constant = 80
+        DispatchQueue.main.async {
+            self.activityViewHeight.constant = 80
+        }
+        
         self.activityIndicator.startAnimating()
     }
     
     func stopAnimateAcitivity() {
         self.activityView.isHidden = true
-        self.activityViewHeight.constant = 0
+        DispatchQueue.main.async {
+            self.activityViewHeight.constant = 0
+        }
+        
         self.activityIndicator.stopAnimating()
     }
     
@@ -203,14 +209,20 @@ class MyCampsiteVc: UIViewController {
         self.recallAPIView.isHidden = true
         self.overlayView.isHidden = true
      
-        if self.comeFrom == myProfile || Singleton.sharedInstance.fromMyProfileTabbarIndex != 3 {
+        if self.comeFrom == myProfile || Singleton.sharedInstance.fromMyProfileTabbarIndex != 3  {
             //self.comeFrom = ""
-            self.backBtnWidth.constant = 50
+            DispatchQueue.main.async {
+                self.backBtnWidth.constant = 50
+            }
+            
             self.backBtn.isHidden = false
             self.backBtnImgView.isHidden = false
             
         } else {
-            self.backBtnWidth.constant = 20
+            DispatchQueue.main.async {
+                self.backBtnWidth.constant = 20
+            }
+            
             self.backBtn.isHidden = true
             self.backBtnImgView.isHidden = true
         }
@@ -571,7 +583,9 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UI
             cell.reviewFeaturedStarView.isHidden = true
             cell.ttlReviewLbl.isHidden = true
             
-            cell.addressTopConstraint.constant = 0
+            DispatchQueue.main.async {
+                cell.addressTopConstraint.constant = 0
+            }
 
             if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String) != "" && ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String) != "" {
                 cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress1") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campAddress2") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "city") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "state") as! String)+", "+((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "country") as! String)
@@ -641,7 +655,10 @@ extension MyCampsiteVc :UICollectionViewDataSource ,UICollectionViewDelegate, UI
             cell.reviewFeaturedStarView.rating = Double(String(describing: ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campRating"))!))!
             cell.ttlReviewLbl.text! = (String(describing: (((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campTotalReviews")))!)) + " review"
             
-            cell.addressTopConstraint.constant = 8
+            DispatchQueue.main.async {
+                cell.addressTopConstraint.constant = 8
+            }
+            
             if ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as? NSDictionary) != nil {
                 
                 let addr = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String

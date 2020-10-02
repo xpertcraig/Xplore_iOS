@@ -96,7 +96,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             
             if self.sing.reviewViewAllArr.count > 0 {
                 self.dataContainingView.isHidden = false
-                self.reloadTbl(arrR: self.sing.featuredViewAllArr, pageR: 0)
+                self.reloadTbl(arrR: self.sing.reviewViewAllArr, pageR: 0)
             }
         } else {
             self.campsiteTypeLbl.text! = allCamps
@@ -356,19 +356,18 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         var api1: String = ""
         var api2: String = ""
         
-      //  if self.comeFrom != myProfile {
+        if self.comeFrom != myProfile {
             if let userId1 = DataManager.userId as? String {
                 userId = userId1
-                
             }
-     //   }
+        }
         
      //   http://clientstagingdev.com/explorecampsite/api/userPublished.php?userId=43&offset=0&userCamps=33
         //&country\(countryOnMyCurrentLatLong)
         if comeFrom == myProfile {
-            api1 = "userPublished.php?userId=" + userId //+ userId
+            api1 = "userPublished.php?userId=" + userId  //+ userId
             
-            api2 = "&offset=\(pageNum)&userCamps=\(userId)"
+            api2 = "&offset=\(pageNum)&userCamps=\(userId)&loginId=\(DataManager.userId as? String ?? "0")"
         } else if comeFrom == featuredBased {
             api1 = "featuredCampsites.php?userId=" + userId
             
@@ -422,15 +421,13 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     func revieweBasedAPIHit(pageNum: Int) {
         if self.featuredReviewArr.count == 0 {
             applicationDelegate.startProgressView(view: self.view)
-         
         }
         if let userId1 = DataManager.userId as? String {
             userId = userId1
-            
         }
         
         let apo1: String = "reviewCampsites.php?userId=" + userId
-        let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)&country=\(countryOnMyCurrentLatLong)"
+        let api2:String = "&latitude=" + String(describing: (myCurrentLatitude)) + "&longitude=" + String(describing: (myCurrentLongitude))+"&toggle="+self.ascDscToggle+"&offset=\(pageNum)&country=\(countryOnMyCurrentLatLong)&loginId=\(DataManager.userId as? String ?? "0")"
         
         let api:String = apo1 + api2
         
@@ -556,9 +553,9 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
                     
                    // print(dict)
                    // self.resetPaginationVar()
-                    let pagN = self.campIndex+1/5
-                    self.pageNo = pagN
-                    self.limit = (pagN+1)*5
+                    let pagN: Float = Float(self.campIndex/5)
+                    self.pageNo = Int(pagN)
+                    self.limit = Int(pagN+1)*5
                     if self.searchType == filter {
                         self.filterApiHit(pageNum: self.pageNo)
 

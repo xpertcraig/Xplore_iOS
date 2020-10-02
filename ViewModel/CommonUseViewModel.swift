@@ -317,7 +317,7 @@ extension CommonUseViewModel {
         }
         var apiUrl: String = ""
         if apistartStr == "reviewCampsites.php?userId=" {
-            apiUrl = "\(apistartStr)\(userId)&latitude=\(myCurrentLatitude)&longitude=\(myCurrentLongitude)&toggle=\(0)&offset=\(0)&country=\(countryOnMyCurrentLatLong)"
+            apiUrl = "\(apistartStr)\(userId)&latitude=\(myCurrentLatitude)&longitude=\(myCurrentLongitude)&toggle=\(0)&offset=\(0)&country=\(countryOnMyCurrentLatLong)&loginId=\(DataManager.userId as? String ?? "0")"
         } else if apistartStr == "publishedCampsite.php?userId=" || apistartStr == "favouriteCampsite.php?userId=" {
             apiUrl = "\(apistartStr)\(userId)&offset=\(0)"
         } else {
@@ -495,11 +495,12 @@ extension CommonUseViewModel {
                     if let retValues = (dict["result"]! as? Int) {
                         print(retValues)
                     }
+                    completion(success)
                     self.getFollowerListFromAPI(actionUrl: apiUrl.followerListApiStr.rawValue) { (rMsg) in
-                        completion(success)
+//                        completion(success)
                     }
                     self.getFollowerListFromAPI(actionUrl: apiUrl.followingListApiStr.rawValue) { (rMsg) in
-                        completion(success)
+                       // completion(success)
                     }
                     //completion(success)
                 

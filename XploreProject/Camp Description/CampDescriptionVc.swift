@@ -94,6 +94,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     
     @IBOutlet weak var topNavigationView: UIView!
     @IBOutlet weak var topNavigationHeight: NSLayoutConstraint!
+    @IBOutlet weak var followUnfollowBtn: UIButtonCustomClass!
     
     //MARK:- Variable Declaration
    // var nibContents = Bundle.main.loadNibNamed("MarkAbouseAlert", owner: nil, options: nil)
@@ -102,11 +103,11 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
     var myCampImgArr: NSArray = []
     var detailLongLat: CLLocation!
     var reviewsArr: NSArray = []
-    
+    private let commonDataViewModel = CommonUseViewModel()
     var timer:Timer? = nil
     
     var selectedAnnotation: MKPointAnnotation?
-    var campDetailDict: NSDictionary = [:]
+    var campDetailDict: NSMutableDictionary = [:]
    
     var playerController = AVPlayerViewController()
     
@@ -228,10 +229,8 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         }
         self.addressLbl.text = ""
         
-      //  self.addressLbl.text = (recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String
         self.mapBelowAddrLbl.text = (recDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String
         
-     //   let reducedNumberSum = (recDict.value(forKey: "ratingsArray") as! NSArray).reduce(0) { (Int(String(describing: ($0))))! + (Int(String(describing: ($1))))! }
         self.ratingLbl.text = String(describing: (recDict.value(forKey: "campRating"))!)
         self.ttlRatingLbl.text = String(describing: (recDict.value(forKey: "campRating"))!)
         
@@ -245,6 +244,13 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         }        
         self.autherNameLbl.text = (recDict.value(forKey: "authorName") as? String)
         
+      // set follow/unfollow status
+        if String(describing: (DataManager.userId)) == String(describing: (recDict.value(forKey: "campAuthor"))!) {
+            self.followUnfollowBtn.isHidden = true
+        } else {
+            let followStatus = "\(recDict.value(forKey: "follow") as? Int ?? 0)"
+            self.setFollowUnfollowBtnApearance(status: followStatus)
+        }
         
         self.ratingView.rating = Double(String(describing: (recDict.value(forKey: "campRating"))!))!
         self.ratingStarView.rating = Double(String(describing: (recDict.value(forKey: "campRating"))!))!
@@ -287,6 +293,19 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         
         self.showLocation(latti: self.detailLongLat.coordinate.latitude, longi: self.detailLongLat.coordinate.longitude)
         
+    }
+    
+    func setFollowUnfollowBtnApearance(status: String) {
+        if status == "0" {
+            self.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+            self.followUnfollowBtn.setTitle("Follow", for: .normal)
+            self.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
+        } else {
+            self.followUnfollowBtn.backgroundColor = UIColor.white
+            self.followUnfollowBtn.setTitle("Following", for: .normal)
+            self.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
+        }
+        self.followUnfollowBtn.isHidden = false
     }
     
     func showLocation(latti: Double, longi: Double) {
@@ -609,6 +628,50 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         self.selectedAnnotation?.title = (self.campDetailDict.value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as? String
         
     }
+    
+    @IBAction func tapFollowUnfollowBtn(_ sender: Any) {
+        self.view.endEditing(true)
+        if String(describing: (self.campDetailDict.value(forKey: "campId"))!) == "0" {
+            CommonFunctions.showAlert(self, message: noCampAtLoc, title: appName)
+        } else {
+            if DataManager.isUserLoggedIn! == false {
+                self.loginAlertFunc(vc: "viewProfile", viewController: self)
+                
+            } else {
+                if connectivity.isConnectedToInternet() {
+                    applicationDelegate.startProgressView(view: self.view)
+                    let indexVal: NSDictionary = self.campDetailDict
+                    let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
+                    
+                    var apiToBeCalled: String = ""
+                    let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
+                    if followStatus == "0" {
+                        apiToBeCalled = apiUrl.followApi.rawValue
+                    } else {
+                        apiToBeCalled = apiUrl.unFollowApi.rawValue
+                    }
+                   // print(param)
+                    self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
+                        print(rMsg)
+                        applicationDelegate.dismissProgressView(view: self.view)
+                       if followStatus == "0" {
+                            self.campDetailDict["follow"] = 1
+                            self.setFollowUnfollowBtnApearance(status: "1")
+                       } else {
+                            self.campDetailDict["follow"] = 0
+                            self.setFollowUnfollowBtnApearance(status: "0")
+                       }
+                    }
+                } else {
+                    self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
+                    //CommonFunctions.showAlert(self, message: noInternet, title: appName)
+                }
+            }
+        }
+
+        
+    }
+    
 }
 
 extension CampDescriptionVc {
@@ -639,7 +702,7 @@ extension CampDescriptionVc {
                  //   print(retDict)
                     self.scroolView.isHidden = false
                     self.recallAPIView.isHidden = true
-                    self.campDetailDict = retDict
+                    self.campDetailDict = retDict.mutableCopy() as! NSMutableDictionary
                     
                     let typeStr = (retDict.value(forKey: "campgroundType") as! NSArray).componentsJoined(by: ", ") // "1,2,3"
                     let bstMnth = (retDict.value(forKey: "bestMonth") as! NSArray).componentsJoined(by: ", ")
@@ -701,39 +764,14 @@ extension CampDescriptionVc {
                     } else {
                         self.reviewTblVIewContainingVIew.isHidden = false
                         self.beTheFirstLbl.isHidden = true
-//                        self.reviewTableView.reloadData()
-//
-//                        self.revieTableHeight.constant = self.reviewTableView.contentSize.height
-//                        self.reviewTableView.layoutIfNeeded()
-                        
-                        //self.reviewTableView.reloadData()
-                        
                     }
                     self.reviewTableView.reloadData()
                     
-                    self.revieTableHeight.constant = self.reviewTableView.contentSize.height 
-                    
-                  //  print("height==\(self.reviewTableView.contentSize.height)")
-               //     print("height constant==\(self.revieTableHeight.constant)")
-                        
-                   
-                    
+                    self.revieTableHeight.constant = self.reviewTableView.contentSize.height
                     self.reviewTableView.layoutIfNeeded()
-                    
-                   // print(retDict)
                     
                     ///
                     self.myCampImgArr = retDict.value(forKey: "campImages") as! NSArray
-                    if let campVid = retDict["campsiteVideo"] as? String {
-                        if campVid != "" {
-                          //  self.myCampImgArr = self.myCampImgArr.reversed() as NSArray
-                            
-                        }
-                    }
-                    
-                    
-              //      print(self.reviewsArr)
-              
                     //pageControl
                     self.pageControl.numberOfPages = self.myCampImgArr.count
                     self.myCampImgesCollView.reloadData()

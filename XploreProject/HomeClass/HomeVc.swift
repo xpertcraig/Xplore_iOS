@@ -1063,7 +1063,7 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                     print(param)
                     self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
                         print(rMsg)
-                        applicationDelegate.dismissProgressView(view: self.view)
+                       // applicationDelegate.dismissProgressView(view: self.view)
                         self.disptchG.enter()
                         self.HomeAPIHit()
                     }
@@ -1098,7 +1098,7 @@ extension HomeVc :UICollectionViewDataSource ,UICollectionViewDelegate , UIColle
                     print(param)
                     self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
                         print(rMsg)
-                        applicationDelegate.dismissProgressView(view: self.view)
+//                        applicationDelegate.dismissProgressView(view: self.view)
                         self.disptchG.enter()
                         self.HomeAPIHit()
                     }

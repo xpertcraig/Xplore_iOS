@@ -696,10 +696,6 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
             }
             cell.locationAddressLbl.text! = trimmedAddr
             
-            
-       //     cell.locationAddressLbl.text! = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campaddress") as! NSDictionary).value(forKey: "address") as! String
-            
-            
         }
         
         if let img = ((self.collArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "profileImage") as? String) {
@@ -722,23 +718,6 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
             
         }
         
-        if campType == favouritesCamp {
-            cell.favouriteButton.isHidden = false
-            
-            cell.removeDraftBtn.isHidden = true
-            cell.followUnfollowBtn.isHidden = false
-        } else {
-            cell.favouriteButton.isHidden = true
-            cell.followUnfollowBtn.isHidden = true
-            cell.removeDraftBtn.isHidden = false
-            cell.removeDraftBtn.tag = indexPath.row
-            cell.removeDraftBtn.addTarget(self, action: #selector(discardSavedCampBtn(sender:)), for: .touchUpInside)
-            
-            let image = UIImage(named: "trash")?.withRenderingMode(.alwaysTemplate)
-            cell.removeDraftBtn.setImage(image, for: .normal)
-            cell.removeDraftBtn.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
-        }
-        
         cell.tapProfilePicBtn.tag = indexPath.row
         cell.tapProfilePicBtn.addTarget(self, action: #selector(tapFevoritesProfilePicBtn(sender:)), for: .touchUpInside)
         
@@ -753,6 +732,23 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
            // cell.playBtn.isHidden = true
             cell.playImg.isHidden = true
             
+        }
+        
+        if campType == favouritesCamp {
+            cell.favouriteButton.isHidden = false
+            
+            cell.removeDraftBtn.isHidden = true
+          //  cell.followUnfollowBtn.isHidden = false
+        } else {
+            cell.favouriteButton.isHidden = true
+            cell.followUnfollowBtn.isHidden = true
+            cell.removeDraftBtn.isHidden = false
+            cell.removeDraftBtn.tag = indexPath.row
+            cell.removeDraftBtn.addTarget(self, action: #selector(discardSavedCampBtn(sender:)), for: .touchUpInside)
+            
+            let image = UIImage(named: "trash")?.withRenderingMode(.alwaysTemplate)
+            cell.removeDraftBtn.setImage(image, for: .normal)
+            cell.removeDraftBtn.tintColor = UIColor(red: 234/255, green: 102/255, blue: 7/255, alpha: 1.0)
         }
         
         return cell
@@ -906,6 +902,7 @@ extension savedCompositeVc {
             self.upToLimit = self.upToLimit + (arrR.count)
             
         }
+        let count: Int = self.favouriteCampArr.count
         if pageR == 0 {
             self.favouriteCampArr = []
             
@@ -918,7 +915,7 @@ extension savedCompositeVc {
             }
         }
         
-        let count: Int = self.favouriteCampArr.count
+        
         for i in 0..<arrR.count {
             self.favouriteCampArr.add(arrR.object(at: i) as! NSDictionary)
             
@@ -944,6 +941,8 @@ extension savedCompositeVc {
                 self.favouriteSavedCollView.scrollToItem(at: indexpathG, at: .top, animated: true)
                 self.favouriteSavedCollView.setNeedsLayout()
                 
+            } else {
+                self.favouriteSavedCollView.reloadData()
             }
         }
     }
