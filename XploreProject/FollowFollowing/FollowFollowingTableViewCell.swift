@@ -61,7 +61,7 @@ class FollowFollowingTableViewCell: UITableViewCell {
                 self.followYourFollowingBtn.isHidden = true
             }
         } else {
-            self.followUnfollowRemoveBtn.setTitle("Following", for: .normal)
+            self.followUnfollowRemoveBtn.setTitle("Unfollow", for: .normal)
             self.followUnfollowRemoveBtn.setTitleColor(UIColor.appThemeGreenColor() , for: .normal)
             self.followUnfollowRemoveBtn.layer.borderColor = UIColor.appThemeGreenColor().cgColor
             self.followYourFollowingBtnWidth.constant = 0

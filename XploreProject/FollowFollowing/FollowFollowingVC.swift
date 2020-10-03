@@ -60,6 +60,8 @@ class FollowFollowingVC: UIViewController {
     
     //MARK:- Function Definitions
     func initailSetUp() {
+        let textFieldInsideSearchBar = self.searchBarField.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.darkGray
         self.checkSwitchType()
         self.noDataAvailableLbl.isHidden = true
         //api

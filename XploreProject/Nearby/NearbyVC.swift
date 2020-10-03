@@ -31,7 +31,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
     
     var recLat: String = ""
     var recLong: String = ""
-    var zoom: Int = 16
+    var zoom: Int = 100
     var selectedIndex: Int = 0
     var delegateCaleed: Int = 0
     var apiCalled: Bool = false
@@ -131,7 +131,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         self.showMapVIew.isMyLocationEnabled = true
         self.showMapVIew.padding = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.showMapVIew.settings.myLocationButton = true
-        let camera = GMSCameraPosition.camera(withLatitude: sendLat, longitude: sendLong, zoom: Float(self.lastZoom))
+        let camera = GMSCameraPosition.camera(withLatitude: sendLat, longitude: sendLong, zoom: Float(6))
         self.showMapVIew.animate(to: camera)
         
     }
@@ -140,7 +140,7 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         self.showMapVIew.isMyLocationEnabled = true
         self.showMapVIew.padding = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.showMapVIew.settings.myLocationButton = true
-        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: Float(self.lastZoom))
+        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: Float(6))
 
         showMapVIew.camera = camera
         self.showMapVIew.animate(to: camera)
@@ -253,10 +253,14 @@ class NearbyVC: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate, 
         //
         let currentZoom: Float = (self.showMapVIew.camera.zoom)
         
-        let camera = GMSCameraPosition.camera(withLatitude: Double(self.recLat)!, longitude: Double(self.recLong)!, zoom: currentZoom)
+        let address = infoWindow.spotData?["campaddress"] as? [String: Any]
+        let cameraOnLat = address?["lat"] as? String ?? "0.00"
+        let cameraOnLong = address?["lng"] as? String ?? "0.00"
+        
+        let camera = GMSCameraPosition.camera(withLatitude: Double(cameraOnLat)!, longitude: Double(cameraOnLong)!, zoom: 8)
         self.showMapVIew.camera = camera
         
-        let update = GMSCameraUpdate.zoom(by: 4)
+        let update = GMSCameraUpdate.zoom(by: 2)
         self.showMapVIew.animate(with: update)
         
         

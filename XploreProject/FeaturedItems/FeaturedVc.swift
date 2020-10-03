@@ -841,7 +841,7 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
               //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
             } else {
                 cell.followUnfollowBtn.backgroundColor = UIColor.white
-                cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                cell.followUnfollowBtn.setTitle("Unfollow", for: .normal)
                 cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
                // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
             }

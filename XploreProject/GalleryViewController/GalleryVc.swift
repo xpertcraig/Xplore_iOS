@@ -10,6 +10,7 @@ import UIKit
 
 import AVKit
 import AVFoundation
+import SimpleImageViewer
 
 class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerDelegate {
 
@@ -337,13 +338,19 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
         cell.mygallaryImgView.sd_setShowActivityIndicatorView(true)
         cell.mygallaryImgView.sd_setIndicatorStyle(UIActivityIndicatorViewStyle.gray)
         if let img =  ((self.gallaryArr.object(at: indexPath.row)) as? String) {
-            cell.mygallaryImgView.loadImageFromUrl(urlString: img, placeHolderImg: "", contenMode: .scaleAspectFit){ (rSuccess) in
-                //
+            if collectionView.tag == 0 {
+                cell.mygallaryImgView.contentMode = .center
+                cell.mygallaryImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFit){ (rSuccess) in
+                    //
+                }
+            } else {
+                cell.mygallaryImgView.contentMode = .scaleAspectFit
+                cell.mygallaryImgView.loadImageFromUrl(urlString: img, placeHolderImg: "PlaceHolder", contenMode: .scaleAspectFill){ (rSuccess) in
+                    //
+                }
             }
         }
         
-       // cell.mygallaryImgView.sd_setImage(with: URL(string: (String(describing: (self.gallaryArr.object(at: indexPath.row))))), placeholderImage: UIImage(named: ""))
-       
         if (self.videoindex) != "-1" && (self.videoindex) != "0" && (self.videoindex) != "" && (self.videoindex) != "" {
             if indexPath.row == Int(self.videoindex)! - 1 {
                 cell.playBtn.isHidden = false
@@ -431,6 +438,14 @@ extension GalleryVc : UICollectionViewDelegate,UICollectionViewDataSource,UIColl
             self.previewGalleryCollView.reloadData()
             self.viewedIndex = indexPath
             self.pageControl.currentPage = indexPath.row
+        } else {
+            let indexPath = NSIndexPath(row: indexPath.row, section: 0)
+            
+            let cell = collectionView.cellForItem(at: indexPath as IndexPath) as! GalleryCollectionViewCell
+            let configuration = ImageViewerConfiguration { config in
+                config.imageView = cell.mygallaryImgView
+            }
+            present(ImageViewerController(configuration: configuration), animated: true)
         }
     }
     

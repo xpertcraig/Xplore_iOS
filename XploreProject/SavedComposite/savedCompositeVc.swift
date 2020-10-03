@@ -74,6 +74,10 @@ class savedCompositeVc: UIViewController {
         self.favUnderLbl.backgroundColor = UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0)
         self.favouritesBtn.setTitleColor(UIColor(red: 0/255, green: 109/255, blue: 104/255, alpha: 1.0) , for: .normal)
         
+        self.savedBtn.backgroundColor = UIColor.clear //UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.savedUnderLbl.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.savedBtn.setTitleColor(UIColor.darkGray, for: .normal)
+        
         self.tabBarController?.selectedIndex = 2
         if Singleton.sharedInstance.favouritesCampArr.count > 0 {
             self.reloadData(arrR: Singleton.sharedInstance.favouritesCampArr, pageR: 0)
@@ -639,7 +643,7 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
               //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
             } else {
                 cell.followUnfollowBtn.backgroundColor = UIColor.white
-                cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                cell.followUnfollowBtn.setTitle("Unfollow", for: .normal)
                 cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
                // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
             }

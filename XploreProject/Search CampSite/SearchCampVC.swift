@@ -767,7 +767,7 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
                   //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
                 } else {
                     cell.followUnfollowBtn.backgroundColor = UIColor.white
-                    cell.followUnfollowBtn.setTitle("Following", for: .normal)
+                    cell.followUnfollowBtn.setTitle("Unfollow", for: .normal)
                     cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
                    // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
                 }

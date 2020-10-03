@@ -456,30 +456,10 @@ extension CommonUseViewModel {
 
         // Pre-configuring activity items
         if #available(iOS 13.0, *) {
+            activityViewController.isModalInPresentation = true
             activityViewController.activityItemsConfiguration = [
                 UIActivity.ActivityType.message
                 ] as? UIActivityItemsConfigurationReading
-        } else {
-            // Fallback on earlier versions
-        }
-
-        // Anything you want to exclude
-//        activityViewController.excludedActivityTypes = [
-//            UIActivity.ActivityType.postToWeibo,
-//            UIActivity.ActivityType.print,
-//            UIActivity.ActivityType.assignToContact,
-//            UIActivity.ActivityType.saveToCameraRoll,
-//            UIActivity.ActivityType.addToReadingList,
-//            UIActivity.ActivityType.postToFlickr,
-//            UIActivity.ActivityType.postToVimeo,
-//            UIActivity.ActivityType.postToTencentWeibo
-//            UIActivity.ActivityType.postToFacebook
-//        ]
-
-        if #available(iOS 13.0, *) {
-            activityViewController.isModalInPresentation = true
-        } else {
-            // Fallback on earlier versions
         }
         vc.present(activityViewController, animated: true, completion: nil)
         

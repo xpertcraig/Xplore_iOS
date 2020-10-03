@@ -302,7 +302,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
             self.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
         } else {
             self.followUnfollowBtn.backgroundColor = UIColor.white
-            self.followUnfollowBtn.setTitle("Following", for: .normal)
+            self.followUnfollowBtn.setTitle("Unfollow", for: .normal)
             self.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
         }
         self.followUnfollowBtn.isHidden = false
@@ -671,7 +671,18 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
 
         
     }
-    
+ 
+    @IBAction func tapShareBtn(_ sender: Any) {
+        let indexP = IndexPath(item: 0, section: 0)
+        let cell = self.myCampImgesCollView.cellForItem(at: indexP) as? CustomCell
+        
+        let indexVal = self.campDetailDict
+        let campTitle = indexVal.value(forKey: "campTitle") as! String
+        let campImgArr = indexVal.value(forKey: "campImages") as! [String]
+        let campImg = campImgArr[0]
+        
+        self.commonDataViewModel.shareAppLinkAndImage(campTitle: "\(campTitle)\n" , campImg: (cell?.featuredReviewImgView.image)!, campimg1: campImg, sender: sender as! UIButton, vc: self)
+    }
 }
 
 extension CampDescriptionVc {
