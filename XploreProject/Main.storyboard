@@ -5339,7 +5339,7 @@
                                                 </cells>
                                             </collectionView>
                                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Yib-9U-beo">
-                                                <rect key="frame" x="326" y="372" width="39" height="37"/>
+                                                <rect key="frame" x="326" y="365.5" width="39" height="37"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </pageControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REVIEW BASED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ae-cc-p8z">
@@ -5728,7 +5728,7 @@
                                             <constraint firstItem="4Zy-mK-7G0" firstAttribute="centerY" secondItem="HDf-oX-V8y" secondAttribute="centerY" multiplier="1.085" id="CpT-fp-Rnz"/>
                                             <constraint firstAttribute="bottom" secondItem="vvh-Rs-027" secondAttribute="bottom" id="Fgr-ar-Xwt"/>
                                             <constraint firstItem="X9b-ci-2Az" firstAttribute="leading" secondItem="irs-SD-ewQ" secondAttribute="leading" id="Idi-b3-XGF"/>
-                                            <constraint firstItem="Yib-9U-beo" firstAttribute="centerY" secondItem="X9b-ci-2Az" secondAttribute="centerY" multiplier="1.2" id="JSx-Lm-tfr"/>
+                                            <constraint firstItem="Yib-9U-beo" firstAttribute="centerY" secondItem="X9b-ci-2Az" secondAttribute="centerY" multiplier="1.18" id="JSx-Lm-tfr"/>
                                             <constraint firstAttribute="trailing" secondItem="X9b-ci-2Az" secondAttribute="trailing" id="JXH-fb-zAs"/>
                                             <constraint firstItem="HDf-oX-V8y" firstAttribute="trailing" secondItem="X9b-ci-2Az" secondAttribute="trailing" id="Mva-3J-mFy"/>
                                             <constraint firstItem="S38-GW-Efr" firstAttribute="centerY" secondItem="d8B-gN-DZQ" secondAttribute="centerY" id="Oaj-jk-ZJf"/>
@@ -11645,6 +11645,7 @@
                                                 <connections>
                                                     <outlet property="autherImgView" destination="UKA-QA-PT7" id="ptX-Fv-pWU"/>
                                                     <outlet property="autherNameLbl" destination="hF6-AA-WsU" id="cTR-Jo-erb"/>
+                                                    <outlet property="favBtnWidth" destination="BED-q8-Ba7" id="CfL-x3-BSY"/>
                                                     <outlet property="favouriteButton" destination="FLT-hZ-O9T" id="Uxt-G2-z1H"/>
                                                     <outlet property="featuredReviewImgView" destination="8en-zq-IhE" id="Lc4-5j-0q6"/>
                                                     <outlet property="followUnfollowBtn" destination="lkB-Dc-KhK" id="gUC-BX-WCk"/>
@@ -15091,7 +15092,7 @@ Following</string>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.0" green="0.42745098040000001" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="1"/>
@@ -15124,7 +15125,7 @@ Following</string>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.0" green="0.42745098040000001" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="1"/>
@@ -15157,7 +15158,7 @@ Following</string>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.0" green="0.42745098040000001" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="1"/>
@@ -15190,7 +15191,7 @@ Following</string>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.0" green="0.42745098040000001" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                         <real key="value" value="1"/>
@@ -19272,7 +19273,7 @@ Following</string>
                                             <action selector="tapAddCampsiteBtn:" destination="cmd-Xy-kPx" eventType="touchUpInside" id="CMq-t0-xs1"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nOZ-aI-g7i">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nOZ-aI-g7i">
                                         <rect key="frame" x="379" y="0.0" width="35" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="35" id="DI1-0X-H1Q"/>
@@ -19718,6 +19719,6 @@ Following</string>
         <image name="upload video" width="169" height="169"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Acs-Mc-t6a"/>
+        <segue reference="2IF-Kg-P59"/>
     </inferredMetricsTieBreakers>
 </document>

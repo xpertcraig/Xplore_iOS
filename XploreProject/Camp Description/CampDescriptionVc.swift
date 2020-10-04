@@ -639,6 +639,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
                 
             } else {
                 if connectivity.isConnectedToInternet() {
+                    Singleton.sharedInstance.updateFavOrFollowStatusInDes = true
                     applicationDelegate.startProgressView(view: self.view)
                     let indexVal: NSDictionary = self.campDetailDict
                     let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
@@ -815,7 +816,7 @@ extension CampDescriptionVc {
     //MARK:- Api's Hit
     func FavUnfavAPIHit(){
         applicationDelegate.startProgressView(view: self.view)
-        
+        Singleton.sharedInstance.updateFavOrFollowStatusInDes = true
         AlamoFireWrapper.sharedInstance.getOnlyApi(action: "markFavourite.php?userId=" + (DataManager.userId as! String) + "&campId=" + String(describing: (self.campId)), onSuccess: { (responseData) in
             self.markAsFavBtn.isUserInteractionEnabled = true
             

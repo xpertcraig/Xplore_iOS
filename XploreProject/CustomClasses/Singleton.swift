@@ -47,6 +47,7 @@ final class Singleton {
     var campId: String = ""
     var notiType: String = ""
     var messageSentUserId: String = ""
+    var updateFavOrFollowStatusInDes: Bool = false
     
     var interstitial: GADInterstitial!
     var timerAdd = Timer()

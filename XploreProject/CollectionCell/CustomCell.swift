@@ -24,6 +24,7 @@ class CustomCell: UICollectionViewCell {
     @IBOutlet weak var tapProfilePicBtn: UIButton!
     
     @IBOutlet weak var favouriteButton: UIButton!
+    @IBOutlet weak var favBtnWidth: NSLayoutConstraint!
     @IBOutlet weak var viewAll: UIButton!
     
     @IBOutlet weak var removeDraftBtn: UIButton!    

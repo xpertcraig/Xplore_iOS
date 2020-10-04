@@ -55,6 +55,7 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     var pageNo:Int = 0
     var limit:Int = 5
     var upToLimit = 0
+    var fromCampDes: Bool = false
     
     var autherInfo: [String: Any] = [:]
     let sing = Singleton.sharedInstance
@@ -113,14 +114,18 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         
         self.overlayview.isHidden = true
         favMarkbottomConstraint.constant = 150
-        //call api
-        self.callAPI()
         
         //refresh controll
         self.refreshData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if self.campIndex == -1 || Singleton.sharedInstance.updateFavOrFollowStatusInDes == true {
+            Singleton.sharedInstance.updateFavOrFollowStatusInDes = false
+            //call api
+            self.callAPI()
+        }
+        
         if DataManager.isUserLoggedIn! == true {
             self.topNavigationView.isHidden = false
             self.topNavigationHeight.constant = 44
@@ -199,8 +204,12 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
     
     func callAPI() {
         if connectivity.isConnectedToInternet() {
+            if self.fromCampDes == false {
+                self.resetPaginationVar()
+            } else {
+                self.fromCampDes = false
+            }
             
-            self.resetPaginationVar()
             if self.searchType == filter {
                 self.filterApiHit(pageNum: pageNo)
                 
@@ -590,6 +599,10 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
         }
     }
     
+    func updateIndexVal() {
+        
+    }
+    
     //MARK:- Button Action
     @IBAction func tapProfileBtn(_ sender: UIButton) {
         if DataManager.isUserLoggedIn! {
@@ -665,7 +678,6 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             let cell = self.categoryCollectionView.cellForItem(at: indexPath as IndexPath) as! CustomCell
             
             if cell.favouriteButton.currentImage == #imageLiteral(resourceName: "Favoutites") {
-                
                 if self.comeFrom == reviewBased {
                     
                     
@@ -1007,6 +1019,7 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
             
         } else {
             if connectivity.isConnectedToInternet() {
+                self.campIndex = sender.tag
                 applicationDelegate.startProgressView(view: self.view)
                 let indexVal: NSDictionary = (self.featuredReviewArr.object(at: sender.tag) as! NSDictionary)
                 let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
@@ -1062,7 +1075,9 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
         vc.campId = String(describing: ((self.featuredReviewArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-        
+        self.fromCampDes = true
+        self.campIndex = indexPath.row
+        self.campId = Int(vc.campId)!
         self.navigationController?.pushViewController(vc, animated: true)
         
     }

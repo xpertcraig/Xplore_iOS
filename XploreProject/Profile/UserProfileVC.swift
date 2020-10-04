@@ -112,7 +112,7 @@ class UserProfileVC: UIViewController {
         vc.comeFrom = myProfile
         vc.userId = self.userId
         
-        if let name: String = self.userInfoDict["authorName"] as? String {
+        if let name: String = self.userInfoDict["name"] as? String  {
             vc.autherInfo.updateValue(name, forKey: "autherName")
             
         }

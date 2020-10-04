@@ -57,6 +57,7 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     var pageNo:Int = 0
     var limit:Int = 5
     var upToLimit = 0
+    var fromCampDes: Bool = false
     
     var selectedLatti: Double = myCurrentLatitude
     var selectedLongi: Double = myCurrentLongitude
@@ -93,6 +94,12 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.stopAnimateAcitivity()
+        
+        if self.campIndex == -1 || Singleton.sharedInstance.updateFavOrFollowStatusInDes == true {
+            Singleton.sharedInstance.updateFavOrFollowStatusInDes = false
+            //call api
+            self.callAPI()
+        }
         
         if notificationCount > 9 {
             self.notificationCountLbl.text! = "\(9)+"
@@ -192,7 +199,11 @@ class SearchCampVC: UIViewController, filterValuesDelegate {
     
     func callAPI() {
         if connectivity.isConnectedToInternet() {
-            self.resetPaginationVar()
+            if self.fromCampDes == false {
+                self.resetPaginationVar()
+            } else {
+                self.fromCampDes = false
+            }
             if comeFrom == filterPush {
                 self.filterApiHit(pageNum: pageNo)
                 
@@ -671,6 +682,7 @@ extension SearchCampVC {
             
         } else {
             if connectivity.isConnectedToInternet() {
+                self.campIndex = sender.tag
                 applicationDelegate.startProgressView(view: self.view)
                 let indexVal: NSDictionary = (self.searchDataArr.object(at: sender.tag) as! NSDictionary)
                 let param: [String: Any] = ["userId": "\(DataManager.userId)", "follow": String(describing: (indexVal.value(forKey: "campAuthor"))!)]
@@ -883,7 +895,9 @@ extension SearchCampVC :UICollectionViewDataSource ,UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CampDescriptionVc") as! CampDescriptionVc
         vc.campId = String(describing: ((self.searchDataArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "campId"))!)
-        
+        self.fromCampDes = true
+        self.campIndex = indexPath.row
+        self.campId = Int(vc.campId)!
         self.navigationController?.pushViewController(vc, animated: true)
         
     }

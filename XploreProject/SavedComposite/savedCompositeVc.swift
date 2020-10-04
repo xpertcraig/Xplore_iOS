@@ -740,10 +740,11 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
         
         if campType == favouritesCamp {
             cell.favouriteButton.isHidden = false
-            
+            cell.favBtnWidth.constant = 40
             cell.removeDraftBtn.isHidden = true
           //  cell.followUnfollowBtn.isHidden = false
         } else {
+            cell.favBtnWidth.constant = 0
             cell.favouriteButton.isHidden = true
             cell.followUnfollowBtn.isHidden = true
             cell.removeDraftBtn.isHidden = false
