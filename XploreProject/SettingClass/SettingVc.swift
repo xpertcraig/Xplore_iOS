@@ -278,20 +278,18 @@ extension SettingVc: UITableViewDataSource , UITableViewDelegate {
             
             
         case About:
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebkitVC") as! WebkitVC
+            vc.urlString = webViewUrlString.aboutUs.rawValue
             navigationController? .pushViewController(vc, animated: true)
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
+//            navigationController? .pushViewController(vc, animated: true)
             
         case TermsConditions:
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "TermsVc") as! TermsVc
-//            navigationController? .pushViewController(vc, animated: true)
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebkitVC") as! WebkitVC
             vc.urlString = webViewUrlString.terms.rawValue
             navigationController? .pushViewController(vc, animated: true)
             
         case PrivacyPolicy:
-//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "PrivacyVc") as! PrivacyVc
-//            navigationController? .pushViewController(vc, animated: true)
-            
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "WebkitVC") as! WebkitVC
             vc.urlString = webViewUrlString.privacyPolicy.rawValue
             navigationController? .pushViewController(vc, animated: true)

@@ -37,6 +37,8 @@ class WebkitVC: UIViewController, WKNavigationDelegate {
             self.titleLbl.text! = webViewTitleString.privacyPolicy.rawValue
         } else if urlString == webViewUrlString.terms.rawValue {
             self.titleLbl.text! = webViewTitleString.terms.rawValue
+        } else {
+            self.titleLbl.text! = webViewTitleString.aboutUs.rawValue
         }
     }
     

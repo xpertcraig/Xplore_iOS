@@ -369,15 +369,15 @@ let GADAdsUnitIdInterstitial = "ca-app-pub-3940256099942544/4411468910"
 
 
 enum webViewUrlString: String {
-    case privacyPolicy = "https://www.explorecampsites.com/privacy-policy.html"
-    case terms = "https://www.explorecampsites.com/terms-and-condition.html"
-    
+    case privacyPolicy = "https://explorecampsites.com/privacy-policy.html"
+    case terms = "https://explorecampsites.com/terms-and-condition.html"
+    case aboutUs = "https://explorecampsites.com/about-us.html"
 }
 
 enum webViewTitleString: String {
     case privacyPolicy = "Privacy Policy"
     case terms = "Terms and Conditions"
-  
+    case aboutUs = "About Us"
 }
 
 //1. https://www.explorecampsites.com/cookies-policy.html
