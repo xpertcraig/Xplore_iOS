@@ -60,9 +60,6 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
             // Fallback on earlier versions
         }
         self.overlayView.isHidden = true
-        //call googleSignIn delegate
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().delegate = self
     
         /////
         self.addKeyBoardObservers()
@@ -70,6 +67,9 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //call googleSignIn delegate
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
         self.tabBarController?.tabBar.isHidden = false
     }
     

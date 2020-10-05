@@ -66,10 +66,6 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
         
         self.addKeyBoardObservers()
         
-        //call googleSignIn delegate
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().delegate = self
-        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -77,6 +73,10 @@ class LoginVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate, PayPalPa
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        //call googleSignIn delegate
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
+        
         let sing = Singleton.sharedInstance
 //        if sing.loginComeFrom == fromTopBar || sing.loginComeFrom == fromProfile || sing.loginComeFrom == fromNearByuser || sing.loginComeFrom == fromAddCamps || sing.loginComeFrom == fromNoti || sing.loginComeFrom == fromSearch || sing.loginComeFrom == fromFavCamps || sing.loginComeFrom == fromRevFavCamp {
             self.backBtn.isHidden = false

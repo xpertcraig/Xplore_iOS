@@ -59,6 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         application.beginReceivingRemoteControlEvents()
         //FireBase Notification
         FirebaseApp.configure()
+        
+        GADMobileAds.configure(withApplicationID: googleAdsAppId)
+        let request : GADRequest = GADRequest ()
+        request.testDevices = ["34af7f77e20d0ef06debd6380845e70f" ]
+        
         // [START set_messaging_delegate]
         
         Messaging.messaging().delegate = self
