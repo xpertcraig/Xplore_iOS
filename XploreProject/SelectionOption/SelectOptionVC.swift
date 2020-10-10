@@ -22,7 +22,10 @@ class SelectOptionVC: UIViewController {
     @IBOutlet weak var selectionHeader: UILabel!
     @IBOutlet weak var selectOptionTblHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var searchBarTxtFld: UISearchBar!
+    @IBOutlet weak var seacrhBarHeight: NSLayoutConstraint!
     @IBOutlet weak var notificationCountLbl: UILabel!
+    @IBOutlet weak var doneBtn: UIButton!
     
  //   var tableViewArray = NSDictionary()
     var selectedArray: NSMutableArray = []
@@ -37,6 +40,7 @@ class SelectOptionVC: UIViewController {
     var campTypeIdsArr: NSArray = []
     var campAmentiesArr: NSArray = []
     var campHookupsArr: NSArray = []
+    private let followingFollowerDataViewModel = FollowerFollowingViewModel()
     
     // this is where wevarclare our protocol
     var delegate:selectTypeDelegate?
@@ -44,27 +48,30 @@ class SelectOptionVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarController?.tabBar.isHidden = true
+        
         if setCampNameIfAvailable != "" {
             self.setCampNameIfAvailable = self.setCampNameIfAvailable.replacingOccurrences(of: ", ", with: ",")
             
             self.arrFromAlreadyStr = self.setCampNameIfAvailable.split{$0 == ","}.map(String.init) as NSArray
-           
-            // or simply:
-            // let fullNameArr = fullName.characters.split{" "}.map(String.init)
-            
-         //   print(arrFromAlreadyStr)
-            
         }
         
         self.optionTableView.tableFooterView = UIView()
         self.selectionHeader.text = key
        
+        self.doneBtn.isHidden = true
+        self.seacrhBarHeight.constant = 0
+        self.searchBarTxtFld.isHidden = true
+        let textFieldInsideSearchBar = self.searchBarTxtFld.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.darkGray
+        
         //call Api's
         self.callApiOnDifferentCond()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.followingFollowerDataViewModel.searchActive = false
         if notificationCount > 9 {
             self.notificationCountLbl.text! = "\(9)+"
         } else {
@@ -80,6 +87,21 @@ class SelectOptionVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         // Register to receive notification in your class
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateNotiCount(_:)), name: NSNotification.Name(rawValue: "notificationRec"), object: nil)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.updateViewConstraints()
+        if self.optionTableView.contentSize.height > self.view.frame.height - 300 {
+            self.selectOptionTblHeight?.constant = self.view.frame.height - 320
+        } else {
+            self.selectOptionTblHeight?.constant = self.optionTableView.contentSize.height + 5
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.view.endEditing(true)
+        self.tabBarController?.tabBar.isHidden = false
+        self.followingFollowerDataViewModel.searchActive = false
     }
     
     deinit {
@@ -116,7 +138,7 @@ class SelectOptionVC: UIViewController {
                 } else {
                     for _ in 0..<self.tableArr.count {
                         self.selectedArray.add(0)
-                        self.typeIdArr.add(0)
+                        self.typeIdArr.add("0")
                         self.typeNameArr.add(0)
                         
                     }
@@ -133,11 +155,13 @@ class SelectOptionVC: UIViewController {
                     }
                     
                     self.optionTableView.reloadData()
-                   // self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                     self.optionTableView.layoutIfNeeded()
                     
                 }
             } else if key == "Select Amenities" {
+                self.seacrhBarHeight.constant = 55
+                self.searchBarTxtFld.isHidden = false
+                
                 self.tableArr = amentiesArr
                 if self.tableArr.count == 0 {
                     self.amentiesApi()
@@ -145,7 +169,7 @@ class SelectOptionVC: UIViewController {
                 } else {
                     for _ in 0..<self.tableArr.count {
                         self.selectedArray.add(0)
-                        self.typeIdArr.add(0)
+                        self.typeIdArr.add("0")
                         self.typeNameArr.add(0)
                         
                     }
@@ -162,7 +186,6 @@ class SelectOptionVC: UIViewController {
                     }
                     
                     self.optionTableView.reloadData()
-                   // self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                     self.optionTableView.layoutIfNeeded()
                     
                 }
@@ -174,7 +197,7 @@ class SelectOptionVC: UIViewController {
                 } else {
                     for _ in 0..<self.tableArr.count {
                         self.selectedArray.add(0)
-                        self.typeIdArr.add(0)
+                        self.typeIdArr.add("0")
                         self.typeNameArr.add(0)
                         
                     }
@@ -191,7 +214,6 @@ class SelectOptionVC: UIViewController {
                     }
                     
                     self.optionTableView.reloadData()
-                   // self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                     self.optionTableView.layoutIfNeeded()
                     
                 }
@@ -200,7 +222,7 @@ class SelectOptionVC: UIViewController {
                 
                 for _ in 0..<self.tableArr.count {
                     self.selectedArray.add(0)
-                    self.typeIdArr.add(0)
+                    self.typeIdArr.add("0")
                     self.typeNameArr.add(0)
                     
                 }
@@ -217,13 +239,11 @@ class SelectOptionVC: UIViewController {
                 }
                 
                 self.optionTableView.reloadData()
-              //  self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                 self.optionTableView.layoutIfNeeded()
                 
             }
         } else {
             self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
-            //CommonFunctions.showAlert(self, message: noInternet, title: appName)
             
         }
     }
@@ -291,17 +311,19 @@ class SelectOptionVC: UIViewController {
         
     }
 }
+
+//MARK: Tableview delegate
 extension SelectOptionVC: UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        var array = NSArray()
-//        if (tableViewArray.count > 0) {
-//            array = tableViewArray.value(forKey: key) as! NSArray
-//
-//        }
-//        return array.count;
-        
+        if self.followingFollowerDataViewModel.searchActive == true {
+            return self.followingFollowerDataViewModel.searchedArr.count
+        }
+        if self.tableArr.count > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                self.doneBtn.isHidden = false
+            }
+        }
         return self.tableArr.count
-        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -313,8 +335,11 @@ extension SelectOptionVC: UITableViewDataSource , UITableViewDelegate {
             cell.settingTitleLabel.text = (self.tableArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "typeName") as? String
             
         } else if key == "Select Amenities" {
-            cell.settingTitleLabel.text = (self.tableArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "amenitiesName") as? String
-            
+            if self.followingFollowerDataViewModel.searchActive == true {
+                cell.settingTitleLabel.text = self.followingFollowerDataViewModel.searchedArr[indexPath.row]["amenitiesName"] as? String
+            } else {
+                cell.settingTitleLabel.text = (self.tableArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "amenitiesName") as? String
+            }
         } else if key == "Select Hookups" {
             cell.settingTitleLabel.text = (self.tableArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "hookupName") as? String
             
@@ -326,59 +351,73 @@ extension SelectOptionVC: UITableViewDataSource , UITableViewDelegate {
         cell.selectButton.tag = indexPath.row
         cell.selectButton.addTarget(self, action:#selector(buttonPressed(_:)), for:.touchUpInside)
         
-        if self.selectedArray.object(at: indexPath.row) as? Int == 0 {
-            cell.selectButton.isSelected = false
-            
-        } else {
-            cell.selectButton.isSelected = true
-            
-        }
-        
-//        if (selectedArray .contains(indexPath.row)) {
-//            cell.selectButton.isSelected = true
-//
-//        } else {
-//            cell.selectButton.isSelected = false
-//
-//        }
-        return cell
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        
-    }
-    
-    @objc func buttonPressed(_ sender: UIButton) {
-        if self.selectedArray.object(at: sender.tag) as? Int == 0 {
-            self.selectedArray.replaceObject(at: sender.tag, with: 1)
-            if key == "Select Type" {
-                self.typeNameArr.replaceObject(at: sender.tag, with: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "typeName") as! String))
-                self.typeIdArr.replaceObject(at: sender.tag, with: String(describing: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "typeId"))!))
+        if self.followingFollowerDataViewModel.searchActive == true {
+            if self.followingFollowerDataViewModel.searchedCheckUncheckedArr[indexPath.row] == 0 {
+                cell.selectButton.isSelected = false
                 
-            } else if key == "Select Amenities" {
-               // print((self.tableArr.object(at: sender.tag) as! NSDictionary))
-                
-                self.typeNameArr.replaceObject(at: sender.tag, with: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "amenitiesName") as! String))
-                self.typeIdArr.replaceObject(at: sender.tag, with: String(describing: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "amenitiesId"))!))
-                
-            } else if key == "Select Hookups" {
-              //  print((self.tableArr.object(at: sender.tag) as! NSDictionary))
-                
-                self.typeNameArr.replaceObject(at: sender.tag, with: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "hookupName") as! String))
-                self.typeIdArr.replaceObject(at: sender.tag, with: String(describing: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "hookupId"))!))
-                
-            } else if key == "Select Months" {
-                self.typeNameArr.replaceObject(at: sender.tag, with: (self.tableArr.object(at: sender.tag) as! String))
-                self.typeIdArr.replaceObject(at: sender.tag, with: (self.tableArr.object(at: sender.tag) as! String))
+            } else {
+                cell.selectButton.isSelected = true
                 
             }
         } else {
-            self.selectedArray.replaceObject(at: sender.tag, with: 0)
-            self.typeNameArr.replaceObject(at: sender.tag, with: 0)
-            self.typeIdArr.replaceObject(at: sender.tag, with: 0)
-            
+            if self.selectedArray.object(at: indexPath.row) as? Int == 0 {
+                cell.selectButton.isSelected = false
+                
+            } else {
+                cell.selectButton.isSelected = true
+                
+            }
+        }
+        return cell
+    }
+    
+    @objc func buttonPressed(_ sender: UIButton) {
+        if self.followingFollowerDataViewModel.searchActive == true {
+            if self.followingFollowerDataViewModel.searchedCheckUncheckedArr[sender.tag] == 0 {
+                self.followingFollowerDataViewModel.searchedCheckUncheckedArr[sender.tag] = 1
+                for i in 0..<self.tableArr.count {
+                    if String(describing: (self.followingFollowerDataViewModel.searchedArr[sender.tag]["amenitiesId"])!) == String(describing: ((self.tableArr[i] as! [String: Any])["amenitiesId"])!) {
+                        self.selectedArray.replaceObject(at: i, with: 1)
+                        
+                        self.typeNameArr.replaceObject(at: i, with: (self.followingFollowerDataViewModel.searchedArr[sender.tag]["amenitiesName"] as! String))
+                        self.typeIdArr.replaceObject(at: i, with: String(describing: (self.followingFollowerDataViewModel.searchedArr[sender.tag]["amenitiesId"])!))
+                    }
+                }
+            } else {
+                self.followingFollowerDataViewModel.searchedCheckUncheckedArr[sender.tag] = 0
+                self.selectedArray.replaceObject(at: sender.tag, with: 0)
+                self.typeNameArr.replaceObject(at: sender.tag, with: 0)
+                self.typeIdArr.replaceObject(at: sender.tag, with: "0")
+            }
+        } else {
+            if self.selectedArray.object(at: sender.tag) as? Int == 0 {
+                self.selectedArray.replaceObject(at: sender.tag, with: 1)
+                if key == "Select Type" {
+                    self.typeNameArr.replaceObject(at: sender.tag, with: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "typeName") as! String))
+                    self.typeIdArr.replaceObject(at: sender.tag, with: String(describing: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "typeId"))!))
+                    
+                } else if key == "Select Amenities" {
+                    self.typeNameArr.replaceObject(at: sender.tag, with: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "amenitiesName") as! String))
+                    self.typeIdArr.replaceObject(at: sender.tag, with: String(describing: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "amenitiesId"))!))
+                } else if key == "Select Hookups" {
+                  //  print((self.tableArr.object(at: sender.tag) as! NSDictionary))
+                    
+                    self.typeNameArr.replaceObject(at: sender.tag, with: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "hookupName") as! String))
+                    self.typeIdArr.replaceObject(at: sender.tag, with: String(describing: ((self.tableArr.object(at: sender.tag) as! NSDictionary).value(forKey: "hookupId"))!))
+                    
+                } else if key == "Select Months" {
+                    self.typeNameArr.replaceObject(at: sender.tag, with: (self.tableArr.object(at: sender.tag) as! String))
+                    self.typeIdArr.replaceObject(at: sender.tag, with: (self.tableArr.object(at: sender.tag) as! String))
+                    
+                }
+            } else {
+                self.selectedArray.replaceObject(at: sender.tag, with: 0)
+                self.typeNameArr.replaceObject(at: sender.tag, with: 0)
+                self.typeIdArr.replaceObject(at: sender.tag, with: "0")
+                
+            }
         }
         self.optionTableView.reloadData()
-      //  self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
         self.optionTableView.layoutIfNeeded()
     }
 }
@@ -399,7 +438,7 @@ extension SelectOptionVC {
                     
                     for _ in 0..<self.tableArr.count {
                         self.selectedArray.add(0)
-                        self.typeIdArr.add(0)
+                        self.typeIdArr.add("0")
                         self.typeNameArr.add(0)
                         
                     }
@@ -420,7 +459,6 @@ extension SelectOptionVC {
                     self.optionTableView.layoutIfNeeded()
                     
                 } else {
-                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
             }
@@ -431,7 +469,6 @@ extension SelectOptionVC {
                 
             } else {
                 self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
-                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
                 
             }
         }
@@ -451,7 +488,7 @@ extension SelectOptionVC {
                     
                     for _ in 0..<self.tableArr.count {
                         self.selectedArray.add(0)
-                        self.typeIdArr.add(0)
+                        self.typeIdArr.add("0")
                         self.typeNameArr.add(0)
                         
                     }
@@ -468,12 +505,10 @@ extension SelectOptionVC {
                     }
                     
                     self.optionTableView.reloadData()
-                 //   self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                     self.optionTableView.layoutIfNeeded()
                     
                 } else {
-                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
-                    
+                   
                 }
             }
         }) { (error) in
@@ -503,7 +538,7 @@ extension SelectOptionVC {
                     
                     for _ in 0..<self.tableArr.count {
                         self.selectedArray.add(0)
-                        self.typeIdArr.add(0)
+                        self.typeIdArr.add("0")
                         self.typeNameArr.add(0)
                         
                     }
@@ -520,11 +555,7 @@ extension SelectOptionVC {
                     }
                     
                     self.optionTableView.reloadData()
-                 //   self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                     self.optionTableView.layoutIfNeeded()
-                    
-                } else {
-                    // CommonFunctions.showAlert(self, message: (String(describing: (dict["error"])!)), title: appName)
                     
                 }
             }
@@ -535,9 +566,73 @@ extension SelectOptionVC {
                 
             } else {
                 self.showToast(message: noInternet, font: .systemFont(ofSize: 12.0))
-                //CommonFunctions.showAlert(self, message: noInternet, title: appName)
-                
             }
         }
+    }
+}
+
+//MARK: Searching
+extension SelectOptionVC : UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.followingFollowerDataViewModel.searchActive = true
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+        self.followingFollowerDataViewModel.searchActive = false
+        self.optionTableView.reloadData()
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.followingFollowerDataViewModel.searchActive = false
+        self.view.endEditing(true)
+        self.optionTableView.reloadData()
+        
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+        if self.searchBarTxtFld.text! == "" {
+            self.followingFollowerDataViewModel.searchActive = false
+            self.optionTableView.reloadData()
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.followingFollowerDataViewModel.searchedArr = self.tableArr.filter {
+            return (($0 as! NSDictionary).value(forKey: "amenitiesName") as! String).range(of: searchText, options: .caseInsensitive) != nil } as! [[String : Any]]
+            
+        print(self.followingFollowerDataViewModel.searchedArr)
+        self.followingFollowerDataViewModel.searchActive = true
+        if self.searchBarTxtFld.text! == "" {
+            self.resetOnSearchFailed()
+            self.followingFollowerDataViewModel.searchActive = false
+            self.optionTableView.reloadData()
+        } else {
+            applicationDelegate.startProgressView(view: self.view)
+            self.followingFollowerDataViewModel.searchedCheckUncheckedArr = []
+            for i in 0..<self.followingFollowerDataViewModel.searchedArr.count {
+                self.followingFollowerDataViewModel.searchedCheckUncheckedArr.append(0)
+                
+                for j in 0..<self.typeIdArr.count {
+                    if String(describing: (self.followingFollowerDataViewModel.searchedArr[i]["amenitiesId"])!) == self.typeIdArr[j] as! String {
+                        self.followingFollowerDataViewModel.searchedCheckUncheckedArr[i] = 1
+                    }
+                }
+            }
+            applicationDelegate.dismissProgressView(view: self.view)
+            self.optionTableView.reloadData()
+        }
+    }
+    
+    func resetOnSearchFailed() {
+        applicationDelegate.startProgressView(view: self.view)
+        for i in 0..<self.tableArr.count {
+            for j in 0..<self.typeIdArr.count {
+                if String(describing: ((self.tableArr[i] as! [String: Any])["amenitiesId"])!) == self.typeIdArr[j] as! String {
+                    self.selectedArray[i] = 1
+                }
+            }
+        }
+        applicationDelegate.dismissProgressView(view: self.view)
+        self.optionTableView.reloadData()
     }
 }

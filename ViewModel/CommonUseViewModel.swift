@@ -18,6 +18,7 @@ class CommonUseViewModel {
     let sing = Singleton.sharedInstance
     
     var urlOfImageToShare: URL?
+    var followedUnfolledUserDict: [String: Any] = [:]
     
     func updateFirebaseProfile() {
         let ref = Database.database().reference().child("UsersProfile").child(DataManager.userId as! String)

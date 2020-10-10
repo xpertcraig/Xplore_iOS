@@ -12,4 +12,6 @@ class FollowerFollowingViewModel {
     var tblListArr: [[String: Any]] = []
     var searchActive: Bool = true
     var searchedArr: [[String: Any]] = []
+    
+    var searchedCheckUncheckedArr: [Int] = []
 }

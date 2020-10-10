@@ -635,18 +635,43 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
         if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
             cell.followUnfollowBtn.isHidden = true
         } else {
+            var followedTrue: Bool = false
             let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
-            if followStatus == "0" {
-                cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
-                cell.followUnfollowBtn.setTitle("Follow", for: .normal)
-                cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
-              //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+            if self.commonDataViewModel.followedUnfolledUserDict.count > 0 {
+                let followStatusFromDict = self.commonDataViewModel.followedUnfolledUserDict["followStatus"] as! String
+                let followUnfollowId = self.commonDataViewModel.followedUnfolledUserDict["followUnfollowedId"]
+                
+                if String(describing: followUnfollowId!) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                    if followStatusFromDict == "0" {
+                        followedTrue = false
+                    } else {
+                        followedTrue = true
+                    }
+                } else {
+                    if followStatus == "0" {
+                        followedTrue = false
+                    } else {
+                        followedTrue = true
+                    }
+                }
             } else {
+                if followStatus == "0" {
+                    followedTrue = false
+                } else {
+                    followedTrue = true
+                }
+            }
+            
+            if followedTrue == true {
                 cell.followUnfollowBtn.backgroundColor = UIColor.white
                 cell.followUnfollowBtn.setTitle("Unfollow", for: .normal)
                 cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
-               // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+            } else {
+                cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
             }
+            
             cell.followUnfollowBtn.isHidden = false
         }
         
@@ -805,6 +830,14 @@ extension savedCompositeVc :UICollectionViewDataSource ,UICollectionViewDelegate
                 self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
                     print(rMsg)
                     applicationDelegate.dismissProgressView(view: self.view)
+                    
+                    self.commonDataViewModel.followedUnfolledUserDict.updateValue(String(describing: (indexVal.value(forKey: "campAuthor"))!), forKey: "followUnfollowedId")
+                    if followStatus == "0" {
+                        self.commonDataViewModel.followedUnfolledUserDict.updateValue("1", forKey: "followStatus")
+                    } else {
+                        self.commonDataViewModel.followedUnfolledUserDict.updateValue("0", forKey: "followStatus")
+                    }
+                    
                     let pagN = self.campIndex/5
                     self.pageNo = pagN
                     self.limit = (pagN+1)*5

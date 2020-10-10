@@ -510,13 +510,14 @@ class FeaturedVc: UIViewController, filterValuesDelegate {
             }
         } else {
             let indexPath = IndexPath(item: self.campIndex, section: 0)
-            
-            var indexPaths = [IndexPath]()
-            indexPaths.append(indexPath) //"indexPath" ideally get when tap didSelectItemAt or through long press gesture recogniser.
-            
-            let indexS = IndexSet(arrayLiteral: 0)
-            self.categoryCollectionView.reloadSections(indexS)
-            self.categoryCollectionView.reloadItems(at: indexPaths)
+            self.categoryCollectionView.reloadData()
+//            var indexPaths = [IndexPath]()
+//            indexPaths.append(indexPath) //"indexPath" ideally get when tap didSelectItemAt or through long press gesture recogniser.
+//
+//            let indexS = IndexSet(arrayLiteral: 0)
+//            self.categoryCollectionView.reloadSections(indexS)
+//            self.categoryCollectionView.reloadItems(at: indexPaths)
+            self.categoryCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
             
             self.campIndex = -1
             self.campId = -1
@@ -845,18 +846,43 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         if String(describing: (DataManager.userId)) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
             cell.followUnfollowBtn.isHidden = true
         } else {
+            var followedTrue: Bool = false
             let followStatus = "\(indexVal.value(forKey: "follow") as? Int ?? 0)"
-            if followStatus == "0" {
-                cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
-                cell.followUnfollowBtn.setTitle("Follow", for: .normal)
-                cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
-              //  cell.followUnfollowBtn.layer.borderColor = UIColor.appThemeKesariColor().cgColor
+            if self.commonDataViewModel.followedUnfolledUserDict.count > 0 {
+                let followStatusFromDict = self.commonDataViewModel.followedUnfolledUserDict["followStatus"] as! String
+                let followUnfollowId = self.commonDataViewModel.followedUnfolledUserDict["followUnfollowedId"]
+                
+                if String(describing: followUnfollowId!) == String(describing: (indexVal.value(forKey: "campAuthor"))!) {
+                    if followStatusFromDict == "0" {
+                        followedTrue = false
+                    } else {
+                        followedTrue = true
+                    }
+                } else {
+                    if followStatus == "0" {
+                        followedTrue = false
+                    } else {
+                        followedTrue = true
+                    }
+                }
             } else {
+                if followStatus == "0" {
+                    followedTrue = false
+                } else {
+                    followedTrue = true
+                }
+            }
+            
+            if followedTrue == true {
                 cell.followUnfollowBtn.backgroundColor = UIColor.white
                 cell.followUnfollowBtn.setTitle("Unfollow", for: .normal)
                 cell.followUnfollowBtn.setTitleColor(UIColor.appThemeGreenColor(), for: .normal)
-               // cell.followUnfollowBtn.layer.borderColor = UIColor.clear.cgColor
+            } else {
+                cell.followUnfollowBtn.backgroundColor = UIColor.appThemeGreenColor()
+                cell.followUnfollowBtn.setTitle("Follow", for: .normal)
+                cell.followUnfollowBtn.setTitleColor(UIColor.white, for: .normal)
             }
+            
             cell.followUnfollowBtn.isHidden = false
         }
         
@@ -978,7 +1004,6 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
         return cell
     }
     
-    
     @objc func tapReviewProfilePicBtn(sender: UIButton) {
         if DataManager.isUserLoggedIn! == false {
             self.loginAlertFunc(vc: "campUserProfile", viewController: self)
@@ -1031,10 +1056,17 @@ extension FeaturedVc :UICollectionViewDataSource ,UICollectionViewDelegate, UICo
                 } else {
                     apiToBeCalled = apiUrl.unFollowApi.rawValue
                 }
-                print(param)
+            //    print(param)
                 self.commonDataViewModel.followUnfollowUwser(actionUrl: apiToBeCalled, param: param) { (rMsg) in
-                    print(rMsg)
+                 //   print(rMsg)
                     applicationDelegate.dismissProgressView(view: self.view)
+                    
+                    self.commonDataViewModel.followedUnfolledUserDict.updateValue(String(describing: (indexVal.value(forKey: "campAuthor"))!), forKey: "followUnfollowedId")
+                    if followStatus == "0" {
+                        self.commonDataViewModel.followedUnfolledUserDict.updateValue("1", forKey: "followStatus")
+                    } else {
+                        self.commonDataViewModel.followedUnfolledUserDict.updateValue("0", forKey: "followStatus")
+                    }
                     
                     let pagN = (sender.tag)/5
                     self.pageNo = pagN

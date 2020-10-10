@@ -306,10 +306,12 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
         vc.delegate = self
         
         vc.setCampNameIfAvailable = self.amentiesLbl.text!
-        vc.campAmentiesArr = self.campAmentiesIdArr
         
-      //  print(self.campAmentiesIdArr)
-        
+        if self.amentiesLbl.text! == "" {
+            vc.campAmentiesArr = []
+        } else {
+            vc.campAmentiesArr = self.campAmentiesIdArr
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -877,36 +879,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                             self.myLocationOnOffSwitch.isHidden = false
                             self.activityOnSwitch.isHidden = true
                             self.activityOnSwitch.stopAnimating()
-                            
-//                            self.descriptionTxtFld.text = ""
-//                            self.elevation.text = ""
-//                            self.numberOfSites.text = ""
-//                            self.climate.text = ""
-                            
-//                            self.bestMonthToVisit.text = ""
-//                            self.bestMonthLbl.text = ""
-//                            self.bestMonthLbl.isHidden = true
-                            
-//                            self.hookupsAvailable.text = ""
-//                            self.hookupLbl.text = ""
-//                            self.hookupLbl.isHidden = true
-//                            self.campHokupsIdArr = []
-                            
-//                            self.amenities.text = ""
-//                            self.amentiesLbl.text = ""
-//                            self.amentiesLbl.isHidden = true
-//                            self.campAmentiesIdArr = []
-                            //
-//                            self.campType.text = ""
-//                            self.campTypeLbl.text = ""
-//                            self.campTypeLbl.isHidden = true
-//                            self.campTypeIdsArr = []
-                            //
-//                            self.price.text = ""
-//                            self.myCampImgArr = []
-//                            self.myImgHeightConstant.constant = 0
-//                            self.myCampImgCollVIew.reloadData()
-                            
+
                         } else {
                             DispatchQueue.main.asyncAfter(deadline: .now()+1) {
                                 if placemark?.addressDictionary != nil {

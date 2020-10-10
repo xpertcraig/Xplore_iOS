@@ -352,8 +352,8 @@ let chatListStr = "chatListStr"
 
 //google ads
 let googleAdsAppId = "ca-app-pub-1944596028719929~1709488790"  //live
-//let GADAdsUnitIdInterstitial = "ca-app-pub-3940256099942544/4411468910"  //test
-let GADAdsUnitIdInterstitial = "ca-app-pub-1944596028719929/7109047330"   //live
+let GADAdsUnitIdInterstitial = "ca-app-pub-3940256099942544/4411468910"  //test
+//let GADAdsUnitIdInterstitial = "ca-app-pub-1944596028719929/7109047330"   //live
 
 enum webViewUrlString: String {
     case privacyPolicy = "https://explorecampsites.com/privacy-policy.html"
