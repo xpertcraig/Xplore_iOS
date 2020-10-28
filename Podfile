@@ -9,31 +9,32 @@ target 'XploreProject' do
 
 pod 'FacebookCore'
 pod 'FacebookLogin'
-pod 'Alamofire'
-pod 'SDWebImage'
-pod 'FirebaseDatabase'
-pod 'GoogleMaps'
-pod 'GooglePlaces'
-pod 'FTIndicator'
 pod 'SplunkMint'
-pod 'SwiftyJSON'
-pod 'MBProgressHUD'
+pod 'FirebaseDatabase'
 pod 'FirebaseStorage'
-pod 'GoogleSignIn'
-pod 'Cosmos', '~> 11.0'
-pod 'IQKeyboardManagerSwift'
-
-pod 'MessageKit'
 pod 'Firebase/Messaging'
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'Firebase/Firestore'
+pod 'GoogleSignIn'
+pod 'GoogleMaps'
+pod 'GooglePlaces'
+pod 'SwiftyJSON'
+#pod 'Google-Mobile-Ads-SDK'
 
+pod 'Alamofire'
+pod 'SDWebImage'
+pod 'FTIndicator'
+
+pod 'MBProgressHUD'
+pod 'Cosmos', '~> 11.0'
+pod 'IQKeyboardManagerSwift'
+pod 'MessageKit'
 pod 'SimpleImageViewer'
 pod 'SwiftKeychainWrapper'
 
-pod 'Google-Mobile-Ads-SDK'
+pod 'PayPal-iOS-SDK'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
@@ -46,8 +47,9 @@ post_install do |installer|
 end
 
 platform :ios, '9.0'
-pod 'PayPal-iOS-SDK'
+
 
 pod 'OpalImagePicker'
+pod 'Bolts'
 
 end

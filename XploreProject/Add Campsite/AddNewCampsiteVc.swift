@@ -132,7 +132,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
     var videoData: Data?
     var videoImg: UIImage?
     var videoImgIndex: Int = -1
-    
+    var zipCodeSendInApi: String = ""
     
     //MARK:- Inbuild FUnction
     override func viewDidLoad() {
@@ -375,6 +375,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             
         }
         
+        self.zipCodeSendInApi = self.recDraft.value(forKey: "zipcode") as? String ?? ""
         self.campsiteName.text! = self.recDraft.value(forKey: "campName") as! String
         
         self.campsiteAddress1.text! = self.recDraft.value(forKey: "campAddress1") as! String
@@ -935,6 +936,8 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                                 self.state.text = (placemark?.addressDictionary!["State"]) as? String
                                 
                             }
+                            self.zipCodeSendInApi = (placemark?.addressDictionary!["ZIP"]) as? String ?? ""
+                            
                             if (placemark?.addressDictionary!["Country"]) != nil {
                                 self.Country.text = (placemark?.addressDictionary!["Country"]) as? String
                                 
@@ -1107,7 +1110,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
             }
             
             if self.recDraftIndex != -1 {
-                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text! ,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString]
+                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text! ,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString,  "zipcode": self.zipCodeSendInApi]
                 
                 if (userDefault.value(forKey: myDraft)) != nil {
                     let tempArr: NSMutableArray = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
@@ -1121,7 +1124,7 @@ class AddNewCampsiteVc: UIViewController, selectTypeDelegate {
                 
                 userDefault.set(NSKeyedArchiver.archivedData(withRootObject: mySavedCampSites), forKey: myDraft)
             } else {
-                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!, "latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString]
+                let tempCampDict: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": self.campTypeLbl.text!, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*self.hookupLbl.text!*/, "amenities": self.amentiesLbl.text!, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!, "latitude": self.latitude.text!, "longitude": self.longitude.text!, "MyImgArr": self.myCampImgArr, "campTypeIdsStr": campTypeIdsStr, "campAmentiesIdStr": campAmentiesIdStr, "campHokupsIdStr": campHokupsIdStr, "locationOnOff": switchStatus, "videoIndex": self.videoImgIndex, "videoUrl": self.videoString,  "zipcode": self.zipCodeSendInApi]
                 
                 if (userDefault.value(forKey: myDraft)) != nil {
                     let tempArr: NSMutableArray = (NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.value(forKey: myDraft)) as! Data) as! NSArray).mutableCopy() as! NSMutableArray
@@ -1372,7 +1375,7 @@ extension AddNewCampsiteVc {
             self.closetTown.text! = ""
         }
                 
-        let param: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": campTypeIdsStr, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*campHokupsIdStr*/, "amenities": campAmentiesIdStr, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "videoindex": self.videoImgIndex]
+        let param: NSDictionary = ["userId": DataManager.userId, "campName": self.campsiteName.text!, "campType": campTypeIdsStr, "campAddress1": self.campsiteAddress1.text!, "campAddress2": addr2, "closestTown": self.closetTown.text!, "country": self.Country.text!, "state": self.state.text!, "city": cityF, "elevation": self.elevation.text!, "numberofsites": self.numberOfSites.text!, "climate": self.climate.text!, "bestMonths": self.bestMonthLbl.text!, "hookups": "antiquing"/*campHokupsIdStr*/, "amenities": campAmentiesIdStr, "price": self.price.text!, "description": self.descriptionTxtFld.text!, "webUrl": self.webSiteTxtView.text!,"latitude": self.latitude.text!, "longitude": self.longitude.text!, "videoindex": self.videoImgIndex, "zipcode": self.zipCodeSendInApi]
         
         print(param)
         
@@ -1498,7 +1501,8 @@ extension AddNewCampsiteVc {
                    self.getLongiLatti(address2: address2, address3: address3, address4: address4, address5: address5)
                     return
             }
-           
+            self.getClosestPlace(userloc: CLLocation(latitude: (location.coordinate.latitude), longitude: (location.coordinate.longitude)))
+            
             applicationDelegate.dismissProgressView(view: self.view)
             self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
             self.longitude.text! = String(describing: (location.coordinate.longitude).roundToDecimal(4))
@@ -1525,6 +1529,7 @@ extension AddNewCampsiteVc {
                     }
                     return
             }
+            self.getClosestPlace(userloc: CLLocation(latitude: (location.coordinate.latitude), longitude: (location.coordinate.longitude)))
             
             applicationDelegate.dismissProgressView(view: self.view)
             self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
@@ -1549,6 +1554,7 @@ extension AddNewCampsiteVc {
                     
                     return
             }
+            self.getClosestPlace(userloc: CLLocation(latitude: (location.coordinate.latitude), longitude: (location.coordinate.longitude)))
             
             applicationDelegate.dismissProgressView(view: self.view)
             self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
@@ -1572,6 +1578,7 @@ extension AddNewCampsiteVc {
                     self.getLongiLatti(address5: address5)
                     return
             }
+            self.getClosestPlace(userloc: CLLocation(latitude: (location.coordinate.latitude), longitude: (location.coordinate.longitude)))
             
             applicationDelegate.dismissProgressView(view: self.view)
             self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))
@@ -1594,6 +1601,7 @@ extension AddNewCampsiteVc {
                     
                     return
             }
+            self.getClosestPlace(userloc: CLLocation(latitude: (location.coordinate.latitude), longitude: (location.coordinate.longitude)))
             
             applicationDelegate.dismissProgressView(view: self.view)
             self.latitude.text! = String(describing: (location.coordinate.latitude).roundToDecimal(4))

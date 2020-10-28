@@ -26,6 +26,7 @@ class SelectOptionVC: UIViewController {
     @IBOutlet weak var seacrhBarHeight: NSLayoutConstraint!
     @IBOutlet weak var notificationCountLbl: UILabel!
     @IBOutlet weak var doneBtn: UIButton!
+    @IBOutlet weak var noDataFound: UILabel!
     
  //   var tableViewArray = NSDictionary()
     var selectedArray: NSMutableArray = []
@@ -59,11 +60,14 @@ class SelectOptionVC: UIViewController {
         self.optionTableView.tableFooterView = UIView()
         self.selectionHeader.text = key
        
+        self.noDataFound.isHidden = true
         self.doneBtn.isHidden = true
         self.seacrhBarHeight.constant = 0
         self.searchBarTxtFld.isHidden = true
-        let textFieldInsideSearchBar = self.searchBarTxtFld.value(forKey: "searchField") as? UITextField
-        textFieldInsideSearchBar?.textColor = UIColor.darkGray
+        
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).textColor = UIColor.darkGray
+//        let textFieldInsideSearchBar = self.searchBarTxtFld.value(forKey: "searchField") as? UITextField
+//        textFieldInsideSearchBar?.textColor = UIColor.darkGray
         
         //call Api's
         self.callApiOnDifferentCond()
@@ -153,7 +157,9 @@ class SelectOptionVC: UIViewController {
                             }
                         }
                     }
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        self.doneBtn.isHidden = false
+                    }
                     self.optionTableView.reloadData()
                     self.optionTableView.layoutIfNeeded()
                     
@@ -185,6 +191,10 @@ class SelectOptionVC: UIViewController {
                         }
                     }
                     
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        self.doneBtn.isHidden = false
+                    }
+                    
                     self.optionTableView.reloadData()
                     self.optionTableView.layoutIfNeeded()
                     
@@ -212,7 +222,9 @@ class SelectOptionVC: UIViewController {
                             }
                         }
                     }
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        self.doneBtn.isHidden = false
+                    }
                     self.optionTableView.reloadData()
                     self.optionTableView.layoutIfNeeded()
                     
@@ -237,7 +249,9 @@ class SelectOptionVC: UIViewController {
                         }
                     }
                 }
-                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                    self.doneBtn.isHidden = false
+                }
                 self.optionTableView.reloadData()
                 self.optionTableView.layoutIfNeeded()
                 
@@ -318,11 +332,11 @@ extension SelectOptionVC: UITableViewDataSource , UITableViewDelegate {
         if self.followingFollowerDataViewModel.searchActive == true {
             return self.followingFollowerDataViewModel.searchedArr.count
         }
-        if self.tableArr.count > 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                self.doneBtn.isHidden = false
-            }
-        }
+//        if self.tableArr.count > 0 {
+//            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+//                self.doneBtn.isHidden = false
+//            }
+//        }
         return self.tableArr.count
     }
 
@@ -336,7 +350,9 @@ extension SelectOptionVC: UITableViewDataSource , UITableViewDelegate {
             
         } else if key == "Select Amenities" {
             if self.followingFollowerDataViewModel.searchActive == true {
-                cell.settingTitleLabel.text = self.followingFollowerDataViewModel.searchedArr[indexPath.row]["amenitiesName"] as? String
+                if self.followingFollowerDataViewModel.searchedArr.count > 0 {
+                    cell.settingTitleLabel.text = self.followingFollowerDataViewModel.searchedArr[indexPath.row]["amenitiesName"] as? String
+                }
             } else {
                 cell.settingTitleLabel.text = (self.tableArr.object(at: indexPath.row) as! NSDictionary).value(forKey: "amenitiesName") as? String
             }
@@ -352,12 +368,14 @@ extension SelectOptionVC: UITableViewDataSource , UITableViewDelegate {
         cell.selectButton.addTarget(self, action:#selector(buttonPressed(_:)), for:.touchUpInside)
         
         if self.followingFollowerDataViewModel.searchActive == true {
-            if self.followingFollowerDataViewModel.searchedCheckUncheckedArr[indexPath.row] == 0 {
-                cell.selectButton.isSelected = false
-                
+            if self.followingFollowerDataViewModel.searchedCheckUncheckedArr.count > 0 {
+                if self.followingFollowerDataViewModel.searchedCheckUncheckedArr[indexPath.row] == 0 {
+                    cell.selectButton.isSelected = false
+                } else {
+                    cell.selectButton.isSelected = true
+                }
             } else {
-                cell.selectButton.isSelected = true
-                
+                cell.selectButton.isSelected = false
             }
         } else {
             if self.selectedArray.object(at: indexPath.row) as? Int == 0 {
@@ -453,7 +471,9 @@ extension SelectOptionVC {
                             }
                         }
                     }
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        self.doneBtn.isHidden = false
+                    }
                     self.optionTableView.reloadData()
                    // self.selectOptionTblHeight.constant = self.optionTableView.contentSize.height + CGFloat(self.tableArr.count)
                     self.optionTableView.layoutIfNeeded()
@@ -503,7 +523,9 @@ extension SelectOptionVC {
                             }
                         }
                     }
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        self.doneBtn.isHidden = false
+                    }
                     self.optionTableView.reloadData()
                     self.optionTableView.layoutIfNeeded()
                     
@@ -553,7 +575,9 @@ extension SelectOptionVC {
                             }
                         }
                     }
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                        self.doneBtn.isHidden = false
+                    }
                     self.optionTableView.reloadData()
                     self.optionTableView.layoutIfNeeded()
                     
@@ -600,9 +624,19 @@ extension SelectOptionVC : UISearchBarDelegate {
         self.followingFollowerDataViewModel.searchedArr = self.tableArr.filter {
             return (($0 as! NSDictionary).value(forKey: "amenitiesName") as! String).range(of: searchText, options: .caseInsensitive) != nil } as! [[String : Any]]
             
-        print(self.followingFollowerDataViewModel.searchedArr)
+       // print(self.followingFollowerDataViewModel.searchedArr)
+        
+        if self.followingFollowerDataViewModel.searchedArr.count == 0 {
+            self.doneBtn.isHidden = true
+            self.noDataFound.isHidden = false
+        } else {
+            self.doneBtn.isHidden = false
+            self.noDataFound.isHidden = true
+        }
+        
         self.followingFollowerDataViewModel.searchActive = true
         if self.searchBarTxtFld.text! == "" {
+            self.noDataFound.isHidden = true
             self.resetOnSearchFailed()
             self.followingFollowerDataViewModel.searchActive = false
             self.optionTableView.reloadData()

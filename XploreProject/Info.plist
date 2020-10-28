@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-1944596028719929~1709488790</string>
-	<key>FirebaseScreenReportingEnabled</key>
-	<false/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Will you allow this app to always know your location?</string>
-	<key>com.apple.developer.networking.wifi-info</key>
-	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -44,15 +36,20 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>306270829957760</string>
 	<key>FacebookDisplayName</key>
 	<string>Xplorecampsite</string>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-1944596028719929~1709488790</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>fbauth2</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>com.paypal.ppclient.touch.v2</string>
 		<string>com.paypal.ppclient.touch.v1</string>
@@ -64,17 +61,19 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSAllowsArbitraryLoadsForMedia</key>
 		<true/>
-		<key>NSAllowsArbitraryLoads</key>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Allow app to access device Media library for upload profile picture</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow app to access device camera for capture profile picture</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Will you allow this app to always know your location?</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Will you allow this app to always know your location?</string>
 	<key>NSLocationUsageDescription</key>
@@ -117,5 +116,7 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>com.apple.developer.networking.wifi-info</key>
+	<true/>
 </dict>
 </plist>

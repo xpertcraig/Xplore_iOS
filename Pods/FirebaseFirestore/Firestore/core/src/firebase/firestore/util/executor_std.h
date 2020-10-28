@@ -25,6 +25,7 @@
 #include <string>
 #include <thread>  // NOLINT(build/c++11)
 #include <utility>
+#include <vector>
 
 #include "Firestore/core/src/firebase/firestore/util/executor.h"
 #include "Firestore/core/src/firebase/firestore/util/hard_assert.h"
@@ -200,13 +201,11 @@ class Schedule {
 
 }  // namespace async
 
-namespace internal {
-
 // A serial queue that executes provided operations on a dedicated background
 // thread, using C++11 standard library functionality.
 class ExecutorStd : public Executor {
  public:
-  ExecutorStd();
+  explicit ExecutorStd(int threads);
   ~ExecutorStd();
 
   void Execute(Operation&& operation) override;
@@ -267,14 +266,13 @@ class ExecutorStd : public Executor {
   // (with due time set to `Immediate`).
   async::Schedule<Entry> schedule_;
 
-  std::thread worker_thread_;
+  std::vector<std::thread> worker_thread_pool_;
   // Used to stop the worker thread.
   std::atomic<bool> shutting_down_{false};
 
   std::atomic<Id> current_id_{0};
 };
 
-}  // namespace internal
 }  // namespace util
 }  // namespace firestore
 }  // namespace firebase

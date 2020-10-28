@@ -13,7 +13,7 @@ import GoogleSignIn
 import AuthenticationServices
 import SwiftKeychainWrapper
 
-class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
+class RegisterVc: UIViewController, GIDSignInDelegate {
     
     //MARK:- IbOutlets
     @IBOutlet weak var ScroolView: UIScrollView!
@@ -68,7 +68,7 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         //call googleSignIn delegate
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -142,16 +142,16 @@ class RegisterVc: UIViewController,GIDSignInUIDelegate, GIDSignInDelegate {
         self.view.endEditing(true)
         
         UserDefaults.standard.set(facbookLogin, forKey: XPLoginStatus)
-        let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
+        let fbLoginManager : LoginManager = LoginManager()
         
-        fbLoginManager.logIn(withReadPermissions: ["email","public_profile"], from: self) { (result, error) in
+        fbLoginManager.logIn(permissions: ["email","public_profile"], from: self) { (result, error) in
             if (error == nil){
-                let fbloginresult : FBSDKLoginManagerLoginResult = result!
+                let fbloginresult : LoginManagerLoginResult = result!
                 
                 if fbloginresult.grantedPermissions != nil {
                     if(fbloginresult.grantedPermissions.contains("email")) {
-                        if((FBSDKAccessToken.current()) != nil){
-                            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
+                        if((AccessToken.current?.tokenString) != nil){
+                            GraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                                 
                                 if (error == nil){
                                     self.fbbDataDict = (result as! [String : AnyObject] as NSDictionary)

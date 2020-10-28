@@ -6,7 +6,6 @@
 //
 
 #import "Mint.h"
-#import "MintUIWebView.h"
 #import "MintWKWebView.h"
 #import "MintLimitedExtraData.h"
 

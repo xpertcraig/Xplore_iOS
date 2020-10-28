@@ -154,7 +154,7 @@ class CampDescriptionVc: UIViewController, MKMapViewDelegate, AVPlayerViewContro
         self.googleMapView.isHidden = true
         self.activityIndicator.isHidden = true
         
-        self.googleMapView.uiDelegate = self
+//        self.googleMapView.uiDelegate = self
         //self.playerController.removeObserver(self)
     }
     
@@ -1180,25 +1180,3 @@ extension CampDescriptionVc: UITextViewDelegate, UITextFieldDelegate  {
     }
 }
 
-extension CampDescriptionVc: WKUIDelegate, UIWebViewDelegate {
-    func webViewDidStartLoad(_ webView: UIWebView) {
-        self.activityIndicator.isHidden = false
-        self.googleMapView.isHidden = false
-        self.activityIndicator.startAnimating()
-        
-    }
-    
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        self.activityIndicator.stopAnimating()
-        self.activityIndicator.isHidden = true
-        
-    }
-    
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        self.googleMapView.isHidden = true
-        self.activityIndicator.isHidden = true
-        self.activityIndicator.startAnimating()
-        
-    }
-    
-}

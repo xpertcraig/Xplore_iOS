@@ -42,6 +42,9 @@ class GalleryVc: UIViewController, UIScrollViewDelegate, AVPlayerViewControllerD
 
         self.notificationCountLbl.text! = String(describing: (notificationCount))
         
+        let image: UIImage = UIImage.outlinedEllipse(size: CGSize(width: 7.0, height: 7.0), color: .lightGray)!
+        self.pageControl.currentPageIndicatorTintColor = UIColor.init(patternImage: image)
+        
         //
         self.callAPI()
     }

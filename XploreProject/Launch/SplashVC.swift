@@ -52,7 +52,11 @@ extension SplashVC: GADInterstitialDelegate {
     func createAndLoadInterstitial() -> GADInterstitial {
         Singleton.sharedInstance.interstitial = GADInterstitial(adUnitID: GADAdsUnitIdInterstitial)
         Singleton.sharedInstance.interstitial.delegate = self
-        Singleton.sharedInstance.interstitial.load(GADRequest())
+        
+        let request : GADRequest = GADRequest()
+        request.testDevices = ["34af7f77e20d0ef06debd6380845e70f"]
+        
+        Singleton.sharedInstance.interstitial.load(request)
         return Singleton.sharedInstance.interstitial
         
     }

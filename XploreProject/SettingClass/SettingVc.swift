@@ -49,10 +49,10 @@ class SettingVc: UIViewController,UIImagePickerControllerDelegate ,UINavigationC
         
         
         if self.socialLogin == true {
-            tableViewArray = [PushNotification, payHistory, About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
+            tableViewArray = [PushNotification, /*payHistory,*/ About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
             
         } else {
-            tableViewArray = [ChangePassword/*,Help*/,PushNotification, payHistory, About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
+            tableViewArray = [ChangePassword/*,Help*/,PushNotification, /*payHistory, */ About/*,Guidlines*/,TermsConditions,PrivacyPolicy,ContactUs]
             
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {

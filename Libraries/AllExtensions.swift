@@ -608,3 +608,66 @@ extension Float {
        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
     }
 }
+
+extension UIPageControl {
+    func customPageControl(dotFillColor:UIColor, dotBorderColor:UIColor, dotBorderWidth:CGFloat) {
+        for (pageIndex, dotView) in self.subviews.enumerated() {
+            if self.currentPage == pageIndex {
+                dotView.backgroundColor = dotFillColor
+                dotView.layer.cornerRadius = dotView.frame.size.height / 2
+            }else{
+                dotView.backgroundColor = .clear
+                dotView.layer.cornerRadius = dotView.frame.size.height / 2
+                dotView.layer.borderColor = dotBorderColor.cgColor
+                dotView.layer.borderWidth = dotBorderWidth
+            }
+        }
+    }
+
+}
+
+/// An extension to `UIImage` for creating images with shapes.
+extension UIImage {
+
+    /// Creates a circular outline image.
+    class func outlinedEllipse(size: CGSize, color: UIColor, lineWidth: CGFloat = 1.0) -> UIImage? {
+
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        guard let context = UIGraphicsGetCurrentContext() else {
+                return nil
+        }
+
+        context.setStrokeColor(color.cgColor)
+        context.setLineWidth(lineWidth)
+        // Inset the rect to account for the fact that strokes are
+        // centred on the bounds of the shape.
+        let rect = CGRect(origin: .zero, size: size).insetBy(dx: lineWidth * 0.5, dy: lineWidth * 0.5)
+        context.addEllipse(in: rect)
+        context.strokePath()
+
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+}
+
+extension UIImage {
+    func imageWithColor(tintColor: UIColor) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+
+        let context = UIGraphicsGetCurrentContext()!
+        context.translateBy(x: 0, y: self.size.height)
+        context.scaleBy(x: 1.0, y: -1.0);
+        context.setBlendMode(.normal)
+
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height) as CGRect
+        context.clip(to: rect, mask: self.cgImage!)
+        tintColor.setFill()
+        context.fill(rect)
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+}

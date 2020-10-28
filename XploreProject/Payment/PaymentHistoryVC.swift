@@ -33,6 +33,22 @@ class PaymentHistoryVC: UIViewController, PayPalPaymentDelegate {
         }
     }
     
+//    var environmentSandbox: String = PayPalEnvironmentSandbox {
+//        willSet(newEnvironment) {
+//            if (newEnvironment != environmentSandbox) {
+//                PayPalMobile.preconnect(withEnvironment: newEnvironment)
+//            }
+//        }
+//    }
+    
+//    var environmentLive: String = PayPalEnvironmentProduction {
+//        willSet(newEnvironment) {
+//            if (newEnvironment != environmentLive) {
+//                PayPalMobile.preconnect(withEnvironment: newEnvironment)
+//            }
+//        }
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -61,8 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FirebaseApp.configure()
         
         GADMobileAds.configure(withApplicationID: googleAdsAppId)
-        let request : GADRequest = GADRequest ()
-        request.testDevices = ["34af7f77e20d0ef06debd6380845e70f" ]
+        
         
         // [START set_messaging_delegate]
         
@@ -86,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         
         //facebook login
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         //gmail Integration
         GIDSignIn.sharedInstance().clientID = "391490568950-or37ivee2lf3hhmd5tl318pns8ms9eoq.apps.googleusercontent.com"
@@ -94,13 +93,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.callSearch()
         
         //paypal
-        PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction: "",PayPalEnvironmentSandbox: "AchQBo7DxGgkZ9gfoqvq-pU2nyQUQmgGoff_J5Dqw60d2CGIRiB0E5yn-Hj9igkaJLvWJx5K139FB_tb"])
+        //new
+        
+        PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction: "AcSVl1kiDmTBoG4GiEbDRI4z0zSyfN8EK3_nGTXC89o5-JxiEmi2iFWNrqZ05_LAOFI9l8hb7FecOxg0"])
+        
+   //     PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction: "AcSVl1kiDmTBoG4GiEbDRI4z0zSyfN8EK3_nGTXC89o5-JxiEmi2iFWNrqZ05_LAOFI9l8hb7FecOxg0",PayPalEnvironmentSandbox: "Ad-dgqhzoLcDLU5jmdcOozwWajoOSG3SWhsS6fmXjwYSF_FmseqNRDuKwjQM-o9jCHRDMo2O67Mg5GAv"])
+        
+     //   old
+      //  PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction: "",PayPalEnvironmentSandbox: "AchQBo7DxGgkZ9gfoqvq-pU2nyQUQmgGoff_J5Dqw60d2CGIRiB0E5yn-Hj9igkaJLvWJx5K139FB_tb"])
         
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        FBSDKAppEvents.activateApp()
+        AppEvents.activateApp()
         self.saveAppData()
     }
 
@@ -265,11 +271,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         
         if UserDefaults.standard.value(forKey: XPLoginStatus) as! String == facbookLogin {
-            return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+            return ApplicationDelegate.shared.application(app, open: url, options: options)
             
         } else if UserDefaults.standard.value(forKey: XPLoginStatus) as! String == gmailLogin {
-            return GIDSignIn.sharedInstance().handle(url, sourceApplication: (options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String), annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+            //return GIDSignIn.sharedInstance().handle(url, sourceApplication: (options[UIApplicationLaunchOptionsKey.sourceApplication]), annotation: options[UIApplicationOpenURLOptionsKey.annotation])
             
+            return GIDSignIn.sharedInstance().handle(url)
         } else {
             return true
             
@@ -279,7 +286,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         var _: [String: AnyObject] = [UIApplicationOpenURLOptionsKey.sourceApplication.rawValue: sourceApplication as AnyObject,UIApplicationOpenURLOptionsKey.annotation.rawValue: annotation as AnyObject]
         
-        return GIDSignIn.sharedInstance().handle(url as URL?,sourceApplication: sourceApplication,annotation: annotation)
+        return GIDSignIn.sharedInstance().handle(url)
+        //return GIDSignIn.sharedInstance()?.handle(url as URL?,sourceApplication: sourceApplication,annotation: annotation)
     }
     
     //notification
@@ -616,7 +624,11 @@ extension AppDelegate: GADInterstitialDelegate {
     func createAndLoadInterstitial() -> GADInterstitial {
         Singleton.sharedInstance.interstitial = GADInterstitial(adUnitID: GADAdsUnitIdInterstitial)
         Singleton.sharedInstance.interstitial.delegate = self
-        Singleton.sharedInstance.interstitial.load(GADRequest())
+        
+        let request : GADRequest = GADRequest()
+        request.testDevices = ["34af7f77e20d0ef06debd6380845e70f"]
+        
+        Singleton.sharedInstance.interstitial.load(request)
         return Singleton.sharedInstance.interstitial
         
     }

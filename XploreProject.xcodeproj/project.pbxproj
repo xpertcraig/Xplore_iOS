@@ -55,15 +55,29 @@
 		18BB68E3205FE82D002C2151 /* maxresdefault.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 18BB68E2205FE82B002C2151 /* maxresdefault.jpg */; };
 		18BB68E5205FE866002C2151 /* UIImageViewCustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E4205FE866002C2151 /* UIImageViewCustomClass.swift */; };
 		18BB68E8205FE94A002C2151 /* GalleryVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E7205FE94A002C2151 /* GalleryVc.swift */; };
-		6347FFB62E03D414F33ADC92 /* Pods_XploreProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16618643E92023492CB801C3 /* Pods_XploreProject.framework */; };
 		E9120E522504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9120E512504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift */; };
 		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
+		E9214C10254504B700CFA45A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C0F254504B700CFA45A /* Alamofire.framework */; };
+		E9214C12254504B700CFA45A /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C11254504B700CFA45A /* FirebaseAuth.framework */; };
+		E9214C14254504B700CFA45A /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C13254504B700CFA45A /* FirebaseCore.framework */; };
+		E9214C16254504B700CFA45A /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C15254504B700CFA45A /* FirebaseCoreDiagnostics.framework */; };
+		E9214C18254504B700CFA45A /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C17254504B700CFA45A /* FirebaseDatabase.framework */; };
+		E9214C1A254504B700CFA45A /* FirebaseFirestore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C19254504B700CFA45A /* FirebaseFirestore.framework */; };
+		E9214C1C254504B700CFA45A /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C1B254504B700CFA45A /* FirebaseInstanceID.framework */; };
+		E9214C1E254504B700CFA45A /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C1D254504B700CFA45A /* FirebaseMessaging.framework */; };
+		E9214C20254504B700CFA45A /* FirebaseStorage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C1F254504B700CFA45A /* FirebaseStorage.framework */; };
+		E9214C22254504CE00CFA45A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C21254504CE00CFA45A /* FBSDKCoreKit.framework */; };
+		E9214C24254504CE00CFA45A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C23254504CE00CFA45A /* FBSDKLoginKit.framework */; };
+		E9214C26254504DE00CFA45A /* FacebookCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C25254504DE00CFA45A /* FacebookCore.framework */; };
+		E9214C28254504DE00CFA45A /* FacebookLogin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C27254504DE00CFA45A /* FacebookLogin.framework */; };
 		E92EFB5A24DAFA4A00E78503 /* WebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */; };
 		E931F9AA22882E8900DA6054 /* myCustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931F9A922882E8900DA6054 /* myCustomSlider.swift */; };
 		E93733812438431F00D69C4B /* CommonUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93733802438431E00D69C4B /* CommonUseViewModel.swift */; };
 		E94ED8B9248A220400B1495B /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ED8B8248A220400B1495B /* SplashVC.swift */; };
+		E95113912545B4D3000AC287 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E95113902545B4D3000AC287 /* SwiftyJSON.framework */; };
 		E95EFED3243CA44C004A6B91 /* PushNotificationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */; };
 		E96BA8DF24D1ECBF00CA1F7A /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96BA8DE24D1ECBF00CA1F7A /* BackgroundTask.swift */; };
+		E999193525450EA80041160A /* grpc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E999193425450EA80041160A /* grpc.framework */; };
 		E9A9C19B23F31E690066E0F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */; };
 		E9BA7E762358BAA600E84A89 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BA7E752358BAA600E84A89 /* Singleton.swift */; };
 		E9BB6D86252B541100F88F47 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9BB6D85252B541100F88F47 /* GoogleService-Info.plist */; };
@@ -197,13 +211,51 @@
 		D9F589C9E4674C54EC034F5F /* Pods-XploreProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XploreProject/Pods-XploreProject.debug.xcconfig"; sourceTree = "<group>"; };
 		E9120E512504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowFollowingTableViewCell.swift; sourceTree = "<group>"; };
 		E915FFDE23F44A38008F01F7 /* Xplore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xplore.xcdatamodel; sourceTree = "<group>"; };
+		E9214C0F254504B700CFA45A /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C11254504B700CFA45A /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C13254504B700CFA45A /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C15254504B700CFA45A /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C17254504B700CFA45A /* FirebaseDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C19254504B700CFA45A /* FirebaseFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C1B254504B700CFA45A /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C1D254504B700CFA45A /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C1F254504B700CFA45A /* FirebaseStorage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseStorage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C21254504CE00CFA45A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C23254504CE00CFA45A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C25254504DE00CFA45A /* FacebookCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FacebookCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9214C27254504DE00CFA45A /* FacebookLogin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FacebookLogin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E92B01912545AEDB00F197E5 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E92B01932545AF5B00F197E5 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E92B01972545AFA000F197E5 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E92EFB5924DAFA4A00E78503 /* WebViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVC.swift; sourceTree = "<group>"; };
 		E931F9A922882E8900DA6054 /* myCustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCustomSlider.swift; sourceTree = "<group>"; };
 		E93733802438431E00D69C4B /* CommonUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseViewModel.swift; sourceTree = "<group>"; };
 		E94ED8B8248A220400B1495B /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
+		E95113902545B4D3000AC287 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationSender.swift; sourceTree = "<group>"; };
 		E96BA8DE24D1ECBF00CA1F7A /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
+		E97216A22543EBC700EA93B6 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E97216A42543EBC700EA93B6 /* PayPalMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalMobile.h; sourceTree = "<group>"; };
+		E97216A52543EBC700EA93B6 /* PayPalPaymentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalPaymentViewController.h; sourceTree = "<group>"; };
+		E97216A62543EBC700EA93B6 /* PayPalPayment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalPayment.h; sourceTree = "<group>"; };
+		E97216A72543EBC700EA93B6 /* PayPalOAuthScopes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalOAuthScopes.h; sourceTree = "<group>"; };
+		E97216A82543EBC700EA93B6 /* PayPalFuturePaymentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalFuturePaymentViewController.h; sourceTree = "<group>"; };
+		E97216A92543EBC700EA93B6 /* PayPalProfileSharingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalProfileSharingViewController.h; sourceTree = "<group>"; };
+		E97216AA2543EBC700EA93B6 /* PayPalConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalConfiguration.h; sourceTree = "<group>"; };
+		E97216AB2543EBC700EA93B6 /* libPayPalMobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMobile.a; sourceTree = "<group>"; };
+		E97216AC2543EBC700EA93B6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E97216AE2543F27F00EA93B6 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E97216B02543F27F00EA93B6 /* PayPalMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalMobile.h; sourceTree = "<group>"; };
+		E97216B12543F27F00EA93B6 /* PayPalPaymentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalPaymentViewController.h; sourceTree = "<group>"; };
+		E97216B22543F27F00EA93B6 /* PayPalPayment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalPayment.h; sourceTree = "<group>"; };
+		E97216B32543F27F00EA93B6 /* PayPalOAuthScopes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalOAuthScopes.h; sourceTree = "<group>"; };
+		E97216B42543F27F00EA93B6 /* PayPalFuturePaymentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalFuturePaymentViewController.h; sourceTree = "<group>"; };
+		E97216B52543F27F00EA93B6 /* PayPalProfileSharingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalProfileSharingViewController.h; sourceTree = "<group>"; };
+		E97216B62543F27F00EA93B6 /* PayPalConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalConfiguration.h; sourceTree = "<group>"; };
+		E97216B72543F27F00EA93B6 /* libPayPalMobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMobile.a; sourceTree = "<group>"; };
+		E97216B82543F27F00EA93B6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E985F1F92388459F00A3F26C /* Xplore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Xplore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E999193425450EA80041160A /* grpc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = grpc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9A9C19A23F31E690066E0F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E9BA7E752358BAA600E84A89 /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		E9BB6D85252B541100F88F47 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -324,6 +376,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E95113912545B4D3000AC287 /* SwiftyJSON.framework in Frameworks */,
+				E999193525450EA80041160A /* grpc.framework in Frameworks */,
+				E9214C26254504DE00CFA45A /* FacebookCore.framework in Frameworks */,
+				E9214C28254504DE00CFA45A /* FacebookLogin.framework in Frameworks */,
+				E9214C22254504CE00CFA45A /* FBSDKCoreKit.framework in Frameworks */,
+				E9214C24254504CE00CFA45A /* FBSDKLoginKit.framework in Frameworks */,
+				E9214C10254504B700CFA45A /* Alamofire.framework in Frameworks */,
+				E9214C12254504B700CFA45A /* FirebaseAuth.framework in Frameworks */,
+				E9214C14254504B700CFA45A /* FirebaseCore.framework in Frameworks */,
+				E9214C16254504B700CFA45A /* FirebaseCoreDiagnostics.framework in Frameworks */,
+				E9214C18254504B700CFA45A /* FirebaseDatabase.framework in Frameworks */,
+				E9214C1A254504B700CFA45A /* FirebaseFirestore.framework in Frameworks */,
+				E9214C1C254504B700CFA45A /* FirebaseInstanceID.framework in Frameworks */,
+				E9214C1E254504B700CFA45A /* FirebaseMessaging.framework in Frameworks */,
+				E9214C20254504B700CFA45A /* FirebaseStorage.framework in Frameworks */,
 				FF28C7502182F9610079E13F /* SafariServices.framework in Frameworks */,
 				FF28C74E2182F9590079E13F /* SystemConfiguration.framework in Frameworks */,
 				FF28C74C2182F94E0079E13F /* MobileCoreServices.framework in Frameworks */,
@@ -334,7 +401,6 @@
 				FF28C7422182F9190079E13F /* AudioToolbox.framework in Frameworks */,
 				FF28C7402182F90D0079E13F /* Accelerate.framework in Frameworks */,
 				1876A4BA2062380500D59873 /* MapKit.framework in Frameworks */,
-				6347FFB62E03D414F33ADC92 /* Pods_XploreProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,6 +717,26 @@
 		D030DCCFBBE15CFE94ADB5DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E95113902545B4D3000AC287 /* SwiftyJSON.framework */,
+				E92B01972545AFA000F197E5 /* SwiftyJSON.framework */,
+				E92B01932545AF5B00F197E5 /* SwiftyJSON.framework */,
+				E92B01912545AEDB00F197E5 /* SwiftyJSON.framework */,
+				E999193425450EA80041160A /* grpc.framework */,
+				E9214C25254504DE00CFA45A /* FacebookCore.framework */,
+				E9214C27254504DE00CFA45A /* FacebookLogin.framework */,
+				E9214C21254504CE00CFA45A /* FBSDKCoreKit.framework */,
+				E9214C23254504CE00CFA45A /* FBSDKLoginKit.framework */,
+				E9214C0F254504B700CFA45A /* Alamofire.framework */,
+				E9214C11254504B700CFA45A /* FirebaseAuth.framework */,
+				E9214C13254504B700CFA45A /* FirebaseCore.framework */,
+				E9214C15254504B700CFA45A /* FirebaseCoreDiagnostics.framework */,
+				E9214C17254504B700CFA45A /* FirebaseDatabase.framework */,
+				E9214C19254504B700CFA45A /* FirebaseFirestore.framework */,
+				E9214C1B254504B700CFA45A /* FirebaseInstanceID.framework */,
+				E9214C1D254504B700CFA45A /* FirebaseMessaging.framework */,
+				E9214C1F254504B700CFA45A /* FirebaseStorage.framework */,
+				E97216A12543EBC700EA93B6 /* PayPal-iOS-SDK */,
+				E97216AD2543F27F00EA93B6 /* PayPal-iOS-SDK */,
 				FF28C74F2182F9600079E13F /* SafariServices.framework */,
 				FF28C74D2182F9570079E13F /* SystemConfiguration.framework */,
 				FF28C74B2182F94D0079E13F /* MobileCoreServices.framework */,
@@ -690,6 +776,58 @@
 				E95EFED2243CA44B004A6B91 /* PushNotificationSender.swift */,
 			);
 			path = PushNotification;
+			sourceTree = "<group>";
+		};
+		E97216A12543EBC700EA93B6 /* PayPal-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				E97216A22543EBC700EA93B6 /* LICENSE */,
+				E97216A32543EBC700EA93B6 /* PayPalMobile */,
+				E97216AC2543EBC700EA93B6 /* README.md */,
+			);
+			name = "PayPal-iOS-SDK";
+			path = "Pods/PayPal-iOS-SDK";
+			sourceTree = "<group>";
+		};
+		E97216A32543EBC700EA93B6 /* PayPalMobile */ = {
+			isa = PBXGroup;
+			children = (
+				E97216A42543EBC700EA93B6 /* PayPalMobile.h */,
+				E97216A52543EBC700EA93B6 /* PayPalPaymentViewController.h */,
+				E97216A62543EBC700EA93B6 /* PayPalPayment.h */,
+				E97216A72543EBC700EA93B6 /* PayPalOAuthScopes.h */,
+				E97216A82543EBC700EA93B6 /* PayPalFuturePaymentViewController.h */,
+				E97216A92543EBC700EA93B6 /* PayPalProfileSharingViewController.h */,
+				E97216AA2543EBC700EA93B6 /* PayPalConfiguration.h */,
+				E97216AB2543EBC700EA93B6 /* libPayPalMobile.a */,
+			);
+			path = PayPalMobile;
+			sourceTree = "<group>";
+		};
+		E97216AD2543F27F00EA93B6 /* PayPal-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				E97216AE2543F27F00EA93B6 /* LICENSE */,
+				E97216AF2543F27F00EA93B6 /* PayPalMobile */,
+				E97216B82543F27F00EA93B6 /* README.md */,
+			);
+			name = "PayPal-iOS-SDK";
+			path = "Pods/PayPal-iOS-SDK";
+			sourceTree = "<group>";
+		};
+		E97216AF2543F27F00EA93B6 /* PayPalMobile */ = {
+			isa = PBXGroup;
+			children = (
+				E97216B02543F27F00EA93B6 /* PayPalMobile.h */,
+				E97216B12543F27F00EA93B6 /* PayPalPaymentViewController.h */,
+				E97216B22543F27F00EA93B6 /* PayPalPayment.h */,
+				E97216B32543F27F00EA93B6 /* PayPalOAuthScopes.h */,
+				E97216B42543F27F00EA93B6 /* PayPalFuturePaymentViewController.h */,
+				E97216B52543F27F00EA93B6 /* PayPalProfileSharingViewController.h */,
+				E97216B62543F27F00EA93B6 /* PayPalConfiguration.h */,
+				E97216B72543F27F00EA93B6 /* libPayPalMobile.a */,
+			);
+			path = PayPalMobile;
 			sourceTree = "<group>";
 		};
 		E9BCA95722E47E6E0079B8FD /* TOCropViewController */ = {
@@ -950,7 +1088,7 @@
 				18BB6879205F9BA5002C2151 /* Frameworks */,
 				18BB687A205F9BA5002C2151 /* Resources */,
 				F9FCC2639C6B0F83531A18C3 /* [CP] Embed Pods Frameworks */,
-				58E9D6E6B82CEC59DDE0ECDE /* [CP] Copy Pods Resources */,
+				A43989FE9850E476A7E35954 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1065,7 +1203,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		58E9D6E6B82CEC59DDE0ECDE /* [CP] Copy Pods Resources */ = {
+		86B2F1EFBFF6F07F8966F1EA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-XploreProject-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A43989FE9850E476A7E35954 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1087,24 +1243,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-XploreProject/Pods-XploreProject-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		86B2F1EFBFF6F07F8966F1EA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-XploreProject-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F9FCC2639C6B0F83531A18C3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1113,64 +1251,60 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-XploreProject/Pods-XploreProject-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FTIndicator/FTIndicator.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/OpalImagePicker/OpalImagePicker.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SimpleImageViewer/SimpleImageViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/abseil/absl.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FTIndicator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpalImagePicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleImageViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/absl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -1384,9 +1518,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1439,7 +1573,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
 				SDKROOT = iphoneos;
@@ -1456,17 +1590,64 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = XploreProject/XploreProject.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: kamaljit Singh (XG37H7NQ28)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
 				ENABLE_BITCODE = YES;
-				INFOPLIST_FILE = XploreProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Libraries/PayPalMobileSDK",
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/BoringSSL-GRPC\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Cosmos\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKLoginKit\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FTIndicator\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FacebookCore\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FacebookLogin\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseAuth\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreDiagnostics\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseDatabase\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseFirestore\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstanceID\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMessaging\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseStorage\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransportCCTSupport\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManagerSwift\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MessageKit\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/OpalImagePicker\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Protobuf\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SimpleImageViewer\"/**",
+					"\"${SRCROOT}/SwiftKeychainWrapper\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/abseil\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-Core\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/leveldb-library\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"/**",
+					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"/**",
+					"\"${PODS_ROOT}/Google-Mobile-Ads-SDK/Frameworks/frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleMaps/Base/Frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"/**",
+					"\"${PODS_ROOT}/GooglePlaces/Frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleSignIn/Frameworks\"/**",
+					"\"${PODS_ROOT}/SplunkMint\"/**",
+					"\"$(PODS_ROOT)/SplunkMint/\"/**",
 				);
+				INFOPLIST_FILE = XploreProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1543,10 +1724,6 @@
 					"-framework",
 					"\"GLKit\"",
 					"-framework",
-					"\"GRPCClient\"",
-					"-framework",
-					"\"GTMOAuth2\"",
-					"-framework",
 					"\"GTMSessionFetcher\"",
 					"-framework",
 					"\"GoogleAppMeasurement\"",
@@ -1560,8 +1737,6 @@
 					"\"GooglePlaces\"",
 					"-framework",
 					"\"GoogleSignIn\"",
-					"-framework",
-					"\"GoogleToolboxForMac\"",
 					"-framework",
 					"\"GoogleUtilities\"",
 					"-framework",
@@ -1581,13 +1756,9 @@
 					"-framework",
 					"\"OpenGLES\"",
 					"-framework",
-					"\"ProtoRPC\"",
-					"-framework",
 					"\"Protobuf\"",
 					"-framework",
 					"\"QuartzCore\"",
-					"-framework",
-					"\"RxLibrary\"",
 					"-framework",
 					"\"SDWebImage\"",
 					"-framework",
@@ -1614,16 +1785,14 @@
 					"\"leveldb\"",
 					"-framework",
 					"\"nanopb\"",
-					"-framework",
-					"\"openssl\"",
 					"-lc++",
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.explorecampsites.app.world;
 				PRODUCT_NAME = Xplore;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
-				PROVISIONING_PROFILE_SPECIFIER = exploreDev29.03.20;
-				SWIFT_OBJC_BRIDGING_HEADER = "Data Manager/XploreProject-Bridging-Header.h";
+				PROVISIONING_PROFILE_SPECIFIER = ExploreLive;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/dharmendra/Desktop/Xplore_iOS/Data Manager/XploreProject-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 4.0;
@@ -1639,17 +1808,63 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = XploreProject/XploreProject.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: kamaljit Singh (XG37H7NQ28)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
 				ENABLE_BITCODE = YES;
-				INFOPLIST_FILE = XploreProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Libraries/PayPalMobileSDK",
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/BoringSSL-GRPC\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Cosmos\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKLoginKit\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FTIndicator\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FacebookCore\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FacebookLogin\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseAuth\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreDiagnostics\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseDatabase\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseFirestore\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstanceID\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMessaging\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseStorage\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransportCCTSupport\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManagerSwift\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MessageKit\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/OpalImagePicker\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Protobuf\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SimpleImageViewer\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftKeychainWrapper\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/abseil\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-Core\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/leveldb-library\"/**",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"/**",
+					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"/**",
+					"\"${PODS_ROOT}/Google-Mobile-Ads-SDK/Frameworks/frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleMaps/Base/Frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"/**",
+					"\"${PODS_ROOT}/GooglePlaces/Frameworks\"/**",
+					"\"${PODS_ROOT}/GoogleSignIn/Frameworks\"/**",
+					"\"${PODS_ROOT}/SplunkMint\"/**",
+					"\"$(PODS_ROOT)/SplunkMint/\"/**",
 				);
+				INFOPLIST_FILE = XploreProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1726,10 +1941,6 @@
 					"-framework",
 					"\"GLKit\"",
 					"-framework",
-					"\"GRPCClient\"",
-					"-framework",
-					"\"GTMOAuth2\"",
-					"-framework",
 					"\"GTMSessionFetcher\"",
 					"-framework",
 					"\"GoogleAppMeasurement\"",
@@ -1743,8 +1954,6 @@
 					"\"GooglePlaces\"",
 					"-framework",
 					"\"GoogleSignIn\"",
-					"-framework",
-					"\"GoogleToolboxForMac\"",
 					"-framework",
 					"\"GoogleUtilities\"",
 					"-framework",
@@ -1764,13 +1973,9 @@
 					"-framework",
 					"\"OpenGLES\"",
 					"-framework",
-					"\"ProtoRPC\"",
-					"-framework",
 					"\"Protobuf\"",
 					"-framework",
 					"\"QuartzCore\"",
-					"-framework",
-					"\"RxLibrary\"",
 					"-framework",
 					"\"SDWebImage\"",
 					"-framework",
@@ -1797,16 +2002,14 @@
 					"\"leveldb\"",
 					"-framework",
 					"\"nanopb\"",
-					"-framework",
-					"\"openssl\"",
 					"-lc++",
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.explorecampsites.app.world;
 				PRODUCT_NAME = Xplore;
 				PROVISIONING_PROFILE = "a239eb7f-4959-4a2f-9327-f8a4f730aa8c";
-				PROVISIONING_PROFILE_SPECIFIER = exploreDev29.03.20;
-				SWIFT_OBJC_BRIDGING_HEADER = "Data Manager/XploreProject-Bridging-Header.h";
+				PROVISIONING_PROFILE_SPECIFIER = ExploreLive;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/dharmendra/Desktop/Xplore_iOS/Data Manager/XploreProject-Bridging-Header.h";
 				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
