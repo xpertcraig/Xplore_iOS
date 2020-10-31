@@ -55,6 +55,7 @@
 		18BB68E3205FE82D002C2151 /* maxresdefault.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 18BB68E2205FE82B002C2151 /* maxresdefault.jpg */; };
 		18BB68E5205FE866002C2151 /* UIImageViewCustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E4205FE866002C2151 /* UIImageViewCustomClass.swift */; };
 		18BB68E8205FE94A002C2151 /* GalleryVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BB68E7205FE94A002C2151 /* GalleryVc.swift */; };
+		46B9905CD45B9EB40E5330C4 /* Pods_XploreProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16618643E92023492CB801C3 /* Pods_XploreProject.framework */; };
 		E9120E522504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9120E512504C06A00FDCBB6 /* FollowFollowingTableViewCell.swift */; };
 		E915FFDF23F44A38008F01F7 /* Xplore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E915FFDD23F44A38008F01F7 /* Xplore.xcdatamodeld */; };
 		E9214C10254504B700CFA45A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9214C0F254504B700CFA45A /* Alamofire.framework */; };
@@ -401,6 +402,7 @@
 				FF28C7422182F9190079E13F /* AudioToolbox.framework in Frameworks */,
 				FF28C7402182F90D0079E13F /* Accelerate.framework in Frameworks */,
 				1876A4BA2062380500D59873 /* MapKit.framework in Frameworks */,
+				46B9905CD45B9EB40E5330C4 /* Pods_XploreProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1260,6 +1262,8 @@
 				"${BUILT_PRODUCTS_DIR}/FTIndicator/FTIndicator.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/Firebase/Firebase.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseUI/FirebaseUI.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
@@ -1290,6 +1294,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FTIndicator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Firebase.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
@@ -1592,7 +1598,7 @@
 				CODE_SIGN_ENTITLEMENTS = XploreProject/XploreProject.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: kamaljit Singh (XG37H7NQ28)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1810,7 +1816,7 @@
 				CODE_SIGN_ENTITLEMENTS = XploreProject/XploreProject.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: kamaljit Singh (XG37H7NQ28)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = XG37H7NQ28;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

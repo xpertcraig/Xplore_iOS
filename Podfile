@@ -17,11 +17,14 @@ pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'Firebase/Firestore'
+pod 'FirebaseUI'
 pod 'GoogleSignIn'
 pod 'GoogleMaps'
 pod 'GooglePlaces'
 pod 'SwiftyJSON'
-#pod 'Google-Mobile-Ads-SDK'
+pod 'Google-Mobile-Ads-SDK'
+pod 'IQKeyboardManagerSwift'
+
 
 pod 'Alamofire'
 pod 'SDWebImage'
@@ -29,12 +32,11 @@ pod 'FTIndicator'
 
 pod 'MBProgressHUD'
 pod 'Cosmos', '~> 11.0'
-pod 'IQKeyboardManagerSwift'
 pod 'MessageKit'
 pod 'SimpleImageViewer'
 pod 'SwiftKeychainWrapper'
 
-pod 'PayPal-iOS-SDK'
+#pod 'PayPal-iOS-SDK'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
